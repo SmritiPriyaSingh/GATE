@@ -1,4 +1,4 @@
-// LocalStorage State Manager for GATE CSE 2027 Platform - Pure Clean State Engine
+// LocalStorage State Manager for GATE CSE 2027 Platform
 
 const STORAGE_KEYS = {
   SYLLABUS_PROGRESS: 'gate2027_syllabus_progress',
@@ -9,23 +9,55 @@ const STORAGE_KEYS = {
   LAST_TOPIC: 'gate2027_last_topic',
   STUDY_HEATMAP: 'gate2027_study_heatmap',
   DAILY_HOURS: 'gate2027_daily_hours',
-  USER_PROFILE: 'gate2027_user_profile'
+  USER_PROFILE: 'gate2027_user_profile',
+  USER_SETTINGS: 'gate2027_user_settings'
 };
 
 const StorageManager = {
-  // Profile Settings
+  // User Profile
   getProfile() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_PROFILE)) || {
-      name: 'GATE Aspirant',
-      targetYear: '2027',
-      targetBranch: 'Computer Science & IT'
+      name: 'Smriti Priya Singh',
+      email: 'smriti.singh@gate2027.edu',
+      targetYear: 'GATE 2027',
+      branch: 'Computer Science & Engineering',
+      joinedDate: 'August 2026',
+      avatar: null
     };
   },
-  saveProfile(profile) {
-    localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(profile));
+  saveProfile(profileData) {
+    const existing = this.getProfile();
+    const updated = { ...existing, ...profileData };
+    localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(updated));
+    return updated;
+  },
+  saveAvatar(base64Data) {
+    const profile = this.getProfile();
+    profile.avatar = base64Data;
+    this.saveProfile(profile);
+  },
+  removeAvatar() {
+    const profile = this.getProfile();
+    profile.avatar = null;
+    this.saveProfile(profile);
   },
 
-  // Syllabus Progress (Starts completely empty {})
+  // User Settings
+  getSettings() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_SETTINGS)) || {
+      theme: 'dark',
+      dailyReminder: true,
+      testReminder: true
+    };
+  },
+  saveSettings(settingsData) {
+    const existing = this.getSettings();
+    const updated = { ...existing, ...settingsData };
+    localStorage.setItem(STORAGE_KEYS.USER_SETTINGS, JSON.stringify(updated));
+    return updated;
+  },
+
+  // Syllabus Progress
   getSyllabusProgress() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.SYLLABUS_PROGRESS)) || {};
   },
@@ -45,7 +77,7 @@ const StorageManager = {
     return prog[topicId];
   },
 
-  // Today's Tasks (Starts empty array [])
+  // Today's Tasks
   getTodayTasks() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.TODAY_TASKS)) || [];
   },
@@ -74,7 +106,7 @@ const StorageManager = {
     return tasks;
   },
 
-  // Last Studied Topic (Starts null until user practices)
+  // Last Studied Topic
   getLastTopic() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.LAST_TOPIC)) || null;
   },
@@ -87,7 +119,7 @@ const StorageManager = {
     }));
   },
 
-  // Heatmap & Activity (Starts empty {})
+  // Heatmap & Activity
   getHeatmapData() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.STUDY_HEATMAP)) || {};
   },
@@ -117,11 +149,6 @@ const StorageManager = {
   // Notes
   getNotes() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_NOTES)) || {};
-  },
-  saveNote(topicId, noteContent) {
-    const n = this.getNotes();
-    n[topicId] = noteContent;
-    localStorage.setItem(STORAGE_KEYS.USER_NOTES, JSON.stringify(n));
   },
 
   // Clear All Data

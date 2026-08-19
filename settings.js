@@ -1,4 +1,4 @@
-// Comprehensive Platform Settings & Data Management Engine
+// Clean Platform Settings & Preferences Engine
 
 document.addEventListener('DOMContentLoaded', () => {
   renderSettingsModule();
@@ -8,42 +8,41 @@ function renderSettingsModule() {
   const container = document.getElementById('settings-container');
   if (!container) return;
 
-  const profile = StorageManager.getProfile();
+  const settings = StorageManager.getSettings();
   const currentTheme = localStorage.getItem('gate2027_theme') || 'dark';
 
   container.innerHTML = `
-    <!-- 1. User Profile Settings -->
+    <!-- 1. Appearance Settings -->
     <div class="card" style="margin-bottom:20px;">
-      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:14px;">👤 User Profile</h3>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:600px;">
-        <div>
-          <label style="font-size:13px; font-weight:600; display:block; margin-bottom:4px;">Aspirant Name</label>
-          <input type="text" id="set-profile-name" value="${profile.name}" style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:8px 12px; border-radius:6px; width:100%; font-size:13px;">
-        </div>
-        <div>
-          <label style="font-size:13px; font-weight:600; display:block; margin-bottom:4px;">Target Exam Year</label>
-          <input type="text" id="set-profile-year" value="${profile.targetYear}" style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:8px 12px; border-radius:6px; width:100%; font-size:13px;">
-        </div>
-        <div style="grid-column: span 2;">
-          <label style="font-size:13px; font-weight:600; display:block; margin-bottom:4px;">Target Branch</label>
-          <input type="text" id="set-profile-branch" value="${profile.targetBranch}" style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:8px 12px; border-radius:6px; width:100%; font-size:13px;">
-        </div>
-      </div>
-      <button class="btn-primary" style="margin-top:14px; font-size:13px;" onclick="saveProfileSettings()">Save Profile</button>
-    </div>
-
-    <!-- 2. Theme Selection -->
-    <div class="card" style="margin-bottom:20px;">
-      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:14px;">🎨 Appearance & Theme</h3>
+      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:6px;">🎨 Appearance & Theme</h3>
+      <p style="font-size:13px; color:var(--text-sub); margin-bottom:14px;">Select your preferred workspace theme to reduce eye fatigue during long study sessions.</p>
       <div style="display:flex; gap:12px; align-items:center;">
         <button class="btn-secondary ${currentTheme === 'dark' ? 'active' : ''}" onclick="setAppTheme('dark')">🌙 Dark Mode</button>
         <button class="btn-secondary ${currentTheme === 'light' ? 'active' : ''}" onclick="setAppTheme('light')">☀️ Light Mode</button>
       </div>
     </div>
 
-    <!-- 3. Backup, Export & Import -->
+    <!-- 2. Notification Preferences -->
     <div class="card" style="margin-bottom:20px;">
-      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:14px;">💾 Data Backup & Restore</h3>
+      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:6px;">🔔 Reminders & Notifications</h3>
+      <p style="font-size:13px; color:var(--text-sub); margin-bottom:14px;">Configure local study reminders and revision alerts.</p>
+      
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <label style="display:flex; align-items:center; justify-content:space-between; font-size:13px; cursor:pointer;">
+          <span>Daily Study Targets Reminder</span>
+          <input type="checkbox" ${settings.dailyReminder ? 'checked' : ''} onchange="toggleSettingPreference('dailyReminder')">
+        </label>
+        <div class="dropdown-divider"></div>
+        <label style="display:flex; align-items:center; justify-content:space-between; font-size:13px; cursor:pointer;">
+          <span>Mock Test & CBT Exam Reminder</span>
+          <input type="checkbox" ${settings.testReminder ? 'checked' : ''} onchange="toggleSettingPreference('testReminder')">
+        </label>
+      </div>
+    </div>
+
+    <!-- 3. Data Backup, Export & Import -->
+    <div class="card" style="margin-bottom:20px;">
+      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:6px;">💾 Data Management & Backup</h3>
       <p style="font-size:13px; color:var(--text-sub); margin-bottom:14px;">
         Export your complete preparation progress, bookmarks, notes, and test history as a JSON file, or restore from a previous backup.
       </p>
@@ -77,22 +76,15 @@ function renderSettingsModule() {
   `;
 }
 
-function saveProfileSettings() {
-  const name = document.getElementById('set-profile-name')?.value || 'GATE Aspirant';
-  const year = document.getElementById('set-profile-year')?.value || '2027';
-  const branch = document.getElementById('set-profile-branch')?.value || 'Computer Science & IT';
-
-  StorageManager.saveProfile({ name, targetYear: year, targetBranch: branch });
-  alert('Profile updated successfully!');
+function toggleSettingPreference(key) {
+  const settings = StorageManager.getSettings();
+  settings[key] = !settings[key];
+  StorageManager.saveSettings(settings);
 }
 
 function setAppTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('gate2027_theme', theme);
-  const text = document.getElementById('theme-text');
-  const icon = document.getElementById('theme-icon');
-  if (text) text.textContent = theme === 'dark' ? 'Dark Mode' : 'Light Mode';
-  if (icon) icon.textContent = theme === 'dark' ? '🌙' : '☀️';
   renderSettingsModule();
 }
 
@@ -104,6 +96,7 @@ function exportUserDataBackup() {
     bookmarks: StorageManager.getBookmarks(),
     notes: StorageManager.getNotes(),
     profile: StorageManager.getProfile(),
+    settings: StorageManager.getSettings(),
     testHistory: JSON.parse(localStorage.getItem('gate2027_test_history')) || [],
     exportDate: new Date().toISOString()
   };
@@ -130,6 +123,7 @@ function importUserDataBackup(e) {
       if (data.bookmarks) localStorage.setItem('gate2027_bookmarks', JSON.stringify(data.bookmarks));
       if (data.notes) localStorage.setItem('gate2027_user_notes', JSON.stringify(data.notes));
       if (data.profile) StorageManager.saveProfile(data.profile);
+      if (data.settings) StorageManager.saveSettings(data.settings);
       if (data.testHistory) localStorage.setItem('gate2027_test_history', JSON.stringify(data.testHistory));
 
       alert('Backup imported successfully! Page will refresh.');
@@ -148,7 +142,7 @@ function confirmResetAllData() {
 }
 
 window.renderSettingsModule = renderSettingsModule;
-window.saveProfileSettings = saveProfileSettings;
+window.toggleSettingPreference = toggleSettingPreference;
 window.setAppTheme = setAppTheme;
 window.exportUserDataBackup = exportUserDataBackup;
 window.importUserDataBackup = importUserDataBackup;
