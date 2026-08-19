@@ -22,7 +22,25 @@ function renderSettingsModule() {
       </div>
     </div>
 
-    <!-- 2. Notification Preferences -->
+    <!-- 2. Developer Demo Mode Toggle -->
+    <div class="card" style="margin-bottom:20px; border-left:4px solid var(--accent-primary);">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div>
+          <div style="font-size:11px; font-weight:700; color:var(--accent-primary); text-transform:uppercase;">Developer Tool</div>
+          <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-top:2px;">⚙️ Developer Demo Mode</h3>
+          <p style="font-size:13px; color:var(--text-sub); margin-top:4px; max-width:600px;">
+            Populate every dashboard, analytics page, and PYQ library with 6 months of realistic student study history (800+ solved questions, mock scores, heatmaps, and weak topics).
+          </p>
+        </div>
+
+        <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:14px; font-weight:700;">
+          <input type="checkbox" ${StorageManager.isDemoMode() ? 'checked' : ''} onchange="StorageManager.setDemoMode(this.checked)" style="transform:scale(1.2); cursor:pointer;">
+          <span>Use Demo Data State</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- 3. Notification Preferences -->
     <div class="card" style="margin-bottom:20px;">
       <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:6px;">Reminders & Notifications</h3>
       <p style="font-size:13px; color:var(--text-sub); margin-bottom:14px;">Configure local study reminders and revision alerts.</p>
