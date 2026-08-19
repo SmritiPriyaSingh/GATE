@@ -142,8 +142,14 @@ const DEMO_REVISION_DATA = {
 };
 
 function renderRevisionModule() {
-  const container = document.getElementById('revision-content-area');
-  if (!container) return;
+  let container = document.getElementById('revision-content-area');
+  if (!container) {
+    const viewSec = document.getElementById('view-revision');
+    if (!viewSec) return;
+    container = document.createElement('div');
+    container.id = 'revision-content-area';
+    viewSec.appendChild(container);
+  }
 
   const isDemo = StorageManager.isDemoMode();
 
