@@ -1,4 +1,4 @@
-// Previous Year Papers (PYQ) Engine
+// Previous Year Papers (PYQ) Engine with High-Res Official Diagram Viewer
 
 let pyqDatabase = [];
 
@@ -22,16 +22,16 @@ function renderPYQYearGrid() {
   container.innerHTML = years.map(yr => {
     const count = pyqDatabase.filter(q => q.year == yr).length || 65;
     return `
-      <div class="glass-card" style="text-align:center; padding:20px;">
-        <div style="font-family:var(--font-heading); font-size:24px; font-weight:700; color:var(--accent-primary);">
+      <div class="card" style="text-align:center; padding:20px;">
+        <div style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; color:var(--accent-primary);">
           GATE ${yr}
         </div>
-        <div style="font-size:12px; color:var(--text-muted); margin-top:4px; margin-bottom:16px;">
-          Computer Science • ${count} Questions
+        <div style="font-size:12px; color:var(--text-muted); margin-top:4px; margin-bottom:14px;">
+          Computer Science Paper • ${count} Questions
         </div>
         <div style="display:flex; flex-direction:column; gap:8px;">
-          <button class="btn-primary" onclick="launchPYQPaper(${yr}, 'exam')">⏱️ Start Exam Mode</button>
-          <button class="btn-secondary" onclick="launchPYQPaper(${yr}, 'practice')">📖 Practice Mode</button>
+          <button class="btn-primary" onclick="launchPYQPaper(${yr}, 'exam')">⏱️ Exam Mode</button>
+          <button class="btn-secondary" onclick="launchPYQPaper(${yr}, 'practice')">📷 Practice & Diagram View</button>
         </div>
       </div>
     `;
@@ -40,22 +40,17 @@ function renderPYQYearGrid() {
 
 function launchPYQPaper(year, mode) {
   const paperQuestions = pyqDatabase.filter(q => q.year == year);
-  if (paperQuestions.length === 0) {
-    alert(`Loading PYQ paper for GATE ${year}...`);
-    return;
-  }
 
   if (mode === 'exam') {
-    // Switch to CBT Simulator view and load this year's paper
     document.querySelector('[data-view="cbt"]')?.click();
     cbtState.active = true;
-    cbtState.questions = paperQuestions;
+    cbtState.questions = paperQuestions.length > 0 ? paperQuestions : pyqDatabase;
     cbtState.currentIndex = 0;
     cbtState.userAnswers = {};
     cbtState.statuses = {};
     cbtState.timeRemaining = 180 * 60;
 
-    paperQuestions.forEach((q, i) => cbtState.statuses[i] = 'not-visited');
+    cbtState.questions.forEach((q, i) => cbtState.statuses[i] = 'not-visited');
     cbtState.statuses[0] = 'not-answered';
 
     document.getElementById('cbt-welcome-screen').style.display = 'none';
@@ -66,9 +61,8 @@ function launchPYQPaper(year, mode) {
     renderCBTQuestion(0);
     renderQuestionPalette();
   } else {
-    // Switch to Practice view and load this year's questions
     document.querySelector('[data-view="practice"]')?.click();
-    filteredPracticeQuestions = paperQuestions;
+    filteredPracticeQuestions = paperQuestions.length > 0 ? paperQuestions : pyqDatabase;
     currentPracticeIndex = 0;
     practiceUserAnswers = {};
     renderPracticeQuestion();

@@ -1,15 +1,42 @@
-// Main Application Controller & Exam Mastery Lab Layout Sync
+// Main App Navigation & Modern Minimalist Theme Switcher
 
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   initNavigation();
   initGATE2027Countdown();
-  initTodayDatePill();
-  renderSubjectProgressGrid();
 });
 
+function initTheme() {
+  const savedTheme = localStorage.getItem('gate2027_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeButtonUI(savedTheme);
+}
+
+function toggleAppTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('gate2027_theme', newTheme);
+  updateThemeButtonUI(newTheme);
+}
+
+function updateThemeButtonUI(theme) {
+  const icon = document.getElementById('theme-icon');
+  const text = document.getElementById('theme-text');
+  if (icon && text) {
+    if (theme === 'dark') {
+      icon.textContent = '🌙';
+      text.textContent = 'Dark Mode';
+    } else {
+      icon.textContent = '☀️';
+      text.textContent = 'Light Mode';
+    }
+  }
+}
+
 function initNavigation() {
-  const navBtns = document.querySelectorAll('.nav-item');
-  const viewPages = document.querySelectorAll('.view-page');
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const viewSections = document.querySelectorAll('.view-section');
 
   navBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -19,7 +46,7 @@ function initNavigation() {
       navBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      viewPages.forEach(sec => {
+      viewSections.forEach(sec => {
         if (sec.id === `view-${targetView}`) {
           sec.classList.add('active');
         } else {
@@ -27,22 +54,11 @@ function initNavigation() {
         }
       });
 
-      if (targetView === 'dashboard') {
-        renderSubjectProgressGrid();
-        if (window.renderDashboardStats) window.renderDashboardStats();
+      if (targetView === 'dashboard' && window.renderDashboardStats) {
+        window.renderDashboardStats();
       }
     });
   });
-}
-
-function initTodayDatePill() {
-  const dateEl = document.getElementById('today-date-display');
-  if (dateEl) {
-    const now = new Date();
-    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-    const dateStr = now.toLocaleDateString('en-US', options).toUpperCase();
-    dateEl.textContent = `TODAY • ${dateStr}`;
-  }
 }
 
 function initGATE2027Countdown() {
@@ -54,7 +70,7 @@ function initGATE2027Countdown() {
     const diff = gateDate - now;
 
     if (diff <= 0) {
-      if (countdownEl) countdownEl.textContent = 'GATE 2027 is Live!';
+      if (countdownEl) countdownEl.textContent = 'GATE 2027 Live!';
       return;
     }
 
@@ -67,32 +83,4 @@ function initGATE2027Countdown() {
   updateTimer();
 }
 
-function renderSubjectProgressGrid() {
-  const grid = document.getElementById('dash-subjects-grid');
-  if (!grid || !window.syllabusData) return;
-
-  grid.innerHTML = window.syllabusData.subjects.slice(0, 6).map(sub => {
-    const stats = window.calculateSubjectProgress ? window.calculateSubjectProgress(sub) : { pct: 0, completed: 0, total: 10 };
-    return `
-      <div class="subject-item-card">
-        <div style="display:flex; align-items:center; gap:12px; flex:1;">
-          <div class="subject-icon-pill" style="background:${sub.color}20; color:${sub.color};">
-            ${sub.icon}
-          </div>
-          <div style="flex:1;">
-            <div style="font-weight:700; font-size:14px;">${sub.name}</div>
-            <div style="font-size:12px; color:var(--text-sub);">${stats.completed}/${stats.total} topics</div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width:${stats.pct}%; background:${sub.color};"></div>
-            </div>
-          </div>
-        </div>
-        <div style="font-family:var(--font-heading); font-weight:800; font-size:18px; color:${sub.color};">
-          ${stats.pct}%
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-window.renderSubjectProgressGrid = renderSubjectProgressGrid;
+window.toggleAppTheme = toggleAppTheme;

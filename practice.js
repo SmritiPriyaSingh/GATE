@@ -1,9 +1,10 @@
-// Topic Practice Module
+// Topic Practice Module with Official Paper Diagram Viewer
 
 let allPracticeQuestions = [];
 let filteredPracticeQuestions = [];
 let currentPracticeIndex = 0;
 let practiceUserAnswers = {};
+let showDiagramMode = false;
 
 async function initPracticeModule() {
   try {
@@ -37,17 +38,13 @@ function setupPracticeFilters() {
   `;
 
   subjectSelect.addEventListener('change', filterPracticeQuestions);
-  document.getElementById('practice-type-select')?.addEventListener('change', filterPracticeQuestions);
 }
 
 function filterPracticeQuestions() {
   const sub = document.getElementById('practice-subject-select')?.value || 'all';
-  const type = document.getElementById('practice-type-select')?.value || 'all';
 
   filteredPracticeQuestions = allPracticeQuestions.filter(q => {
-    const matchSub = sub === 'all' || q.subjectId === sub;
-    const matchType = type === 'all' || q.type === type;
-    return matchSub && matchType;
+    return sub === 'all' || q.subjectId === sub;
   });
 
   currentPracticeIndex = 0;
@@ -80,11 +77,11 @@ function renderPracticeQuestion() {
 
   let optionsHTML = '';
   if (q.type === 'MCQ' || q.type === 'MSQ') {
-    optionsHTML = `<div class="options-list">`;
+    optionsHTML = `<div style="display:flex; flex-direction:column; gap:10px; margin-top:16px;">`;
     q.options.forEach((opt, idx) => {
       const isSelected = userAns === opt;
       optionsHTML += `
-        <div class="option-item ${isSelected ? 'selected' : ''}" onclick="submitPracticeAnswer('${opt.replace(/'/g, "\\'")}')">
+        <div style="background:var(--bg-surface-hover); border:1px solid ${isSelected ? 'var(--accent-primary)' : 'var(--border-color)'}; padding:12px 16px; border-radius:8px; cursor:pointer;" onclick="submitPracticeAnswer('${opt.replace(/'/g, "\\'")}')">
           <span><strong>(${String.fromCharCode(65 + idx)})</strong> ${opt}</span>
         </div>
       `;
@@ -92,10 +89,25 @@ function renderPracticeQuestion() {
     optionsHTML += `</div>`;
   } else if (q.type === 'NAT') {
     optionsHTML = `
-      <div style="margin-top:20px;">
-        <label style="font-weight:600; font-size:14px; display:block; margin-bottom:8px;">Your Numerical Answer:</label>
-        <input type="number" step="any" class="nat-input" id="practice-nat-val" value="${userAns || ''}" placeholder="e.g. 15.5">
-        <button class="btn-primary" style="margin-left:12px;" onclick="submitPracticeAnswer(document.getElementById('practice-nat-val').value)">Submit Answer</button>
+      <div style="margin-top:16px;">
+        <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">Numerical Answer:</label>
+        <input type="number" step="any" id="practice-nat-val" value="${userAns || ''}" style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:10px 14px; border-radius:8px; width:200px;" placeholder="e.g. 15.5">
+        <button class="btn-primary" style="margin-left:10px;" onclick="submitPracticeAnswer(document.getElementById('practice-nat-val').value)">Submit Answer</button>
+      </div>
+    `;
+  }
+
+  let diagramHTML = '';
+  const pageNum = Math.ceil((q.qNum || 1) / 3);
+  const paperFolder = `CS${q.year}`;
+  
+  if (showDiagramMode) {
+    diagramHTML = `
+      <div class="diagram-viewer-card">
+        <div style="font-size:12px; color:var(--text-sub); margin-bottom:8px; font-weight:600;">
+          📷 Official GATE ${q.year} Question View (Full Paper Page With Diagrams & Circuits)
+        </div>
+        <img src="assets/papers/${paperFolder}/page_${pageNum}.png" onerror="this.onerror=null; this.src='assets/papers/CS2026s1/page_1.png';" alt="GATE Question Diagram">
       </div>
     `;
   }
@@ -104,17 +116,14 @@ function renderPracticeQuestion() {
   if (userAns !== undefined) {
     const isCorrect = userAns === q.correct;
     solutionHTML = `
-      <div class="solution-card" style="border-color:${isCorrect ? 'var(--color-success)' : 'var(--color-danger)'}; background:${isCorrect ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)'};">
-        <div style="font-weight:700; font-size:16px; color:${isCorrect ? 'var(--color-success)' : 'var(--color-danger)'}; margin-bottom:8px;">
+      <div style="margin-top:16px; padding:16px; border-radius:8px; border:1px solid ${isCorrect ? 'var(--color-success)' : 'var(--color-danger)'}; background:${isCorrect ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)'};">
+        <div style="font-weight:700; font-size:15px; color:${isCorrect ? 'var(--color-success)' : 'var(--color-danger)'};">
           ${isCorrect ? '🎉 Correct Answer!' : '❌ Incorrect Answer'}
         </div>
-        <div>Your Answer: <strong>${userAns}</strong></div>
-        <div>Correct Answer: <strong style="color:var(--color-success);">${q.correct}</strong></div>
-        <hr style="border:0; border-top:1px solid var(--border-color); margin:12px 0;">
-        <strong>💡 Step-by-Step Solution & Concept:</strong>
-        <p style="margin-top:6px; white-space:pre-line;">${q.solution}</p>
-        <div style="margin-top:10px; font-size:12px; color:var(--text-secondary);">
-          Concept: ${q.concept} &bull; Difficulty: ${q.difficulty}
+        <div style="font-size:14px; margin-top:6px;">Your Answer: <strong>${userAns}</strong> | Correct Answer: <strong style="color:var(--color-success);">${q.correct}</strong></div>
+        <div style="margin-top:10px; font-size:14px;">
+          <strong>💡 Step-by-Step Solution:</strong>
+          <p style="margin-top:4px; white-space:pre-line;">${q.solution}</p>
         </div>
       </div>
     `;
@@ -122,22 +131,33 @@ function renderPracticeQuestion() {
 
   container.innerHTML = `
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <span class="badge badge-purple">Question ${currentPracticeIndex + 1} of ${filteredPracticeQuestions.length}</span>
-      <button class="btn-secondary" onclick="toggleBookmarkCurrent('${q.id}')" style="padding:4px 12px; font-size:12px;">
-        ${isBookmarked ? '⭐ Bookmarked' : '☆ Bookmark'}
-      </button>
+      <span style="font-size:13px; font-weight:600; color:var(--accent-primary);">Question ${currentPracticeIndex + 1} of ${filteredPracticeQuestions.length} &bull; GATE ${q.year}</span>
+      <div style="display:flex; gap:10px;">
+        <button class="btn-secondary" style="font-size:12px; padding:4px 10px;" onclick="toggleDiagramMode()">
+          ${showDiagramMode ? '📄 Hide Diagram Page' : '📷 View Diagram / Official Page'}
+        </button>
+        <button class="btn-secondary" style="font-size:12px; padding:4px 10px;" onclick="toggleBookmarkCurrent('${q.id}')">
+          ${isBookmarked ? '⭐ Bookmarked' : '☆ Bookmark'}
+        </button>
+      </div>
     </div>
-    <div style="font-size:13px; color:var(--accent-primary); font-weight:600;">${q.subjectName} &bull; ${q.type} (${q.marks} Mark)</div>
-    <div style="font-size:16px; font-weight:500; margin-top:10px; line-height:1.7;">
+    <div style="font-size:13px; color:var(--text-sub); font-weight:600;">${q.subjectName} &bull; ${q.type} (${q.marks} Mark)</div>
+    <div style="font-size:15px; font-weight:500; margin-top:10px; line-height:1.6;">
       ${q.text}
     </div>
     ${optionsHTML}
+    ${diagramHTML}
     ${solutionHTML}
-    <div style="display:flex; justify-content:space-between; margin-top:24px;">
+    <div style="display:flex; justify-content:space-between; margin-top:20px;">
       <button class="btn-secondary" onclick="prevPracticeQuestion()" ${currentPracticeIndex === 0 ? 'disabled' : ''}>← Previous</button>
       <button class="btn-primary" onclick="nextPracticeQuestion()" ${currentPracticeIndex >= filteredPracticeQuestions.length - 1 ? 'disabled' : ''}>Next →</button>
     </div>
   `;
+}
+
+function toggleDiagramMode() {
+  showDiagramMode = !showDiagramMode;
+  renderPracticeQuestion();
 }
 
 function submitPracticeAnswer(ansVal) {
@@ -148,7 +168,6 @@ function submitPracticeAnswer(ansVal) {
 
 function toggleBookmarkCurrent(qId) {
   const status = StorageManager.toggleBookmark(qId);
-  alert(status ? '⭐ Question bookmarked for revision!' : 'Removed from bookmarks.');
   renderPracticeQuestion();
 }
 
