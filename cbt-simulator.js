@@ -233,6 +233,13 @@ function clearCBTResponse() {
   renderCBTQuestion(cbtState.currentIndex);
 }
 
+function formatQuestionText(text) {
+  if (!text) return '';
+  let clean = text.replace(/^Q\.\d+\s*[–\-]\s*Q\.\d+\s+Carry\s+\w+\s+marks?\s+Each/i, '').trim();
+  clean = clean.replace(/```c([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+  return clean;
+}
+
 function renderQuestionPalette() {
   const container = document.getElementById('question-palette-grid');
   if (!container) return;
