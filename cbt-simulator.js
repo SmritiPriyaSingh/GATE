@@ -21,19 +21,27 @@ async function loadQuestionsData() {
   }
 }
 
-function startCBTExam(subjectFilter = 'all') {
+function startCBTExam(type = 'full') {
   if (questionsData.length === 0) {
     alert('Questions database loading... Please try again in a moment.');
     return;
   }
 
-  let selectedQuestions = questionsData;
-  if (subjectFilter !== 'all') {
-    selectedQuestions = questionsData.filter(q => q.subjectId === subjectFilter);
-  }
-
-  if (selectedQuestions.length === 0) {
-    selectedQuestions = questionsData;
+  let selectedQuestions = [...questionsData];
+  
+  if (type === 'mini') {
+    for (let i = selectedQuestions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [selectedQuestions[i], selectedQuestions[j]] = [selectedQuestions[j], selectedQuestions[i]];
+    }
+    selectedQuestions = selectedQuestions.slice(0, 20);
+    cbtState.timeRemaining = 60 * 60; // 1 hour
+  } else {
+    // Full Mock (65 Questions, 3 Hours)
+    if (selectedQuestions.length > 65) {
+      selectedQuestions = selectedQuestions.slice(0, 65);
+    }
+    cbtState.timeRemaining = 180 * 60; // 3 hours
   }
 
   cbtState.active = true;
@@ -41,7 +49,6 @@ function startCBTExam(subjectFilter = 'all') {
   cbtState.currentIndex = 0;
   cbtState.userAnswers = {};
   cbtState.statuses = {};
-  cbtState.timeRemaining = 180 * 60;
 
   cbtState.questions.forEach((q, i) => {
     cbtState.statuses[i] = 'not-visited';
