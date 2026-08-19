@@ -39,6 +39,7 @@ function calculateSubjectProgress(subject) {
   const prog = StorageManager.getSyllabusProgress();
   let total = 0;
   let completed = 0;
+  let inProgress = 0;
 
   subject.units.forEach((unit, uIdx) => {
     unit.topics.forEach((topic, tIdx) => {
@@ -47,6 +48,7 @@ function calculateSubjectProgress(subject) {
       if (prog[key] === 'mastered') {
         completed++;
       } else if (prog[key] === 'in_progress') {
+        inProgress++;
         completed += 0.5;
       }
     });
@@ -55,6 +57,7 @@ function calculateSubjectProgress(subject) {
   return {
     total,
     completed: Math.round(completed),
+    inProgressCount: inProgress,
     remaining: total - Math.round(completed),
     pct: total > 0 ? Math.round((completed / total) * 100) : 0
   };
@@ -70,9 +73,43 @@ function setTopicStatus(key, status) {
 
 function setSyllabusFilter(filterType, btn) {
   activeFilter = filterType;
-  document.querySelectorAll('#syllabus-filter-pills button').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
+  document.querySelectorAll('#syllabus-filter-pills button').forEach(b => {
+    b.classList.remove('active');
+    b.style.background = 'var(--bg-surface-hover)';
+    b.style.color = 'var(--text-main)';
+    b.style.borderColor = 'var(--border-color)';
+  });
+
+  if (btn) {
+    btn.classList.add('active');
+    btn.style.background = 'var(--accent-primary)';
+    btn.style.color = '#ffffff';
+    btn.style.borderColor = 'var(--accent-primary)';
+  }
+
+  // Auto-select first matching subject when filter changes
+  if (syllabusData && syllabusData.subjects) {
+    const matching = syllabusData.subjects.filter(s => isSubjectMatchingFilter(s));
+    if (matching.length > 0 && !matching.some(m => m.id === selectedSubjectId)) {
+      selectedSubjectId = matching[0].id;
+    }
+  }
+
   renderSyllabusAppLayout();
+}
+
+function isSubjectMatchingFilter(subject) {
+  const stats = calculateSubjectProgress(subject);
+  if (activeFilter === 'in_progress') {
+    return stats.inProgressCount > 0 || (stats.pct > 0 && stats.pct < 100);
+  }
+  if (activeFilter === 'mastered') {
+    return stats.pct === 100;
+  }
+  if (activeFilter === 'high_weightage') {
+    return subject.weightage.includes('8') || subject.weightage.includes('10') || subject.weightage.includes('13') || subject.weightage.includes('15');
+  }
+  return true;
 }
 
 function handleUniversalSearch(val) {
@@ -120,29 +157,52 @@ function renderSyllabusAppLayout() {
     return;
   }
 
+  // Filter subjects for left sidebar
+  const filteredSubjects = syllabusData.subjects.filter(s => isSubjectMatchingFilter(s));
+
+  if (filteredSubjects.length === 0) {
+    container.innerHTML = `
+      <div class="card" style="text-align:center; padding:40px 20px;">
+        <div style="font-size:15px; font-weight:600; color:var(--text-sub);">
+          No subjects matched the active filter ("${activeFilter.replace('_', ' ')}").
+        </div>
+        <button class="btn-secondary" style="margin-top:12px; font-size:12px;" onclick="setSyllabusFilter('all', document.querySelector('#syllabus-filter-pills button'))">
+          Clear Filter
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  // Ensure valid selection
+  if (!filteredSubjects.some(s => s.id === selectedSubjectId)) {
+    selectedSubjectId = filteredSubjects[0].id;
+  }
+
   // 3. Main Desktop Explorer: Left Sidebar + Right Subject Panel
   container.innerHTML = `
-    <div style="display:grid; grid-template-columns: 240px 1fr; gap:20px; align-items:start;">
+    <div style="display:grid; grid-template-columns: 260px 1fr; gap:20px; align-items:start;">
       
       <!-- Persistent Desktop Left Sidebar -->
       <div class="card" style="padding:14px 10px; position:sticky; top:70px;">
-        <div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:10px; padding:0 8px;">
-          Subjects Library
+        <div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:10px; padding:0 8px; display:flex; justify-content:space-between; align-items:center;">
+          <span>Subjects Library</span>
+          <span style="font-size:10px; font-weight:600; color:var(--accent-primary);">${filteredSubjects.length} Listed</span>
         </div>
 
-        <div style="display:flex; flex-direction:column; gap:2px;">
-          ${syllabusData.subjects.map(s => {
+        <div style="display:flex; flex-direction:column; gap:3px;">
+          ${filteredSubjects.map(s => {
             const stats = calculateSubjectProgress(s);
             const isSelected = s.id === selectedSubjectId;
             const iconSVG = SUBJECT_SVGS[s.id] || SUBJECT_SVGS['em'];
 
             return `
-              <div onclick="selectSubject('${s.id}')" style="display:flex; align-items:center; justify-content:space-between; padding:8px 10px; border-radius:6px; cursor:pointer; font-size:13px; font-weight:${isSelected ? '700' : '500'}; background:${isSelected ? 'var(--accent-subtle)' : 'transparent'}; color:${isSelected ? 'var(--accent-primary)' : 'var(--text-main)'}; border:1px solid ${isSelected ? 'var(--accent-primary)' : 'transparent'};">
+              <div onclick="selectSubject('${s.id}')" style="display:flex; align-items:center; justify-content:space-between; padding:9px 10px; border-radius:6px; cursor:pointer; font-size:13px; font-weight:${isSelected ? '700' : '500'}; background:${isSelected ? 'var(--accent-subtle)' : 'transparent'}; color:${isSelected ? 'var(--accent-primary)' : 'var(--text-main)'}; border:1px solid ${isSelected ? 'var(--accent-primary)' : 'transparent'}; transition:background 0.15s ease;">
                 <div style="display:flex; align-items:center; gap:8px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
                   <span>${iconSVG}</span>
                   <span style="overflow:hidden; text-overflow:ellipsis;">${s.name}</span>
                 </div>
-                <span style="font-size:11px; font-weight:600; opacity:0.8;">${stats.pct}%</span>
+                <span style="font-size:11px; font-weight:600; opacity:0.8; padding:2px 6px; border-radius:4px; background:${stats.pct === 100 ? 'rgba(16,185,129,0.15)' : 'var(--bg-surface-hover)'}; color:${stats.pct === 100 ? 'var(--color-success)' : 'inherit'};">${stats.pct}%</span>
               </div>
             `;
           }).join('')}
@@ -206,6 +266,19 @@ function renderSelectedSubjectPanel(subjectId) {
         const unitKey = `${subject.id}_u${uIdx}`;
         const isCollapsed = collapsedUnits[unitKey];
 
+        // Filter topics if active filter is set
+        const visibleTopics = unit.topics.filter((_, tIdx) => {
+          const k = getTopicKey(subject.id, uIdx, tIdx);
+          const st = prog[k] || 'not_started';
+          if (activeFilter === 'in_progress') return st === 'in_progress';
+          if (activeFilter === 'mastered') return st === 'mastered';
+          return true;
+        });
+
+        if (activeFilter !== 'all' && activeFilter !== 'high_weightage' && visibleTopics.length === 0) {
+          return ''; // Skip empty units when filtering
+        }
+
         const unitCompletedCount = unit.topics.filter((_, tIdx) => {
           const k = getTopicKey(subject.id, uIdx, tIdx);
           return prog[k] === 'mastered';
@@ -230,6 +303,9 @@ function renderSelectedSubjectPanel(subjectId) {
                 ${unit.topics.map((topic, tIdx) => {
                   const key = getTopicKey(subject.id, uIdx, tIdx);
                   const status = prog[key] || 'not_started';
+
+                  if (activeFilter === 'in_progress' && status !== 'in_progress') return '';
+                  if (activeFilter === 'mastered' && status !== 'mastered') return '';
 
                   let statusIcon = `<span style="color:var(--text-muted); font-size:14px;">○</span>`;
                   let statusText = `Not Started`;
