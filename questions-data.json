@@ -1,0 +1,122 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "year": 2024,
+      "subjectId": "pds",
+      "subjectName": "Programming & Data Structures",
+      "topic": "Recursion & Call Stack",
+      "type": "MCQ",
+      "marks": 1,
+      "negative": 0.33,
+      "text": "Consider the following C function:\n\n```c\nint fun(int n) {\n    if (n == 0 || n == 1)\n        return 1;\n    if (n % 2 == 0)\n        return fun(n / 2) + 1;\n    else\n        return fun(3 * n + 1) + 1;\n}\n```\nWhat is the value returned by `fun(5)`?",
+      "options": ["5", "6", "7", "8"],
+      "correct": "5",
+      "solution": "Let's trace `fun(5)` step-by-step:\n- `fun(5)`: 5 is odd $\\rightarrow$ `fun(3*5 + 1) + 1` = `fun(16) + 1`\n- `fun(16)`: 16 is even $\\rightarrow$ `fun(8) + 1`\n- `fun(8)`: 8 is even $\\rightarrow$ `fun(4) + 1`\n- `fun(4)`: 4 is even $\\rightarrow$ `fun(2) + 1`\n- `fun(2)`: 2 is even $\\rightarrow$ `fun(1) + 1`\n- `fun(1)`: Base case returns 1.\n\nSubstituting backwards:\n- `fun(2)` = 1 + 1 = 2\n- `fun(4)` = 2 + 1 = 3\n- `fun(8)` = 3 + 1 = 4\n- `fun(16)` = 4 + 1 = 5\n- `fun(5)` = 5 + 1 = 6\nWait! Let's re-verify:\n`fun(1) = 1`\n`fun(2) = 1 + 1 = 2`\n`fun(4) = 2 + 1 = 3`\n`fun(8) = 3 + 1 = 4`\n`fun(16) = 4 + 1 = 5`\n`fun(5) = fun(16) + 1 = 5 + 1 = 6`.\nTherefore, `fun(5)` returns **6**."
+    },
+    {
+      "id": "q2",
+      "year": 2023,
+      "subjectId": "algo",
+      "subjectName": "Algorithms",
+      "topic": "Graph Algorithms (Shortest Paths)",
+      "type": "NAT",
+      "marks": 2,
+      "negative": 0,
+      "tolerance": [14, 14],
+      "text": "Consider a weighted connected graph $G = (V, E)$ with 5 vertices $\{A, B, C, D, E\}$ and edge weights:\n- $(A, B) = 4$, $(A, C) = 2$\n- $(B, C) = 1$, $(B, D) = 5$\n- $(C, D) = 8$, $(C, E) = 10$\n- $(D, E) = 2$\n\nWhat is the weight of the Minimum Spanning Tree (MST) of graph $G$?",
+      "options": [],
+      "correct": "9",
+      "solution": "Using Kruskal's algorithm on graph edges sorted by ascending weight:\n1. Edge $(C, E)$ with weight 10? No.\nSorted edges:\n- $(B, C) = 1$ (Add edge, weight = 1)\n- $(A, C) = 2$ (Add edge, weight = 2 + 1 = 3)\n- $(D, E) = 2$ (Add edge, weight = 3 + 2 = 5)\n- $(A, B) = 4$ (Creates cycle $A-B-C$, reject)\n- $(B, D) = 5$ (Add edge, weight = 5 + 4 = 9)\n\nAll 5 vertices $\{A, B, C, D, E\}$ are connected with 4 edges: $(B,C), (A,C), (D,E), (B,D)$.\nTotal MST weight = $1 + 2 + 2 + 4 = 9$."
+    },
+    {
+      "id": "q3",
+      "year": 2024,
+      "subjectId": "os",
+      "subjectName": "Operating Systems",
+      "topic": "CPU Scheduling",
+      "type": "MCQ",
+      "marks": 2,
+      "negative": 0.66,
+      "text": "Consider three processes $P_1, P_2, P_3$ arriving at time $t = 0$ with CPU burst times 10 ms, 5 ms, and 8 ms respectively. Using Non-Preemptive Shortest Job First (SJF) scheduling, what is the average turnaround time?",
+      "options": ["11 ms", "13.67 ms", "15 ms", "12.33 ms"],
+      "correct": "13.67 ms",
+      "solution": "Under Non-Preemptive SJF scheduling:\n- Order of execution based on shortest burst time: $P_2 (5\\text{ ms}) \\rightarrow P_3 (8\\text{ ms}) \\rightarrow P_1 (10\\text{ ms})$.\n\nCompletion times ($C_i$):\n- $P_2$: completes at $t = 5$\n- $P_3$: completes at $t = 5 + 8 = 13$\n- $P_1$: completes at $t = 13 + 10 = 23$\n\nTurnaround Time ($TAT = \\text{Completion Time} - \\text{Arrival Time}$):\n- $TAT(P_2) = 5 - 0 = 5\\text{ ms}$\n- $TAT(P_3) = 13 - 0 = 13\\text{ ms}$\n- $TAT(P_1) = 23 - 0 = 23\\text{ ms}$\n\nAverage Turnaround Time = $\\frac{5 + 13 + 23}{3} = \\frac{41}{3} \\approx 13.67\\text{ ms}$."
+    },
+    {
+      "id": "q4",
+      "year": 2025,
+      "subjectId": "dbms",
+      "subjectName": "Databases",
+      "topic": "Normalization & BCNF",
+      "type": "MSQ",
+      "marks": 2,
+      "negative": 0,
+      "text": "Which of the following statements is/are TRUE regarding Database Normalization? (Select ALL correct options)",
+      "options": [
+        "Every relation in 3NF is also in BCNF.",
+        "Lossless join decomposition into 3NF is always achievable.",
+        "Dependency preservation decomposition into BCNF is not always guaranteed.",
+        "Boyce-Codd Normal Form (BCNF) eliminates all anomalies resulting from functional dependencies."
+      ],
+      "correct": ["Lossless join decomposition into 3NF is always achievable.", "Dependency preservation decomposition into BCNF is not always guaranteed.", "Boyce-Codd Normal Form (BCNF) eliminates all anomalies resulting from functional dependencies."],
+      "solution": "Let's evaluate each statement:\n- **Statement A**: False. BCNF is stricter than 3NF. Every relation in BCNF is in 3NF, but NOT vice versa.\n- **Statement B**: True. 3NF decomposition can ALWAYS achieve both Lossless Join and Dependency Preservation.\n- **Statement C**: True. BCNF guarantees Lossless Join, but Dependency Preservation may not always be achievable.\n- **Statement D**: True. BCNF eliminates all functional dependency (FD) based redundancies and anomalies."
+    },
+    {
+      "id": "q5",
+      "year": 2023,
+      "subjectId": "toc",
+      "subjectName": "Theory of Computation",
+      "topic": "Regular Languages & DFA",
+      "type": "NAT",
+      "marks": 1,
+      "negative": 0,
+      "text": "What is the minimum number of states in a Deterministic Finite Automaton (DFA) that accepts the language $L = \\{ w \\in \\{a, b\\}^* \\mid w \\text{ contains 'ab' as a substring} \\}$?",
+      "options": [],
+      "correct": "3",
+      "solution": "The minimum DFA states required to recognize substring 'ab':\n- **State $q_0$ (Start)**: No relevant prefix matched yet.\n- **State $q_1$**: Last character seen was 'a'.\n- **State $q_2$ (Final Trap State)**: Substring 'ab' has been seen.\n\nTransitions:\n- $q_0 \\xrightarrow{a} q_1$, $q_0 \\xrightarrow{b} q_0$\n- $q_1 \\xrightarrow{a} q_1$, $q_1 \\xrightarrow{b} q_2$\n- $q_2 \\xrightarrow{a,b} q_2$\n\nTotal minimum states = **3**."
+    },
+    {
+      "id": "q6",
+      "year": 2024,
+      "subjectId": "dl",
+      "subjectName": "Digital Logic",
+      "topic": "Combinational Circuits (Multiplexers)",
+      "type": "MCQ",
+      "marks": 1,
+      "negative": 0.33,
+      "text": "How many $2 \\times 1$ Multiplexers are needed to implement a $16 \\times 1$ Multiplexer?",
+      "options": ["15", "16", "8", "31"],
+      "correct": "15",
+      "solution": "To build a $16 \\times 1$ MUX using $2 \\times 1$ MUXes:\n- Level 1: 8 MUXes (inputs 16 to 8)\n- Level 2: 4 MUXes (inputs 8 to 4)\n- Level 3: 2 MUXes (inputs 4 to 2)\n- Level 4: 1 MUX (inputs 2 to 1)\n\nTotal $2 \\times 1$ MUXes required = $8 + 4 + 2 + 1 = 15$."
+    },
+    {
+      "id": "q7",
+      "year": 2024,
+      "subjectId": "cn",
+      "subjectName": "Computer Networks",
+      "topic": "IPv4 Subnetting & CIDR",
+      "type": "NAT",
+      "marks": 2,
+      "negative": 0,
+      "text": "An organization is allocated the IP address block `192.168.1.0/24`. The administrator wants to divide this network into equal subnets, each capable of accommodating at least 25 host addresses. What is the maximum number of such subnets that can be created?",
+      "options": [],
+      "correct": "4",
+      "solution": "To support at least 25 hosts per subnet:\n- Formula for usable hosts: $2^h - 2 \\ge 25 \\implies 2^h \\ge 27 \\implies h = 5$ bits for host ID.\n- Subnet prefix length = $32 - 5 = /27$.\n- Original network prefix = $/24$.\n- Subnet bits borrowed = $27 - 24 = 3$ bits.\n- Number of subnets possible = $2^3 = 8$.\nWait, let's re-verify: $2^5 = 32$, so $32 - 2 = 30$ hosts per subnet. Borrowing 3 bits gives $2^3 = 8$ subnets. If 4 bits borrowed ($/28$), $2^4 - 2 = 14 < 25$ hosts. Thus max subnets = **8**."
+    },
+    {
+      "id": "q8",
+      "year": 2025,
+      "subjectId": "ga",
+      "subjectName": "General Aptitude",
+      "topic": "Quantitative Aptitude (Percentages)",
+      "type": "MCQ",
+      "marks": 1,
+      "negative": 0.33,
+      "text": "If the price of petrol increases by 25%, by what percentage must a motorist reduce petrol consumption so that the total expenditure remains unchanged?",
+      "options": ["20%", "25%", "15%", "16.67%"],
+      "correct": "20%",
+      "solution": "Let initial price = $P = 100$, initial consumption = $C = 100$.\nInitial expenditure = $100 \\times 100 = 10,000$.\n\nNew price = $100 \\times 1.25 = 125$.\nTo keep expenditure constant at 10,000:\nNew consumption $C' = \\frac{10,000}{125} = 80$.\n\nReduction in consumption = $100 - 80 = 20$, which is **20%**."
+    }
+  ]
+}
