@@ -2,9 +2,35 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   renderProfileModule();
+  updateHeaderProfileButton();
 });
 
+function updateHeaderProfileButton() {
+  const btn = document.querySelector('.profile-trigger-btn');
+  if (!btn) return;
+
+  const profile = StorageManager.getProfile();
+
+  let iconHTML = `
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+  `;
+
+  if (profile && profile.avatar) {
+    iconHTML = `
+      <img src="${profile.avatar}" alt="Avatar" style="width:22px; height:22px; border-radius:50%; object-fit:cover; border:1px solid var(--accent-primary);">
+    `;
+  }
+
+  btn.innerHTML = `
+    ${iconHTML}
+    <span>Profile</span>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+  `;
+}
+
 function renderProfileModule() {
+  updateHeaderProfileButton();
+
   const container = document.getElementById('profile-container');
   if (!container) return;
 
@@ -193,6 +219,7 @@ function saveProfileChanges() {
 }
 
 window.renderProfileModule = renderProfileModule;
+window.updateHeaderProfileButton = updateHeaderProfileButton;
 window.handleAvatarUpload = handleAvatarUpload;
 window.removeUserAvatar = removeUserAvatar;
 window.openEditProfileModal = openEditProfileModal;
