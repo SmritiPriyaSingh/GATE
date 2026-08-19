@@ -1,22 +1,11 @@
 // Practice Center Module - LeetCode / Duolingo Style Practice Hub
 
 let allPracticeQuestions = [];
-let activePracticeSession = null; // null when at Practice Home, or session config object
+let activePracticeSession = null;
 let currentPracticeIndex = 0;
 let practiceUserAnswers = {};
 let practiceStartTime = null;
 let practiceTimerInterval = null;
-
-// Practice Session Configuration State
-let practiceConfig = {
-  subjectId: 'all',
-  unitName: 'all',
-  topicName: 'all',
-  difficulty: 'all',
-  questionCount: 10,
-  enableTimer: true,
-  instantCheck: true
-};
 
 async function initPracticeModule() {
   try {
@@ -40,9 +29,23 @@ function renderPracticeModule() {
   }
 }
 
-// 1. Practice Home Dashboard (LeetCode / HackerRank Style)
+// 1. Practice Home Dashboard (Exact Order 1 to 6 as Requested)
 function renderPracticeHome(container) {
   if (practiceTimerInterval) clearInterval(practiceTimerInterval);
+
+  const subjectOptionsHTML = `
+    <option value="ga">General Aptitude (15 Marks)</option>
+    <option value="pds">Programming & Data Structures (15 Marks)</option>
+    <option value="em">Engineering Mathematics (13 Marks)</option>
+    <option value="cn">Computer Networks (10 Marks)</option>
+    <option value="os">Operating Systems (9 Marks)</option>
+    <option value="coa">Computer Organization & Architecture (8 Marks)</option>
+    <option value="dbms">Databases (7 Marks)</option>
+    <option value="algo">Algorithms (7 Marks)</option>
+    <option value="dl">Digital Logic (6 Marks)</option>
+    <option value="toc">Theory of Computation (6 Marks)</option>
+    <option value="cd">Compiler Design (4 Marks)</option>
+  `;
 
   container.innerHTML = `
     <!-- Top Header Banner -->
@@ -51,32 +54,22 @@ function renderPracticeHome(container) {
       <p style="color:var(--text-sub); font-size:13px;">Choose how you want to structure your study session today before starting.</p>
     </div>
 
-    <!-- Practice Modes Grid -->
+    <!-- Practice Modes Grid (Exact Order 1 to 6) -->
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:20px;">
       
-      <!-- Card 1: Topic-wise Custom Practice -->
+      <!-- 1. 📚 Topic-wise Practice -->
       <div class="card" style="padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
         <div>
-          <div style="font-size:12px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">Topic-Wise Practice</div>
-          <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:12px;">Custom Topic Session</h3>
-          <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">Select subject, topic, and difficulty to focus on specific weaknesses.</p>
+          <div style="font-size:12px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">Mode 1</div>
+          <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:6px;">Topic-wise Practice</h3>
+          <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">Practice questions filtered by subject, topic, and difficulty.</p>
 
           <div style="display:flex; flex-direction:column; gap:10px;">
             <div>
-              <label style="font-size:11px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Subject</label>
+              <label style="font-size:11px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Select Subject</label>
               <select id="p-home-subject" style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:6px 10px; border-radius:6px; font-size:12px; width:100%;">
                 <option value="all">All Subjects</option>
-                <option value="ga">General Aptitude (15 Marks)</option>
-                <option value="pds">Programming & Data Structures (15 Marks)</option>
-                <option value="em">Engineering Mathematics (13 Marks)</option>
-                <option value="cn">Computer Networks (10 Marks)</option>
-                <option value="os">Operating Systems (9 Marks)</option>
-                <option value="coa">Computer Organization & Architecture (8 Marks)</option>
-                <option value="dbms">Databases (7 Marks)</option>
-                <option value="algo">Algorithms (7 Marks)</option>
-                <option value="dl">Digital Logic (6 Marks)</option>
-                <option value="toc">Theory of Computation (6 Marks)</option>
-                <option value="cd">Compiler Design (4 Marks)</option>
+                ${subjectOptionsHTML}
               </select>
             </div>
 
@@ -108,25 +101,32 @@ function renderPracticeHome(container) {
         </button>
       </div>
 
-      <!-- Card 2: Subject Practice -->
+      <!-- 2. 📖 Subject Practice -->
       <div class="card" style="padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
         <div>
-          <div style="font-size:12px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">Full Subject Practice</div>
-          <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:12px;">Subject Mastery</h3>
-          <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">Solve questions covering all units of a single chosen subject.</p>
+          <div style="font-size:12px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">Mode 2</div>
+          <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:6px;">Subject Practice</h3>
+          <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">Practice all topics from one chosen subject.</p>
+
+          <div>
+            <label style="font-size:11px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Select Subject</label>
+            <select id="p-subject-only-select" style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:6px 10px; border-radius:6px; font-size:12px; width:100%;">
+              ${subjectOptionsHTML}
+            </select>
+          </div>
         </div>
 
-        <button class="btn-primary" style="font-size:13px; padding:8px 16px;" onclick="startSubjectSession('os')">
-          Start OS Practice ➔
+        <button class="btn-primary" style="margin-top:16px; font-size:13px; padding:8px 16px;" onclick="startSelectedSubjectSession()">
+          Start Subject Practice ➔
         </button>
       </div>
 
-      <!-- Card 3: Previous Year Papers -->
-      <div class="card" style="padding:20px; display:flex; flex-direction:column; justify-space-between;">
+      <!-- 3. 📝 Previous Year Questions -->
+      <div class="card" style="padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
         <div>
-          <div style="font-size:12px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">Official Archives</div>
-          <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:12px;">PYQ Question Sets</h3>
-          <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">Practice official GATE questions year by year from 2007 to 2026.</p>
+          <div style="font-size:12px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">Mode 3</div>
+          <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:6px;">Previous Year Questions</h3>
+          <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">Solve official GATE CSE questions year by year from 2007 to 2026.</p>
         </div>
 
         <button class="btn-primary" style="font-size:13px; padding:8px 16px;" onclick="navigateToView('pyq')">
@@ -134,12 +134,12 @@ function renderPracticeHome(container) {
         </button>
       </div>
 
-      <!-- Card 4: Random Syllabus Practice -->
+      <!-- 4. 🎲 Random Practice -->
       <div class="card" style="padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
         <div>
-          <div style="font-size:12px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">Mixed Practice</div>
-          <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:12px;">Random Syllabus Sprint</h3>
-          <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">Random selection of questions across all Computer Science subjects.</p>
+          <div style="font-size:12px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">Mode 4</div>
+          <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:6px;">Random Practice</h3>
+          <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">Random questions from the entire Computer Science syllabus.</p>
         </div>
 
         <button class="btn-primary" style="font-size:13px; padding:8px 16px;" onclick="startRandomSession()">
@@ -147,16 +147,29 @@ function renderPracticeHome(container) {
         </button>
       </div>
 
-      <!-- Card 5: Bookmarked Questions -->
+      <!-- 5. ⭐ Bookmarked Questions -->
       <div class="card" style="padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
         <div>
-          <div style="font-size:12px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">Revision Vault</div>
-          <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:12px;">Bookmarked Questions</h3>
+          <div style="font-size:12px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">Mode 5</div>
+          <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:6px;">Bookmarked Questions</h3>
           <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">Re-solve questions you previously bookmarked for revision.</p>
         </div>
 
         <button class="btn-secondary" style="font-size:13px; padding:8px 16px;" onclick="startBookmarksSession()">
           Start Bookmarks Session ➔
+        </button>
+      </div>
+
+      <!-- 6. 🔁 Weak Topics Practice -->
+      <div class="card" style="padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div style="font-size:12px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">Mode 6</div>
+          <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:6px;">Weak Topics Practice</h3>
+          <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">Target questions from topics you have marked as needing improvement.</p>
+        </div>
+
+        <button class="btn-secondary" style="font-size:13px; padding:8px 16px;" onclick="startWeakTopicsSession()">
+          Start Weak Topics Sprint ➔
         </button>
       </div>
 
@@ -178,7 +191,6 @@ function startConfiguredPractice() {
 
   if (pool.length === 0) pool = allPracticeQuestions;
 
-  // Shuffle & Limit
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [pool[i], pool[j]] = [pool[j], pool[i]];
@@ -190,6 +202,11 @@ function startConfiguredPractice() {
   activePracticeSession = { type: 'custom', sub };
   startPracticeTimer();
   renderPracticeModule();
+}
+
+function startSelectedSubjectSession() {
+  const subId = document.getElementById('p-subject-only-select')?.value || 'ga';
+  startSubjectSession(subId);
 }
 
 function startSubjectSession(subId) {
@@ -231,6 +248,24 @@ function startBookmarksSession() {
   currentPracticeIndex = 0;
   practiceUserAnswers = {};
   activePracticeSession = { type: 'bookmarks' };
+  startPracticeTimer();
+  renderPracticeModule();
+}
+
+function startWeakTopicsSession() {
+  // Practice 2-mark higher difficulty questions
+  let pool = allPracticeQuestions.filter(q => q.marks === 2);
+  if (pool.length === 0) pool = [...allPracticeQuestions];
+
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+
+  filteredPracticeQuestions = pool.slice(0, 15);
+  currentPracticeIndex = 0;
+  practiceUserAnswers = {};
+  activePracticeSession = { type: 'weak' };
   startPracticeTimer();
   renderPracticeModule();
 }
@@ -423,9 +458,11 @@ function nextPracticeQuestion() {
 
 window.renderPracticeModule = renderPracticeModule;
 window.startConfiguredPractice = startConfiguredPractice;
+window.startSelectedSubjectSession = startSelectedSubjectSession;
 window.startSubjectSession = startSubjectSession;
 window.startRandomSession = startRandomSession;
 window.startBookmarksSession = startBookmarksSession;
+window.startWeakTopicsSession = startWeakTopicsSession;
 window.exitPracticeSession = exitPracticeSession;
 window.submitPracticeAnswer = submitPracticeAnswer;
 window.clearPracticeAnswer = clearPracticeAnswer;
