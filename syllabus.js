@@ -1,4 +1,4 @@
-// Notion / Steam Style GATE Syllabus Explorer Module
+// Notion / Steam Style GATE Syllabus Explorer Module with Breadcrumb Navigation
 
 let syllabusData = null;
 let currentSubjectView = null; // null = grid view, or subjectId string
@@ -173,7 +173,7 @@ function renderSubjectGrid(container) {
   `;
 }
 
-// 2. Notion-Style Hierarchical Subject Detail Explorer
+// 2. Notion-Style Hierarchical Subject Detail Explorer with Breadcrumb Navigation
 function openSubjectExplorer(subjectId) {
   currentSubjectView = subjectId;
   renderSyllabusModule();
@@ -198,27 +198,36 @@ function renderSubjectExplorerView(container, subjectId) {
   const prog = StorageManager.getSyllabusProgress();
 
   container.innerHTML = `
-    <!-- Top Explorer Header Card -->
+    <!-- Sticky Breadcrumb & Navigation Bar -->
+    <div style="background:var(--bg-surface); border:1px solid var(--border-color); border-radius:10px; padding:12px 18px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:70px; z-index:100; backdrop-filter:blur(10px); box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+      <div style="display:flex; align-items:center; gap:8px; font-size:13px;">
+        <span style="color:var(--accent-primary); font-weight:600; cursor:pointer;" onclick="closeSubjectExplorer()">Syllabus</span>
+        <span style="color:var(--text-muted);">/</span>
+        <span style="font-weight:700; color:var(--text-main);">${subject.name}</span>
+      </div>
+
+      <div style="display:flex; gap:8px;">
+        <button class="btn-secondary" style="font-size:12px; padding:5px 12px;" onclick="closeSubjectExplorer()">
+          ← Back to All Subjects
+        </button>
+        <button class="btn-primary" style="font-size:12px; padding:5px 14px;" onclick="startSubjectPractice('${subject.id}')">
+          Practice Subject ➔
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Explorer Header Card -->
     <div class="card" style="margin-bottom:20px; padding:20px 24px;">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; margin-bottom:16px;">
-        <div style="display:flex; align-items:center; gap:14px;">
-          <button class="btn-secondary" style="font-size:12px; padding:6px 12px;" onclick="closeSubjectExplorer()">
-            ← All Subjects
-          </button>
-          <div style="width:44px; height:44px; border-radius:10px; background:var(--bg-surface-hover); color:var(--accent-primary); display:flex; align-items:center; justify-content:center; border:1px solid var(--border-color);">
-            ${iconSVG}
-          </div>
-          <div>
-            <h1 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:2px;">${subject.name}</h1>
-            <div style="font-size:12px; color:var(--text-sub);">
-              ${subject.code} • Weightage: <strong>${subject.weightage}</strong> • ${stats.total} Topics
-            </div>
+      <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+        <div style="width:48px; height:48px; border-radius:10px; background:var(--bg-surface-hover); color:var(--accent-primary); display:flex; align-items:center; justify-content:center; border:1px solid var(--border-color);">
+          ${iconSVG}
+        </div>
+        <div>
+          <h1 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:2px;">${subject.name}</h1>
+          <div style="font-size:12px; color:var(--text-sub);">
+            ${subject.code} • Weightage: <strong>${subject.weightage}</strong> • ${stats.total} Topics
           </div>
         </div>
-
-        <button class="btn-primary" style="font-size:13px; padding:8px 16px;" onclick="startSubjectPractice('${subject.id}')">
-          Practice This Subject ➔
-        </button>
       </div>
 
       <!-- Subject Progress Overview Bar -->
@@ -250,25 +259,6 @@ function renderSubjectExplorerView(container, subjectId) {
 
                 const matchesSearch = searchQuery ? topic.toLowerCase().includes(searchQuery) : true;
                 if (searchQuery && !matchesSearch) return '';
-
-                let statusBadge = `
-                  <span style="display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--text-muted); background:var(--bg-surface-hover); border:1px solid var(--border-color); padding:4px 10px; border-radius:6px; font-weight:500;">
-                    ○ Not Started
-                  </span>
-                `;
-                if (status === 'in_progress') {
-                  statusBadge = `
-                    <span style="display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--accent-primary); background:var(--accent-subtle); border:1px solid var(--accent-primary); padding:4px 10px; border-radius:6px; font-weight:600;">
-                      ◉ In Progress
-                    </span>
-                  `;
-                } else if (status === 'mastered') {
-                  statusBadge = `
-                    <span style="display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--color-success); background:rgba(16,185,129,0.12); border:1px solid var(--color-success); padding:4px 10px; border-radius:6px; font-weight:700;">
-                      ✓ Mastered
-                    </span>
-                  `;
-                }
 
                 return `
                   <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; flex-wrap:wrap; gap:10px;">
