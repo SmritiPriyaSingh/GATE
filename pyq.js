@@ -1,4 +1,4 @@
-// Previous Year Papers (PYQ) Engine with High-Res Official Diagram Viewer
+// Previous Year Papers (PYQ) Engine
 
 let pyqDatabase = [];
 
@@ -31,7 +31,7 @@ function renderPYQYearGrid() {
         </div>
         <div style="display:flex; flex-direction:column; gap:8px;">
           <button class="btn-primary" onclick="launchPYQPaper(${yr}, 'exam')">⏱️ Exam Mode</button>
-          <button class="btn-secondary" onclick="launchPYQPaper(${yr}, 'practice')">📷 Practice & Diagram View</button>
+          <button class="btn-secondary" onclick="launchPYQPaper(${yr}, 'practice')">📖 Practice Mode</button>
         </div>
       </div>
     `;

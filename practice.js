@@ -1,10 +1,9 @@
-// Topic Practice Module with Official Paper Diagram Viewer
+// Topic Practice Module with Inline Seamless Question Diagrams
 
 let allPracticeQuestions = [];
 let filteredPracticeQuestions = [];
 let currentPracticeIndex = 0;
 let practiceUserAnswers = {};
-let showDiagramMode = false;
 
 async function initPracticeModule() {
   try {
@@ -75,6 +74,17 @@ function renderPracticeQuestion() {
   const isBookmarked = StorageManager.getBookmarks().includes(q.id);
   const userAns = practiceUserAnswers[currentPracticeIndex];
 
+  // 1. Diagram HTML (rendered right under question text if present)
+  let diagramHTML = '';
+  if (q.diagram) {
+    diagramHTML = `
+      <div style="margin:16px 0; text-align:center; background:var(--bg-surface-hover); border:1px solid var(--border-color); padding:14px; border-radius:8px;">
+        <img src="${q.diagram}" onerror="this.style.display='none'" alt="Question Diagram" style="max-width:100%; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+      </div>
+    `;
+  }
+
+  // 2. Options HTML
   let optionsHTML = '';
   if (q.type === 'MCQ' || q.type === 'MSQ') {
     optionsHTML = `<div style="display:flex; flex-direction:column; gap:10px; margin-top:16px;">`;
@@ -97,21 +107,7 @@ function renderPracticeQuestion() {
     `;
   }
 
-  let diagramHTML = '';
-  const pageNum = Math.ceil((q.qNum || 1) / 3);
-  const paperFolder = `CS${q.year}`;
-  
-  if (showDiagramMode) {
-    diagramHTML = `
-      <div class="diagram-viewer-card">
-        <div style="font-size:12px; color:var(--text-sub); margin-bottom:8px; font-weight:600;">
-          📷 Official GATE ${q.year} Question View (Full Paper Page With Diagrams & Circuits)
-        </div>
-        <img src="assets/papers/${paperFolder}/page_${pageNum}.png" onerror="this.onerror=null; this.src='assets/papers/CS2026s1/page_1.png';" alt="GATE Question Diagram">
-      </div>
-    `;
-  }
-
+  // 3. Solution HTML
   let solutionHTML = '';
   if (userAns !== undefined) {
     const isCorrect = userAns === q.correct;
@@ -129,35 +125,35 @@ function renderPracticeQuestion() {
     `;
   }
 
+  // Structure: Question Text -> Diagram (if any) -> Options -> Solution
   container.innerHTML = `
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
       <span style="font-size:13px; font-weight:600; color:var(--accent-primary);">Question ${currentPracticeIndex + 1} of ${filteredPracticeQuestions.length} &bull; GATE ${q.year}</span>
-      <div style="display:flex; gap:10px;">
-        <button class="btn-secondary" style="font-size:12px; padding:4px 10px;" onclick="toggleDiagramMode()">
-          ${showDiagramMode ? '📄 Hide Diagram Page' : '📷 View Diagram / Official Page'}
-        </button>
-        <button class="btn-secondary" style="font-size:12px; padding:4px 10px;" onclick="toggleBookmarkCurrent('${q.id}')">
-          ${isBookmarked ? '⭐ Bookmarked' : '☆ Bookmark'}
-        </button>
-      </div>
+      <button class="btn-secondary" style="font-size:12px; padding:4px 10px;" onclick="toggleBookmarkCurrent('${q.id}')">
+        ${isBookmarked ? '⭐ Bookmarked' : '☆ Bookmark'}
+      </button>
     </div>
     <div style="font-size:13px; color:var(--text-sub); font-weight:600;">${q.subjectName} &bull; ${q.type} (${q.marks} Mark)</div>
+    
+    <!-- 1. Question Text -->
     <div style="font-size:15px; font-weight:500; margin-top:10px; line-height:1.6;">
       ${q.text}
     </div>
-    ${optionsHTML}
+
+    <!-- 2. Diagram Image (Inline) -->
     ${diagramHTML}
+
+    <!-- 3. Options -->
+    ${optionsHTML}
+
+    <!-- 4. Solution (if answered) -->
     ${solutionHTML}
+
     <div style="display:flex; justify-content:space-between; margin-top:20px;">
       <button class="btn-secondary" onclick="prevPracticeQuestion()" ${currentPracticeIndex === 0 ? 'disabled' : ''}>← Previous</button>
       <button class="btn-primary" onclick="nextPracticeQuestion()" ${currentPracticeIndex >= filteredPracticeQuestions.length - 1 ? 'disabled' : ''}>Next →</button>
     </div>
   `;
-}
-
-function toggleDiagramMode() {
-  showDiagramMode = !showDiagramMode;
-  renderPracticeQuestion();
 }
 
 function submitPracticeAnswer(ansVal) {
