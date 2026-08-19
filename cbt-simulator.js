@@ -218,8 +218,19 @@ function saveAndNext() {
   }
 }
 
+function prevCBTQuestion() {
+  if (cbtState.currentIndex > 0) {
+    renderCBTQuestion(cbtState.currentIndex - 1);
+  }
+}
+
 function markForReviewAndNext() {
-  cbtState.statuses[cbtState.currentIndex] = 'marked';
+  if (cbtState.userAnswers[cbtState.currentIndex] !== undefined) {
+    cbtState.statuses[cbtState.currentIndex] = 'marked';
+  } else {
+    cbtState.statuses[cbtState.currentIndex] = 'marked';
+  }
+
   if (cbtState.currentIndex < cbtState.questions.length - 1) {
     renderCBTQuestion(cbtState.currentIndex + 1);
   } else {
