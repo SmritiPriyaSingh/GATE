@@ -4,41 +4,142 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GATE CSE 2027 | Study Workspace</title>
-  <meta name="description" content="Minimalist, focused GATE 2027 Computer Science Study Platform & CBT Simulator.">
+  <meta name="description" content="Professional GATE 2027 Computer Science Study Platform & CBT Simulator.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Top App Header (GitHub / Notion Style) -->
+  <!-- Top App Header (GitHub / Notion / Linear Style) -->
   <header class="app-header">
-    <div class="brand-title">
-      <span style="font-size:22px;">⚡</span>
-      <span>GATE CSE 2027</span>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <button class="menu-toggle-btn" onclick="toggleSidebarDrawer()" title="Open Navigation Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+      <div class="brand-title">
+        <span>GATE CSE 2027</span>
+      </div>
     </div>
 
-    <!-- Main Navigation Bar -->
+    <!-- Desktop Navigation Links -->
     <nav class="nav-links">
-      <button class="nav-btn active" data-view="dashboard">Dashboard</button>
-      <button class="nav-btn" data-view="syllabus">Syllabus</button>
-      <button class="nav-btn" data-view="practice">Practice</button>
-      <button class="nav-btn" data-view="pyq">PYQs</button>
-      <button class="nav-btn" data-view="cbt">CBT Exam</button>
-      <button class="nav-btn" data-view="analytics">Analytics</button>
-      <button class="nav-btn" data-view="revision">Revision</button>
+      <button class="nav-btn active" data-view="dashboard">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-btn" data-view="syllabus">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+        <span>Syllabus</span>
+      </button>
+      <button class="nav-btn" data-view="practice">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.867.837a.5.5 0 0 1-.62-.62l.837-2.867a2 2 0 0 1 .506-.855z"/></svg>
+        <span>Practice</span>
+      </button>
+      <button class="nav-btn" data-view="pyq">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span>PYQs</span>
+      </button>
+      <button class="nav-btn" data-view="cbt">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>CBT Exam</span>
+      </button>
+      <button class="nav-btn" data-view="analytics">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+        <span>Analytics</span>
+      </button>
+      <button class="nav-btn" data-view="revision">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span>Revision</span>
+      </button>
     </nav>
 
-    <!-- Right Header Controls -->
-    <div style="display:flex; align-items:center; gap:8px;">
-      <button class="nav-btn" style="padding:6px 10px;" title="Notifications" onclick="alert('Notifications: All systems operational.')">🔔</button>
-      <button class="nav-btn" style="padding:6px 10px;" title="Settings" data-view="settings">⚙️</button>
-      <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleAppTheme()">
-        <span id="theme-icon">🌙</span>
-        <span id="theme-text" style="display:none;">Dark Mode</span>
+    <!-- Right Header: Profile Dropdown Menu -->
+    <div class="profile-menu-container" id="profile-menu-container">
+      <button class="profile-trigger-btn" onclick="toggleProfileDropdown(event)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Profile</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
       </button>
+
+      <div class="profile-dropdown-menu" id="profile-dropdown-menu">
+        <button class="dropdown-item" data-view="settings">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Settings & Preferences</span>
+        </button>
+        <button class="dropdown-item" onclick="toggleAppTheme()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          <span>Toggle Light/Dark Theme</span>
+        </button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" onclick="exportUserDataBackup()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          <span>Backup Progress</span>
+        </button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" style="color:var(--color-danger);" onclick="confirmResetAllData()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+          <span>Reset All Progress</span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- Main Container (Generous Whitespace) -->
+  <!-- Sidebar Overlay & Sliding Drawer -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebarDrawer()"></div>
+  <aside class="sidebar-drawer" id="sidebar-drawer">
+    <div class="sidebar-header">
+      <span style="font-weight:600; font-size:14px; color:var(--text-main);">Navigation Drawer</span>
+      <button class="menu-toggle-btn" onclick="closeSidebarDrawer()">✕</button>
+    </div>
+
+    <div class="sidebar-content">
+      <button class="sidebar-item active" data-view="dashboard">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        <span>Dashboard</span>
+      </button>
+
+      <div class="sidebar-group-title">Study</div>
+      <button class="sidebar-item" data-view="syllabus">
+        <span style="font-size:10px; opacity:0.6;">•</span>
+        <span>Syllabus</span>
+      </button>
+      <button class="sidebar-item" data-view="practice">
+        <span style="font-size:10px; opacity:0.6;">•</span>
+        <span>Topic Practice</span>
+      </button>
+      <button class="sidebar-item" data-view="pyq">
+        <span style="font-size:10px; opacity:0.6;">•</span>
+        <span>PYQs</span>
+      </button>
+      <button class="sidebar-item" data-view="cbt">
+        <span style="font-size:10px; opacity:0.6;">•</span>
+        <span>CBT Simulator</span>
+      </button>
+      <button class="sidebar-item" data-view="revision">
+        <span style="font-size:10px; opacity:0.6;">•</span>
+        <span>Revision</span>
+      </button>
+
+      <div class="sidebar-group-title">System</div>
+      <button class="sidebar-item" data-view="analytics">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+        <span>Analytics</span>
+      </button>
+      <button class="sidebar-item" data-view="settings">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        <span>Settings</span>
+      </button>
+      <button class="sidebar-item" onclick="alert('Help: Access offline GATE 2027 syllabus guides & documentation.')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+        <span>Help & Guide</span>
+      </button>
+      <button class="sidebar-item" onclick="confirmResetAllData()" style="color:var(--color-danger);">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+        <span>Reset Website</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Container -->
   <main class="main-container">
 
     <!-- VIEW 1: DASHBOARD / WORKSPACE -->
@@ -77,7 +178,7 @@
 
           <!-- Subject Progress Overview -->
           <div class="card">
-            <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:14px;">📚 Subject Progress Overview</h3>
+            <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:14px;">Subject Progress Overview</h3>
             <div id="cmd-subject-progress-grid">
               <!-- Rendered dynamically -->
             </div>
@@ -91,7 +192,7 @@
           <!-- Today's Tasks -->
           <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-              <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin:0;">🎯 Today's Tasks</h3>
+              <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin:0;">Today's Tasks</h3>
               <span style="font-size:12px; color:var(--text-sub);" id="cmd-task-count">0 remaining</span>
             </div>
 
@@ -107,7 +208,7 @@
 
           <!-- Activity & Diagnostic Log (Appears as user interacts) -->
           <div class="card">
-            <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin-bottom:12px;">⏱️ Recent Activity</h3>
+            <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin-bottom:12px;">Recent Activity</h3>
             <div id="cmd-activity-feed">
               <!-- Rendered dynamically -->
             </div>
@@ -161,7 +262,7 @@
     <!-- VIEW 4: PYQ PAPERS -->
     <section id="view-pyq" class="view-section">
       <div class="card">
-        <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700;">📜 Previous Year GATE Papers (2007 - 2026)</h2>
+        <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700;">Previous Year GATE Papers (2007 - 2026)</h2>
         <p style="color:var(--text-sub); font-size:13px; margin-top:4px;">Solve official GATE papers with 100% complete diagrams, figures, and formatting.</p>
       </div>
 
@@ -177,7 +278,7 @@
         <p style="color:var(--text-sub); max-width:600px; margin:0 auto 20px auto; font-size:14px;">
           Simulate official GATE exam with timer, question palette, calculator, and official marking rules (+1/-0.33, +2/-0.66).
         </p>
-        <button class="btn-primary" onclick="startCBTExam('all')">🚀 Start CBT Exam</button>
+        <button class="btn-primary" onclick="startCBTExam('all')">Start CBT Exam</button>
       </div>
 
       <div id="cbt-active-screen" class="cbt-wrapper" style="display:none;">
@@ -189,9 +290,9 @@
                 <span style="font-size:12px; color:var(--text-sub); margin-left:8px;">(Session Active)</span>
               </div>
               <div style="display:flex; gap:10px; align-items:center;">
-                <button class="btn-secondary" onclick="toggleCalculator()">🧮 Calculator</button>
-                <div style="background:rgba(239,68,68,0.1); color:var(--color-danger); padding:4px 12px; border-radius:6px; font-weight:700;" id="cbt-timer-display">⏱️ 03:00:00</div>
-                <button class="btn-secondary" style="border-color:var(--color-danger); color:var(--color-danger);" onclick="quitCBTExam()">🚪 Quit Exam</button>
+                <button class="btn-secondary" onclick="toggleCalculator()">Calculator</button>
+                <div style="background:rgba(239,68,68,0.1); color:var(--color-danger); padding:4px 12px; border-radius:6px; font-weight:700;" id="cbt-timer-display">03:00:00</div>
+                <button class="btn-secondary" style="border-color:var(--color-danger); color:var(--color-danger);" onclick="quitCBTExam()">Quit Exam</button>
               </div>
             </div>
 
@@ -225,7 +326,7 @@
     <!-- VIEW 6: ANALYTICS -->
     <section id="view-analytics" class="view-section">
       <div class="card">
-        <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700;">📈 Performance Analytics</h2>
+        <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700;">Performance Analytics</h2>
         <p style="color:var(--text-sub); font-size:13px;">Subject accuracy and performance metrics.</p>
       </div>
     </section>
@@ -233,7 +334,7 @@
     <!-- VIEW 7: REVISION -->
     <section id="view-revision" class="view-section">
       <div class="card">
-        <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700;">⭐ Bookmarked Questions & Notes</h2>
+        <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700;">Bookmarked Questions & Notes</h2>
         <div id="revision-content-area" style="margin-top:16px;">
           <!-- Rendered dynamically -->
         </div>
@@ -252,27 +353,27 @@
   <!-- Fixed Bottom Navigation Bar for Minimized / Mobile Screens -->
   <nav class="bottom-nav-bar">
     <button class="nav-btn active" data-view="dashboard">
-      <span class="icon">📌</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
       <span>Dash</span>
     </button>
     <button class="nav-btn" data-view="syllabus">
-      <span class="icon">📚</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
       <span>Syllabus</span>
     </button>
     <button class="nav-btn" data-view="practice">
-      <span class="icon">📝</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.867.837a.5.5 0 0 1-.62-.62l.837-2.867a2 2 0 0 1 .506-.855z"/></svg>
       <span>Practice</span>
     </button>
     <button class="nav-btn" data-view="pyq">
-      <span class="icon">📜</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
       <span>PYQs</span>
     </button>
     <button class="nav-btn" data-view="cbt">
-      <span class="icon">🎯</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       <span>CBT</span>
     </button>
     <button class="nav-btn" data-view="settings">
-      <span class="icon">⚙️</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Settings</span>
     </button>
   </nav>
@@ -281,7 +382,7 @@
   <div class="modal-overlay" id="calc-modal-overlay">
     <div class="calc-modal">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span style="font-weight: 700; font-size: 14px;">GATE Scientific Calculator</span>
+        <span style="font-weight: 600; font-size: 14px;">GATE Scientific Calculator</span>
         <button style="background: none; border: none; color: var(--text-sub); font-size: 18px; cursor: pointer;" onclick="toggleCalculator()">✕</button>
       </div>
       <div class="calc-display" id="calc-display-screen">0</div>

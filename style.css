@@ -60,15 +60,15 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Header Bar */
+/* Header Bar (Professional Engineering Application Style) */
 .app-header {
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 0 20px;
-  min-height: 64px;
+  padding: 0 16px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -76,24 +76,41 @@ body {
 }
 
 .brand-title {
-  font-family: 'Outfit', sans-serif;
-  font-weight: 700;
-  font-size: 18px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   white-space: nowrap;
   flex-shrink: 0;
+  color: var(--text-main);
+}
+
+.menu-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-sub);
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.menu-toggle-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-main);
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   overflow-x: auto;
   white-space: nowrap;
-  padding: 6px 0;
-  -webkit-overflow-scrolling: touch;
 }
 
 .nav-links::-webkit-scrollbar {
@@ -104,14 +121,17 @@ body {
   background: transparent;
   border: none;
   color: var(--text-sub);
-  padding: 8px 12px;
+  padding: 6px 12px;
   font-weight: 500;
   font-size: 13px;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .nav-btn:hover {
@@ -125,21 +145,159 @@ body {
   font-weight: 600;
 }
 
-.theme-toggle-btn {
-  background: var(--bg-surface-hover);
+/* Profile Dropdown Menu */
+.profile-menu-container {
+  position: relative;
+}
+
+.profile-trigger-btn {
+  background: transparent;
   border: 1px solid var(--border-color);
   color: var(--text-main);
-  padding: 6px 12px;
-  border-radius: 8px;
+  padding: 5px 12px;
+  border-radius: 6px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 6px;
-  white-space: nowrap;
-  flex-shrink: 0;
+  transition: all 0.15s ease;
 }
+
+.profile-trigger-btn:hover {
+  background: var(--bg-surface-hover);
+}
+
+.profile-dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 6px;
+  width: 220px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow-card);
+  padding: 6px 0;
+  z-index: 1100;
+}
+
+.profile-dropdown-menu.active {
+  display: block;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.dropdown-item:hover {
+  background: var(--bg-surface-hover);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 4px 0;
+}
+
+/* Professional Sidebar Drawer */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 1200;
+}
+
+.sidebar-overlay.active {
+  display: block;
+}
+
+.sidebar-drawer {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100vh;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-color);
+  z-index: 1300;
+  transition: left 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-drawer.active {
+  left: 0;
+}
+
+.sidebar-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-content {
+  padding: 12px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sidebar-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 14px 8px 6px 8px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: left;
+}
+
+.sidebar-item:hover {
+  background: var(--bg-surface-hover);
+}
+
+.sidebar-item.active {
+  background: var(--accent-subtle);
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
 
 /* Page Layout Container */
 .main-container {
