@@ -3,195 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GATE CSE 2027 | Study Command Center</title>
-  <meta name="description" content="Modern Minimalist GATE 2027 Computer Science Study Platform & CBT Simulator.">
+  <title>GATE CSE 2027 | Study Workspace</title>
+  <meta name="description" content="Minimalist, focused GATE 2027 Computer Science Study Platform & CBT Simulator.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Top App Header -->
+  <!-- Top App Header (GitHub / Notion Style) -->
   <header class="app-header">
     <div class="brand-title">
-      <span style="font-size:24px;">⚡</span>
+      <span style="font-size:22px;">⚡</span>
       <span>GATE CSE 2027</span>
     </div>
 
-    <!-- Desktop Navigation Links -->
+    <!-- Main Navigation Bar -->
     <nav class="nav-links">
-      <button class="nav-btn active" data-view="dashboard">⚡ Study Command Center</button>
-      <button class="nav-btn" data-view="syllabus">📚 Syllabus</button>
-      <button class="nav-btn" data-view="practice">📝 Practice</button>
-      <button class="nav-btn" data-view="pyq">📜 PYQs</button>
-      <button class="nav-btn" data-view="cbt">🎯 CBT Exam</button>
-      <button class="nav-btn" data-view="analytics">📈 Analytics</button>
-      <button class="nav-btn" data-view="revision">⭐ Revision</button>
-      <button class="nav-btn" data-view="settings">⚙️ Settings</button>
+      <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+      <button class="nav-btn" data-view="syllabus">Syllabus</button>
+      <button class="nav-btn" data-view="practice">Practice</button>
+      <button class="nav-btn" data-view="pyq">PYQs</button>
+      <button class="nav-btn" data-view="cbt">CBT Exam</button>
+      <button class="nav-btn" data-view="analytics">Analytics</button>
+      <button class="nav-btn" data-view="revision">Revision</button>
     </nav>
 
-    <div style="display:flex; align-items:center; gap:12px;">
+    <!-- Right Header Controls -->
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button class="nav-btn" style="padding:6px 10px;" title="Notifications" onclick="alert('Notifications: All systems operational.')">🔔</button>
+      <button class="nav-btn" style="padding:6px 10px;" title="Settings" data-view="settings">⚙️</button>
       <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleAppTheme()">
         <span id="theme-icon">🌙</span>
-        <span id="theme-text">Dark Mode</span>
+        <span id="theme-text" style="display:none;">Dark Mode</span>
       </button>
     </div>
   </header>
 
-  <!-- Main Container -->
+  <!-- Main Container (Generous Whitespace) -->
   <main class="main-container">
 
-    <!-- VIEW 1: STUDY COMMAND CENTER -->
+    <!-- VIEW 1: DASHBOARD / WORKSPACE -->
     <section id="view-dashboard" class="view-section active">
 
-      <!-- Top Row: Today's Mission & Quick Action Shortcuts -->
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:20px;">
-        <div>
-          <h1 style="font-family:'Outfit', sans-serif; font-size:24px; font-weight:700; margin:0;">⚡ Study Command Center</h1>
-          <div style="font-size:13px; color:var(--text-sub); margin-top:2px;">Your daily control hub for GATE 2027 Computer Science preparation.</div>
-        </div>
-
-        <!-- Quick Action Bar Shortcuts -->
-        <div class="quick-action-bar">
-          <button class="btn-primary" onclick="document.querySelector('[data-view=\'practice\']').click();">+ Practice</button>
-          <button class="btn-secondary" onclick="resumeLastStudySession('os')">+ Resume</button>
-          <button class="btn-secondary" onclick="document.querySelector('[data-view=\'cbt\']').click();">+ Mock Test</button>
-          <button class="btn-secondary" onclick="document.querySelector('[data-view=\'revision\']').click();">+ Revision</button>
-          <button class="btn-secondary" onclick="document.querySelector('[data-view=\'pyq\']').click();">+ PYQs</button>
-        </div>
-      </div>
-
-      <!-- Hero 1: Today's Mission (First Eye Contact) -->
-      <div class="card" style="background:var(--bg-surface); border:1px solid var(--accent-primary); border-radius:12px; padding:20px; margin-bottom:24px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+      <!-- Top Metric Header: GATE Countdown & Syllabus Progress Bar -->
+      <div class="card" style="margin-bottom:24px; padding:18px 24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
           <div>
-            <span style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700;">🎯 Today's Mission</span>
-            <span style="font-size:12px; background:var(--accent-subtle); color:var(--accent-primary); padding:3px 10px; border-radius:12px; font-weight:600; margin-left:10px;" id="cmd-remaining-count">Loading tasks...</span>
+            <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Target Countdown</div>
+            <div style="font-family:'Outfit', sans-serif; font-size:26px; font-weight:700; color:var(--accent-primary);" id="dash-target-countdown">-- Days</div>
           </div>
-          <div style="display:flex; gap:8px;">
-            <input type="text" id="cmd-task-input" placeholder="Add new daily target..." style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:6px 12px; border-radius:8px; font-size:13px; width:220px;" onkeydown="if(event.key==='Enter') addMissionTask()">
-            <button class="btn-primary" style="font-size:12px; padding:6px 12px;" onclick="addMissionTask()">+ Add Task</button>
-          </div>
-        </div>
 
-        <div id="cmd-mission-list">
-          <!-- Rendered dynamically -->
-        </div>
-      </div>
-
-      <!-- Hero 2: Command Metrics Bar -->
-      <div class="stats-grid">
-        <div class="card stat-box">
-          <div class="stat-icon">⏱️</div>
-          <div>
-            <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">GATE 2027 Countdown</div>
-            <div class="stat-val" id="dash-target-countdown">-- Days</div>
-          </div>
-        </div>
-
-        <div class="card stat-box">
-          <div class="stat-icon">📊</div>
-          <div style="width:100%;">
-            <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Overall Syllabus</div>
-            <div class="stat-val" id="cmd-syllabus-pct">0%</div>
-            <div class="progress-bar-bg">
+          <div style="flex:1; max-width:380px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:600; margin-bottom:4px;">
+              <span>Overall Syllabus Progress</span>
+              <span id="cmd-syllabus-pct">0%</span>
+            </div>
+            <div class="progress-bar-bg" style="height:8px;">
               <div class="progress-bar-fill" id="cmd-syllabus-bar" style="width: 0%;"></div>
             </div>
           </div>
         </div>
-
-        <div class="card stat-box">
-          <div class="stat-icon" style="color:var(--color-warning); background:rgba(245,158,11,0.1);">🔥</div>
-          <div>
-            <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Current Streak</div>
-            <div class="stat-val" id="cmd-streak-val">14 Days</div>
-          </div>
-        </div>
-
-        <div class="card stat-box">
-          <div class="stat-icon">⏳</div>
-          <div>
-            <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Study Hours Today</div>
-            <div class="stat-val" id="cmd-hours-val">4.5 Hrs</div>
-          </div>
-        </div>
-
-        <div class="card stat-box">
-          <div class="stat-icon" style="color:var(--color-success); background:rgba(16,185,129,0.1);">🎯</div>
-          <div>
-            <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Overall Accuracy</div>
-            <div class="stat-val" id="cmd-accuracy-val">78%</div>
-          </div>
-        </div>
       </div>
 
-      <!-- Main Command Grid: 2 Columns (Focus Area & Diagnostics Area) -->
-      <div style="display:grid; grid-template-columns:1fr 340px; gap:24px; align-items:start;">
+      <!-- 2 Column Layout: Workspace Focus (Left) & Today's Tasks (Right) -->
+      <div style="display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;">
 
-        <!-- Left Column: Focus Area & Subject Grid -->
+        <!-- Left Column: Continue Studying & Subject Progress Overview -->
         <div style="display:flex; flex-direction:column; gap:24px;">
 
-          <!-- Continue Studying Card -->
+          <!-- Continue Studying Card (Handles empty state gracefully) -->
           <div class="card" id="cmd-continue-card">
             <!-- Rendered dynamically -->
           </div>
 
-          <!-- Subject Progress Grid (Color-Coded) -->
-          <div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-              <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin:0;">📚 Subject Mastery & Progress</h3>
-              <div style="display:flex; gap:8px; font-size:11px; font-weight:600;">
-                <span class="status-pill behind">🔴 Behind</span>
-                <span class="status-pill in-progress">🟡 In Progress</span>
-                <span class="status-pill strong">🟢 Strong</span>
-              </div>
-            </div>
-
-            <div class="stats-grid" id="cmd-subject-grid" style="grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));">
-              <!-- Rendered dynamically -->
-            </div>
-          </div>
-
-          <!-- GitHub-Style Study Consistency Heatmap -->
+          <!-- Subject Progress Overview -->
           <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-              <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin:0;">🟩 Study Consistency Heatmap (Last 16 Weeks)</h3>
-              <span style="font-size:12px; color:var(--text-muted);">Daily Practice Intensity</span>
-            </div>
-            <div class="heatmap-container" id="cmd-heatmap-grid">
+            <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:14px;">📚 Subject Progress Overview</h3>
+            <div id="cmd-subject-progress-grid">
               <!-- Rendered dynamically -->
-            </div>
-            <div style="display:flex; justify-content:flex-end; align-items:center; gap:6px; margin-top:10px; font-size:11px; color:var(--text-sub);">
-              <span>Less</span>
-              <div class="heatmap-square lvl-0" style="width:10px; height:10px;"></div>
-              <div class="heatmap-square lvl-1" style="width:10px; height:10px;"></div>
-              <div class="heatmap-square lvl-2" style="width:10px; height:10px;"></div>
-              <div class="heatmap-square lvl-3" style="width:10px; height:10px;"></div>
-              <div class="heatmap-square lvl-4" style="width:10px; height:10px;"></div>
-              <span>More</span>
             </div>
           </div>
 
         </div>
 
-        <!-- Right Column: Diagnostics Area & Actionable Next Step -->
+        <!-- Right Column: Today's Tasks & Diagnostic Activity Stream -->
         <div style="display:flex; flex-direction:column; gap:24px;">
 
-          <!-- Actionable Recommendation Card -->
-          <div class="card" id="cmd-recommendation-card">
-            <!-- Rendered dynamically -->
-          </div>
-
-          <!-- Weekly Study Hours Bar Chart -->
+          <!-- Today's Tasks -->
           <div class="card">
-            <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin-bottom:14px;">📊 Weekly Study Hours Trend</h3>
-            <div style="display:flex; gap:10px; align-items:flex-end;" id="cmd-weekly-chart">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin:0;">🎯 Today's Tasks</h3>
+              <span style="font-size:12px; color:var(--text-sub);" id="cmd-task-count">0 remaining</span>
+            </div>
+
+            <div style="display:flex; gap:6px; margin-bottom:12px;">
+              <input type="text" id="cmd-task-input" placeholder="Add study target..." style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:6px 10px; border-radius:6px; font-size:13px; flex:1;" onkeydown="if(event.key==='Enter') addMissionTask()">
+              <button class="btn-primary" style="font-size:12px; padding:6px 12px;" onclick="addMissionTask()">+ Add</button>
+            </div>
+
+            <div id="cmd-task-list">
               <!-- Rendered dynamically -->
             </div>
           </div>
 
-          <!-- Timeline Activity Stream -->
+          <!-- Activity & Diagnostic Log (Appears as user interacts) -->
           <div class="card">
-            <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin-bottom:14px;">⏱️ Recent Activity Log</h3>
-            <div id="cmd-timeline-feed">
+            <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin-bottom:12px;">⏱️ Recent Activity</h3>
+            <div id="cmd-activity-feed">
               <!-- Rendered dynamically -->
             </div>
           </div>
@@ -325,13 +242,8 @@
 
     <!-- VIEW 8: SETTINGS -->
     <section id="view-settings" class="view-section">
-      <div class="card">
-        <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:16px;">⚙️ Settings & Data Backup</h2>
-        <div style="display:flex; flex-direction:column; gap:12px; max-width:500px;">
-          <button class="btn-primary" onclick="exportUserDataBackup()">💾 Export Backup JSON</button>
-          <input type="file" accept=".json" onchange="importUserDataBackup(event)" style="font-size:13px;">
-          <button class="btn-secondary" style="color:var(--color-danger); border-color:var(--color-danger);" onclick="confirmResetAllData()">Reset All Data</button>
-        </div>
+      <div id="settings-container">
+        <!-- Rendered dynamically from settings.js -->
       </div>
     </section>
 
@@ -340,8 +252,8 @@
   <!-- Fixed Bottom Navigation Bar for Minimized / Mobile Screens -->
   <nav class="bottom-nav-bar">
     <button class="nav-btn active" data-view="dashboard">
-      <span class="icon">⚡</span>
-      <span>Command</span>
+      <span class="icon">📌</span>
+      <span>Dash</span>
     </button>
     <button class="nav-btn" data-view="syllabus">
       <span class="icon">📚</span>
@@ -357,11 +269,11 @@
     </button>
     <button class="nav-btn" data-view="cbt">
       <span class="icon">🎯</span>
-      <span>CBT Exam</span>
+      <span>CBT</span>
     </button>
-    <button class="nav-btn" data-view="revision">
-      <span class="icon">⭐</span>
-      <span>Notes</span>
+    <button class="nav-btn" data-view="settings">
+      <span class="icon">⚙️</span>
+      <span>Settings</span>
     </button>
   </nav>
 

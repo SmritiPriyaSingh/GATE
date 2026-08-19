@@ -1,4 +1,4 @@
-// LocalStorage State Manager for GATE CSE 2027 Platform
+// LocalStorage State Manager for GATE CSE 2027 Platform - Pure Clean State Engine
 
 const STORAGE_KEYS = {
   SYLLABUS_PROGRESS: 'gate2027_syllabus_progress',
@@ -8,11 +8,24 @@ const STORAGE_KEYS = {
   TODAY_TASKS: 'gate2027_today_tasks',
   LAST_TOPIC: 'gate2027_last_topic',
   STUDY_HEATMAP: 'gate2027_study_heatmap',
-  DAILY_HOURS: 'gate2027_daily_hours'
+  DAILY_HOURS: 'gate2027_daily_hours',
+  USER_PROFILE: 'gate2027_user_profile'
 };
 
 const StorageManager = {
-  // Syllabus Progress
+  // Profile Settings
+  getProfile() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_PROFILE)) || {
+      name: 'GATE Aspirant',
+      targetYear: '2027',
+      targetBranch: 'Computer Science & IT'
+    };
+  },
+  saveProfile(profile) {
+    localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(profile));
+  },
+
+  // Syllabus Progress (Starts completely empty {})
   getSyllabusProgress() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.SYLLABUS_PROGRESS)) || {};
   },
@@ -32,18 +45,9 @@ const StorageManager = {
     return prog[topicId];
   },
 
-  // Today's Mission Tasks
+  // Today's Tasks (Starts empty array [])
   getTodayTasks() {
-    const saved = localStorage.getItem(STORAGE_KEYS.TODAY_TASKS);
-    if (saved) return JSON.parse(saved);
-
-    // Default missions
-    return [
-      { id: 't1', text: 'Finish Scheduling Algorithms (OS)', done: false },
-      { id: 't2', text: 'Solve 20 Computer Networks PYQs', done: false },
-      { id: 't3', text: 'Revise DBMS SQL Queries', done: true },
-      { id: 't4', text: 'Attempt 1 GATE Mini Mock Test', done: false }
-    ];
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.TODAY_TASKS)) || [];
   },
   saveTodayTasks(tasks) {
     localStorage.setItem(STORAGE_KEYS.TODAY_TASKS, JSON.stringify(tasks));
@@ -70,16 +74,11 @@ const StorageManager = {
     return tasks;
   },
 
-  // Last Studied Topic (Continue Card)
+  // Last Studied Topic (Starts null until user practices)
   getLastTopic() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.LAST_TOPIC)) || {
-      subject: 'Operating Systems',
-      topic: 'Deadlocks & Synchronization',
-      view: 'practice',
-      subjectId: 'os'
-    };
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.LAST_TOPIC)) || null;
   },
-  setLastTopic(subject, topic, subjectId = 'os') {
+  setLastTopic(subject, topic, subjectId) {
     localStorage.setItem(STORAGE_KEYS.LAST_TOPIC, JSON.stringify({
       subject,
       topic,
@@ -88,7 +87,7 @@ const StorageManager = {
     }));
   },
 
-  // Study Heatmap & Activity Log
+  // Heatmap & Activity (Starts empty {})
   getHeatmapData() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.STUDY_HEATMAP)) || {};
   },
@@ -97,13 +96,6 @@ const StorageManager = {
     const map = this.getHeatmapData();
     map[today] = (map[today] || 0) + count;
     localStorage.setItem(STORAGE_KEYS.STUDY_HEATMAP, JSON.stringify(map));
-  },
-
-  // Daily Study Hours
-  getDailyHours() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.DAILY_HOURS)) || {
-      Mon: 3.5, Tue: 4.0, Wed: 5.5, Thu: 2.0, Fri: 4.5, Sat: 6.0, Sun: 3.0
-    };
   },
 
   // Bookmarks
@@ -122,7 +114,7 @@ const StorageManager = {
     return b.includes(questionId);
   },
 
-  // User Notes
+  // Notes
   getNotes() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_NOTES)) || {};
   },
@@ -130,6 +122,12 @@ const StorageManager = {
     const n = this.getNotes();
     n[topicId] = noteContent;
     localStorage.setItem(STORAGE_KEYS.USER_NOTES, JSON.stringify(n));
+  },
+
+  // Clear All Data
+  clearAllData() {
+    localStorage.clear();
+    window.location.reload();
   }
 };
 
