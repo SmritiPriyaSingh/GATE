@@ -290,3 +290,70 @@ body {
 .cbt-btn.marked { background: var(--color-purple); }
 .cbt-btn.not-visited { background: var(--text-muted); }
 .cbt-btn.current { border: 2px solid var(--text-main); }
+
+/* Calculator Modal Overlay */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.active {
+  display: flex !important;
+}
+
+.calc-modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+  width: 320px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.calc-display {
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: 'Fira Code', monospace;
+  font-size: 22px;
+  text-align: right;
+  color: var(--color-success);
+  margin-bottom: 14px;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.calc-btn {
+  background: var(--bg-surface-hover);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.calc-btn:hover {
+  background: var(--border-color);
+}
+
+.calc-btn.op {
+  background: var(--accent-subtle);
+  color: var(--accent-primary);
+}
+
