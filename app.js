@@ -20,47 +20,51 @@ function toggleAppTheme() {
   if (window.renderSettingsModule) window.renderSettingsModule();
 }
 
-function initNavigation() {
+function navigateToView(targetView) {
+  if (!targetView) return;
+
+  // Strict Exam Mode Lock Check:
+  if (window.cbtState && window.cbtState.active) {
+    const confirmQuit = window.quitCBTExam ? window.quitCBTExam() : confirm('Quit current active exam?');
+    if (!confirmQuit) return;
+  }
+
   const navBtns = document.querySelectorAll('.nav-btn, .sidebar-item, .dropdown-item');
   const viewSections = document.querySelectorAll('.view-section');
 
-  navBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
+  navBtns.forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`[data-view="${targetView}"]`).forEach(b => b.classList.add('active'));
+
+  viewSections.forEach(sec => {
+    if (sec.id === `view-${targetView}`) {
+      sec.classList.add('active');
+    } else {
+      sec.classList.remove('active');
+    }
+  });
+
+  if (targetView === 'dashboard' && window.renderCommandCenter) {
+    window.renderCommandCenter();
+  } else if (targetView === 'profile' && window.renderProfileModule) {
+    window.renderProfileModule();
+  } else if (targetView === 'settings' && window.renderSettingsModule) {
+    window.renderSettingsModule();
+  }
+
+  closeSidebarDrawer();
+  closeProfileDropdown();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function initNavigation() {
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-view]');
+    if (btn) {
       const targetView = btn.dataset.view;
-      if (!targetView) return;
-
-      // Strict Exam Mode Lock Check:
-      if (window.cbtState && window.cbtState.active) {
-        const confirmQuit = window.quitCBTExam ? window.quitCBTExam() : confirm('Quit current active exam?');
-        if (!confirmQuit) {
-          e.preventDefault();
-          return;
-        }
+      if (targetView) {
+        navigateToView(targetView);
       }
-
-      navBtns.forEach(b => b.classList.remove('active'));
-      document.querySelectorAll(`[data-view="${targetView}"]`).forEach(b => b.classList.add('active'));
-
-      viewSections.forEach(sec => {
-        if (sec.id === `view-${targetView}`) {
-          sec.classList.add('active');
-        } else {
-          sec.classList.remove('active');
-        }
-      });
-
-      if (targetView === 'dashboard' && window.renderCommandCenter) {
-        window.renderCommandCenter();
-      } else if (targetView === 'profile' && window.renderProfileModule) {
-        window.renderProfileModule();
-      } else if (targetView === 'settings' && window.renderSettingsModule) {
-        window.renderSettingsModule();
-      }
-
-      closeSidebarDrawer();
-      closeProfileDropdown();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    }
   });
 }
 
@@ -133,6 +137,7 @@ function initGATE2027Countdown() {
   updateTimer();
 }
 
+window.navigateToView = navigateToView;
 window.toggleAppTheme = toggleAppTheme;
 window.toggleSidebarDrawer = toggleSidebarDrawer;
 window.closeSidebarDrawer = closeSidebarDrawer;

@@ -72,7 +72,7 @@ function renderProfileModule() {
             <!-- Profile Quick Actions -->
             <div style="display:flex; gap:8px;">
               <button class="btn-primary" style="font-size:13px; padding:6px 14px;" onclick="openEditProfileModal()">Edit Profile</button>
-              <button class="btn-secondary" style="font-size:13px; padding:6px 14px;" onclick="document.querySelector('[data-view=\'settings\']').click();">Settings ⚙️</button>
+              <button class="btn-secondary" style="font-size:13px; padding:6px 14px;" onclick="navigateToView('settings')">Settings ⚙️</button>
             </div>
           </div>
         </div>
