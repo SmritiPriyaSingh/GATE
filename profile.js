@@ -214,6 +214,8 @@ function saveProfileChanges() {
   const branch = document.getElementById('edit-prof-branch')?.value || 'Computer Science & Engineering';
 
   StorageManager.saveProfile({ name, email, targetYear, branch });
+  if (window.updateBrandTitle) window.updateBrandTitle();
+  if (window.initGATE2027Countdown) window.initGATE2027Countdown();
   closeEditProfileModal();
   renderProfileModule();
 }

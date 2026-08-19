@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initNavigation();
+  updateBrandTitle();
   initGATE2027Countdown();
   initProfileDropdown();
 });
@@ -18,6 +19,56 @@ function toggleAppTheme() {
   document.documentElement.setAttribute('data-theme', newTheme);
   localStorage.setItem('gate2027_theme', newTheme);
   if (window.renderSettingsModule) window.renderSettingsModule();
+}
+
+function updateBrandTitle() {
+  const brandEl = document.getElementById('app-brand-title');
+  if (!brandEl) return;
+
+  const profile = window.StorageManager ? window.StorageManager.getProfile() : null;
+  let targetYear = '2027';
+
+  if (profile && profile.targetYear) {
+    const match = profile.targetYear.match(/\b(20\d\d)\b/);
+    if (match) {
+      targetYear = match[1];
+    }
+  }
+
+  brandEl.textContent = `GATE CSE ${targetYear}`;
+}
+
+function initGATE2027Countdown() {
+  const countdownEl = document.getElementById('dash-target-countdown');
+  const profile = window.StorageManager ? window.StorageManager.getProfile() : null;
+  let year = 2027;
+
+  if (profile && profile.targetYear) {
+    const match = profile.targetYear.match(/\b(20\d\d)\b/);
+    if (match) {
+      year = parseInt(match[1], 10);
+    }
+  }
+
+  // GATE exam is usually on the first Saturday of February
+  const gateDate = new Date(`${year}-02-06T09:30:00+05:30`).getTime();
+
+  function updateTimer() {
+    const now = new Date().getTime();
+    const diff = gateDate - now;
+
+    if (diff <= 0) {
+      if (countdownEl) countdownEl.textContent = `GATE ${year} Live!`;
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    if (countdownEl) {
+      countdownEl.textContent = `${days} Days`;
+    }
+  }
+
+  updateTimer();
 }
 
 function navigateToView(targetView) {
@@ -115,30 +166,10 @@ function closeProfileDropdown() {
   }
 }
 
-function initGATE2027Countdown() {
-  const gateDate = new Date('2027-02-06T09:30:00+05:30').getTime();
-  const countdownEl = document.getElementById('dash-target-countdown');
-
-  function updateTimer() {
-    const now = new Date().getTime();
-    const diff = gateDate - now;
-
-    if (diff <= 0) {
-      if (countdownEl) countdownEl.textContent = 'GATE 2027 Live!';
-      return;
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    if (countdownEl) {
-      countdownEl.textContent = `${days} Days`;
-    }
-  }
-
-  updateTimer();
-}
-
 window.navigateToView = navigateToView;
 window.toggleAppTheme = toggleAppTheme;
+window.updateBrandTitle = updateBrandTitle;
+window.initGATE2027Countdown = initGATE2027Countdown;
 window.toggleSidebarDrawer = toggleSidebarDrawer;
 window.closeSidebarDrawer = closeSidebarDrawer;
 window.toggleProfileDropdown = toggleProfileDropdown;
