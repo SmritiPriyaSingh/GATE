@@ -454,6 +454,10 @@ body {
   font-weight: 600;
   font-size: 13px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .cbt-btn.answered { background: var(--color-success); }
