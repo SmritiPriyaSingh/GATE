@@ -682,5 +682,6 @@ window.resumeActiveExam = resumeActiveExam;
 window.quitCBTExam = quitCBTExam;
 
 document.addEventListener('DOMContentLoaded', () => {
+  renderCBTWelcomeHub();
   loadQuestionsData();
 });
