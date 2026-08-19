@@ -1,14 +1,29 @@
-// Syllabus Tracker Module
+// Notion / Steam Style GATE Syllabus Explorer Module
 
 let syllabusData = null;
-let userSyllabusProgress = JSON.parse(localStorage.getItem('gate2027_syllabus_progress')) || {};
+let currentSubjectView = null; // null = grid view, or subjectId string
+let activeFilter = 'all'; // 'all', 'in_progress', 'mastered', 'high_weightage'
+let searchQuery = '';
+
+const SUBJECT_SVGS = {
+  em: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 5-7 7-7-7"/><path d="m5 19 7-7 7 7"/></svg>`,
+  dl: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  coa: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>`,
+  pds: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><circle cx="6" cy="19" r="3"/><circle cx="18" cy="19" r="3"/><line x1="10" x2="7.5" y1="7.5" y2="16.5"/><line x1="14" x2="16.5" y1="7.5" y2="16.5"/></svg>`,
+  algo: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+  toc: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>`,
+  cd: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+  os: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>`,
+  dbms: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
+  cn: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" x2="22" y1="12" y2="12"/></svg>`,
+  ga: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><line x1="9" x2="15" y1="21" y2="21"/></svg>`
+};
 
 async function loadSyllabusData() {
   try {
     const res = await fetch('syllabus-data.json');
     syllabusData = await res.json();
-    renderSyllabusTracker();
-    updateGlobalProgressHeader();
+    renderSyllabusModule();
   } catch (err) {
     console.error('Failed to load syllabus-data.json:', err);
   }
@@ -18,15 +33,8 @@ function getTopicKey(subjectId, unitIndex, topicIndex) {
   return `${subjectId}_u${unitIndex}_t${topicIndex}`;
 }
 
-function setTopicStatus(key, status) {
-  userSyllabusProgress[key] = status;
-  localStorage.setItem('gate2027_syllabus_progress', JSON.stringify(userSyllabusProgress));
-  renderSyllabusTracker();
-  updateGlobalProgressHeader();
-  if (window.renderDashboardStats) window.renderDashboardStats();
-}
-
 function calculateSubjectProgress(subject) {
+  const prog = StorageManager.getSyllabusProgress();
   let total = 0;
   let completed = 0;
 
@@ -34,9 +42,9 @@ function calculateSubjectProgress(subject) {
     unit.topics.forEach((topic, tIdx) => {
       total++;
       const key = getTopicKey(subject.id, uIdx, tIdx);
-      if (userSyllabusProgress[key] === 'mastered') {
+      if (prog[key] === 'mastered') {
         completed++;
-      } else if (userSyllabusProgress[key] === 'in_progress') {
+      } else if (prog[key] === 'in_progress') {
         completed += 0.5;
       }
     });
@@ -49,137 +57,274 @@ function calculateSubjectProgress(subject) {
   };
 }
 
-function calculateOverallSyllabusProgress() {
-  if (!syllabusData) return 0;
-  let totalTopics = 0;
-  let completedTopics = 0;
+function setTopicStatus(key, status) {
+  const prog = StorageManager.getSyllabusProgress();
+  prog[key] = status;
+  StorageManager.saveSyllabusProgress(prog);
+  renderSyllabusModule();
 
-  syllabusData.subjects.forEach(subject => {
-    const stats = calculateSubjectProgress(subject);
-    totalTopics += stats.total;
-    completedTopics += stats.completed;
-  });
-
-  return totalTopics > 0 ? Math.round((completedTopics / totalTopics) * 100) : 0;
+  if (window.renderCommandCenter) window.renderCommandCenter();
 }
 
-function updateGlobalProgressHeader() {
-  const pct = calculateOverallSyllabusProgress();
-  const fillEl = document.getElementById('global-progress-fill');
-  const textEl = document.getElementById('global-progress-pct');
-  if (fillEl) fillEl.style.width = `${pct}%`;
-  if (textEl) textEl.textContent = `${pct}% Completed`;
+function setSyllabusFilter(filterType, btn) {
+  activeFilter = filterType;
+  document.querySelectorAll('#syllabus-filter-pills button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderSyllabusModule();
 }
 
-function renderSyllabusTracker(filterText = '', filterStatus = 'all') {
-  const container = document.getElementById('syllabus-subjects-list');
+function handleSyllabusSearch(val) {
+  searchQuery = val.trim().toLowerCase();
+  renderSyllabusModule();
+}
+
+function renderSyllabusModule() {
+  const container = document.getElementById('syllabus-main-content');
   if (!container || !syllabusData) return;
 
-  container.innerHTML = '';
-
-  syllabusData.subjects.forEach(subject => {
-    const stats = calculateSubjectProgress(subject);
-
-    const subjectCard = document.createElement('div');
-    subjectCard.className = 'subject-card';
-
-    const header = document.createElement('div');
-    header.className = 'subject-header';
-    header.innerHTML = `
-      <div class="subject-title-group">
-        <div class="subject-icon-box" style="background: ${subject.color}20; color: ${subject.color};">
-          ${subject.icon}
-        </div>
-        <div>
-          <div class="subject-name">${subject.name} <span style="font-size:12px; color:var(--text-muted);">(${subject.code})</span></div>
-          <div class="subject-meta">Weightage: ${subject.weightage} • ${stats.completed}/${stats.total} topics</div>
-        </div>
-      </div>
-      <div class="subject-progress-stats">
-        <span class="badge badge-purple">${stats.pct}%</span>
-        <span style="font-size:18px; color:var(--text-muted);" class="toggle-icon">▼</span>
-      </div>
-    `;
-
-    const topicListContainer = document.createElement('div');
-    topicListContainer.className = 'topic-list';
-
-    let hasMatchingTopics = false;
-
-    subject.units.forEach((unit, uIdx) => {
-      const unitTitle = document.createElement('div');
-      unitTitle.className = 'unit-group-title';
-      unitTitle.textContent = unit.name;
-      topicListContainer.appendChild(unitTitle);
-
-      unit.topics.forEach((topic, tIdx) => {
-        const key = getTopicKey(subject.id, uIdx, tIdx);
-        const currentStatus = userSyllabusProgress[key] || 'not_started';
-
-        if (filterStatus !== 'all' && currentStatus !== filterStatus) return;
-        if (filterText && !topic.toLowerCase().includes(filterText.toLowerCase())) return;
-
-        hasMatchingTopics = true;
-
-        const topicRow = document.createElement('div');
-        topicRow.className = 'topic-item';
-
-        topicRow.innerHTML = `
-          <div class="topic-label">
-            <span style="color: ${currentStatus === 'mastered' ? 'var(--color-success)' : currentStatus === 'in_progress' ? 'var(--color-warning)' : 'var(--text-muted)'}; font-size:16px;">
-              ${currentStatus === 'mastered' ? '✓' : currentStatus === 'in_progress' ? '⏳' : '○'}
-            </span>
-            <span style="${currentStatus === 'mastered' ? 'text-decoration: line-through; opacity:0.8;' : ''}">${topic}</span>
-          </div>
-          <div>
-            <select class="status-select" onchange="setTopicStatus('${key}', this.value)">
-              <option value="not_started" ${currentStatus === 'not_started' ? 'selected' : ''}>Not Started</option>
-              <option value="in_progress" ${currentStatus === 'in_progress' ? 'selected' : ''}>In Progress</option>
-              <option value="mastered" ${currentStatus === 'mastered' ? 'selected' : ''}>Mastered ✓</option>
-            </select>
-          </div>
-        `;
-
-        topicListContainer.appendChild(topicRow);
-      });
-    });
-
-    if (filterText || filterStatus !== 'all') {
-      if (!hasMatchingTopics) return; // Skip rendering empty subject when filtering
-      topicListContainer.style.display = 'flex';
-    } else {
-      topicListContainer.style.display = 'none'; // Accordion collapsed by default
-    }
-
-    header.addEventListener('click', () => {
-      const isVisible = topicListContainer.style.display === 'flex';
-      topicListContainer.style.display = isVisible ? 'none' : 'flex';
-      header.querySelector('.toggle-icon').textContent = isVisible ? '▼' : '▲';
-    });
-
-    subjectCard.appendChild(header);
-    subjectCard.appendChild(topicListContainer);
-    container.appendChild(subjectCard);
-  });
+  if (currentSubjectView) {
+    renderSubjectExplorerView(container, currentSubjectView);
+  } else {
+    renderSubjectGrid(container);
+  }
 }
 
-// Search and Filter Listeners
-document.addEventListener('DOMContentLoaded', () => {
-  const searchInput = document.getElementById('syllabus-search');
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      renderSyllabusTracker(e.target.value, document.querySelector('.filter-btn.active')?.dataset.filter || 'all');
-    });
-  }
+// 1. Grid of Subject Cards (Steam / Notion Style)
+function renderSubjectGrid(container) {
+  let filteredSubjects = syllabusData.subjects.filter(s => {
+    const stats = calculateSubjectProgress(s);
+    if (activeFilter === 'in_progress' && (stats.pct === 0 || stats.pct === 100)) return false;
+    if (activeFilter === 'mastered' && stats.pct !== 100) return false;
+    if (activeFilter === 'high_weightage' && !s.weightage.includes('8') && !s.weightage.includes('10') && !s.weightage.includes('13') && !s.weightage.includes('15')) return false;
 
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderSyllabusTracker(document.getElementById('syllabus-search')?.value || '', btn.dataset.filter);
-    });
+    if (searchQuery) {
+      const matchSubject = s.name.toLowerCase().includes(searchQuery);
+      const matchTopic = s.units.some(u => u.topics.some(t => t.toLowerCase().includes(searchQuery)));
+      return matchSubject || matchTopic;
+    }
+    return true;
   });
 
+  if (filteredSubjects.length === 0) {
+    container.innerHTML = `
+      <div class="card" style="text-align:center; padding:40px 20px;">
+        <div style="font-size:15px; font-weight:600; color:var(--text-sub);">No subjects matched your filter or search criteria.</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:20px;">
+      ${filteredSubjects.map(s => {
+        const stats = calculateSubjectProgress(s);
+        const iconSVG = SUBJECT_SVGS[s.id] || SUBJECT_SVGS['em'];
+        const isMastered = stats.pct === 100;
+        const isInProgress = stats.pct > 0 && stats.pct < 100;
+
+        return `
+          <div class="card subject-card-rich" style="padding:20px; display:flex; flex-direction:column; justify-space-between; cursor:pointer;" onclick="openSubjectExplorer('${s.id}')">
+            <div>
+              <!-- Top Row: Icon, Title, Weightage Badge -->
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                  <div style="width:40px; height:40px; border-radius:8px; background:var(--bg-surface-hover); color:var(--accent-primary); display:flex; align-items:center; justify-content:center; border:1px solid var(--border-color);">
+                    ${iconSVG}
+                  </div>
+                  <div>
+                    <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; line-height:1.2;">${s.name}</h3>
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${s.code}</div>
+                  </div>
+                </div>
+
+                <span style="font-size:11px; font-weight:600; background:var(--bg-surface-hover); border:1px solid var(--border-color); color:var(--text-sub); padding:3px 8px; border-radius:6px; white-space:nowrap;">
+                  Weightage ${s.weightage}
+                </span>
+              </div>
+
+              <!-- Thicker Progress Bar & Statistics -->
+              <div style="margin:16px 0;">
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:600; margin-bottom:6px;">
+                  <span style="color:${isMastered ? 'var(--color-success)' : isInProgress ? 'var(--accent-primary)' : 'var(--text-muted)'};">
+                    ${stats.pct}% Completed
+                  </span>
+                  <span style="color:var(--text-sub);">${stats.completed} / ${stats.total} Topics</span>
+                </div>
+
+                <div class="progress-bar-bg" style="height:10px; border-radius:5px;">
+                  <div class="progress-bar-fill" style="width:${stats.pct}%; height:100%; border-radius:5px; background:${isMastered ? 'var(--color-success)' : isInProgress ? 'var(--accent-primary)' : 'var(--border-color)'};"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Quick Info & Action -->
+            <div style="display:flex; justify-content:space-between; align-items:center; pt:12px; border-top:1px solid var(--border-color); margin-top:12px;">
+              <span style="font-size:12px; color:var(--text-sub); font-weight:500;">
+                ${s.units.length} Units • ${stats.total} Topics
+              </span>
+              <button class="btn-secondary" style="font-size:12px; padding:5px 12px;" onclick="event.stopPropagation(); openSubjectExplorer('${s.id}')">
+                Explore Outline ➔
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+// 2. Notion-Style Hierarchical Subject Detail Explorer
+function openSubjectExplorer(subjectId) {
+  currentSubjectView = subjectId;
+  renderSyllabusModule();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closeSubjectExplorer() {
+  currentSubjectView = null;
+  renderSyllabusModule();
+}
+
+function renderSubjectExplorerView(container, subjectId) {
+  const subject = syllabusData.subjects.find(s => s.id === subjectId);
+  if (!subject) {
+    currentSubjectView = null;
+    renderSubjectGrid(container);
+    return;
+  }
+
+  const stats = calculateSubjectProgress(subject);
+  const iconSVG = SUBJECT_SVGS[subject.id] || SUBJECT_SVGS['em'];
+  const prog = StorageManager.getSyllabusProgress();
+
+  container.innerHTML = `
+    <!-- Top Explorer Header Card -->
+    <div class="card" style="margin-bottom:20px; padding:20px 24px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <button class="btn-secondary" style="font-size:12px; padding:6px 12px;" onclick="closeSubjectExplorer()">
+            ← All Subjects
+          </button>
+          <div style="width:44px; height:44px; border-radius:10px; background:var(--bg-surface-hover); color:var(--accent-primary); display:flex; align-items:center; justify-content:center; border:1px solid var(--border-color);">
+            ${iconSVG}
+          </div>
+          <div>
+            <h1 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:2px;">${subject.name}</h1>
+            <div style="font-size:12px; color:var(--text-sub);">
+              ${subject.code} • Weightage: <strong>${subject.weightage}</strong> • ${stats.total} Topics
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary" style="font-size:13px; padding:8px 16px;" onclick="startSubjectPractice('${subject.id}')">
+          Practice This Subject ➔
+        </button>
+      </div>
+
+      <!-- Subject Progress Overview Bar -->
+      <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:12px 16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:600; margin-bottom:6px;">
+          <span>Subject Overall Completion</span>
+          <span>${stats.pct}% (${stats.completed}/${stats.total} Topics)</span>
+        </div>
+        <div class="progress-bar-bg" style="height:8px; border-radius:4px;">
+          <div class="progress-bar-fill" style="width:${stats.pct}%; height:100%; border-radius:4px; background:${stats.pct === 100 ? 'var(--color-success)' : 'var(--accent-primary)'};"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Units & Topics Outline Tree (Notion Style) -->
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      ${subject.units.map((unit, uIdx) => {
+        return `
+          <div class="card" style="padding:18px 24px;">
+            <div style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
+              <span>Unit ${uIdx + 1}: ${unit.name}</span>
+              <span style="font-size:12px; color:var(--text-sub); font-weight:500;">${unit.topics.length} Topics</span>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              ${unit.topics.map((topic, tIdx) => {
+                const key = getTopicKey(subject.id, uIdx, tIdx);
+                const status = prog[key] || 'not_started';
+
+                const matchesSearch = searchQuery ? topic.toLowerCase().includes(searchQuery) : true;
+                if (searchQuery && !matchesSearch) return '';
+
+                let statusBadge = `
+                  <span style="display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--text-muted); background:var(--bg-surface-hover); border:1px solid var(--border-color); padding:4px 10px; border-radius:6px; font-weight:500;">
+                    ○ Not Started
+                  </span>
+                `;
+                if (status === 'in_progress') {
+                  statusBadge = `
+                    <span style="display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--accent-primary); background:var(--accent-subtle); border:1px solid var(--accent-primary); padding:4px 10px; border-radius:6px; font-weight:600;">
+                      ◉ In Progress
+                    </span>
+                  `;
+                } else if (status === 'mastered') {
+                  statusBadge = `
+                    <span style="display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--color-success); background:rgba(16,185,129,0.12); border:1px solid var(--color-success); padding:4px 10px; border-radius:6px; font-weight:700;">
+                      ✓ Mastered
+                    </span>
+                  `;
+                }
+
+                return `
+                  <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; flex-wrap:wrap; gap:10px;">
+                    <div style="display:flex; align-items:center; gap:12px; flex:1;">
+                      <span style="font-size:13px; ${status === 'mastered' ? 'opacity:0.75; text-decoration:line-through;' : 'font-weight:500;'}">${topic}</span>
+                    </div>
+
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <select class="status-select" style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:4px 8px; border-radius:6px; font-size:12px; cursor:pointer;" onchange="setTopicStatus('${key}', this.value)">
+                        <option value="not_started" ${status === 'not_started' ? 'selected' : ''}>Not Started</option>
+                        <option value="in_progress" ${status === 'in_progress' ? 'selected' : ''}>In Progress</option>
+                        <option value="mastered" ${status === 'mastered' ? 'selected' : ''}>Mastered</option>
+                      </select>
+
+                      <button class="btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="practiceSpecificTopic('${subject.id}', '${topic.replace(/'/g, "\\'")}')">
+                        Practice ➔
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+function startSubjectPractice(subjectId) {
+  document.querySelector('[data-view="practice"]')?.click();
+  const select = document.getElementById('practice-subject-select');
+  if (select) {
+    select.value = subjectId;
+    select.dispatchEvent(new Event('change'));
+  }
+}
+
+function practiceSpecificTopic(subjectId, topicName) {
+  document.querySelector('[data-view="practice"]')?.click();
+  const select = document.getElementById('practice-subject-select');
+  if (select) {
+    select.value = subjectId;
+    select.dispatchEvent(new Event('change'));
+  }
+}
+
+window.renderSyllabusModule = renderSyllabusModule;
+window.setSyllabusFilter = setSyllabusFilter;
+window.handleSyllabusSearch = handleSyllabusSearch;
+window.openSubjectExplorer = openSubjectExplorer;
+window.closeSubjectExplorer = closeSubjectExplorer;
+window.setTopicStatus = setTopicStatus;
+window.startSubjectPractice = startSubjectPractice;
+window.practiceSpecificTopic = practiceSpecificTopic;
+
+document.addEventListener('DOMContentLoaded', () => {
   loadSyllabusData();
 });
