@@ -1,9 +1,53 @@
-// GitHub Insights + Apple Health + Notion Style Performance Analytics Platform (Linear/Vercel Aesthetic Polish)
+// TradingView + GitHub Insights Style SVG Line & Area Charts Engine for GATE CSE 2027
 
 let activeTimeRange = '30D'; // '7D', '30D', '90D', '1Y', 'ALL'
 let selectedSubjectFilter = 'all'; // 'all' or specific subject id
 let selectedHeatmapYear = '2027';
 let isReplayingProgress = false;
+
+// Dynamic Datasets for 7D, 30D, 90D, 1Y, ALL
+const CHART_DATASETS = {
+  '7D': {
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    accuracy: [78, 80, 81, 83, 82, 85, 87],
+    questions: [35, 22, 48, 15, 30, 42, 25],
+    hours: [4.2, 3.0, 5.1, 2.0, 3.8, 5.5, 3.2],
+    trend: 'up',
+    delta: '+4.2%'
+  },
+  '30D': {
+    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    accuracy: [65, 72, 78, 84],
+    questions: [140, 185, 210, 260],
+    hours: [28, 35, 42, 48],
+    trend: 'up',
+    delta: '+8.4%'
+  },
+  '90D': {
+    labels: ['Month 1', 'Month 2', 'Month 3'],
+    accuracy: [58, 68, 84],
+    questions: [320, 450, 680],
+    hours: [75, 98, 142],
+    trend: 'up',
+    delta: '+14.6%'
+  },
+  '1Y': {
+    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+    accuracy: [52, 64, 75, 84],
+    questions: [600, 950, 1400, 2100],
+    hours: [120, 210, 310, 420],
+    trend: 'up',
+    delta: '+32.0%'
+  },
+  'ALL': {
+    labels: ['2025 H1', '2025 H2', '2026 H1', '2026 H2'],
+    accuracy: [45, 58, 72, 85],
+    questions: [800, 1500, 2400, 3200],
+    hours: [180, 320, 480, 640],
+    trend: 'up',
+    delta: '+40.0%'
+  }
+};
 
 function renderAnalyticsModule() {
   const container = document.getElementById('analytics-main-content');
@@ -12,12 +56,12 @@ function renderAnalyticsModule() {
   const isDemo = StorageManager.isDemoMode();
   const testHistory = StorageManager.getTestHistory();
 
-  // 1. Clean Onboarding State (If Demo Mode is OFF and 0 real test activity exists)
+  // Onboarding Empty State (If Demo Mode is OFF and 0 real test activity exists)
   if (!isDemo && testHistory.length === 0) {
     container.innerHTML = `
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px 24px; margin-bottom:20px;">
         <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; color:#F5F5F5; margin-bottom:4px;">Performance Analytics</h2>
-        <p style="color:#9CA3AF; font-size:13px;">Diagnostic study report, activity heatmap, time range analytics, and goal progress.</p>
+        <p style="color:#9CA3AF; font-size:13px;">Diagnostic study report, TradingView SVG charts, activity heatmap, and goal progress.</p>
       </div>
 
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; text-align:center; padding:48px 24px;">
@@ -40,8 +84,8 @@ function renderAnalyticsModule() {
   }
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const currentSet = CHART_DATASETS[activeTimeRange] || CHART_DATASETS['30D'];
   
-  // Clean Notion/GitHub Table of All 11 Subjects
   const subjectRows = [
     { id: 'dbms', name: 'Databases (DBMS)', progress: 92, accuracy: 91, solved: 145 },
     { id: 'coa', name: 'Computer Organization & Architecture', progress: 88, accuracy: 88, solved: 110 },
@@ -68,10 +112,10 @@ function renderAnalyticsModule() {
             </span>
           ` : ''}
         </div>
-        <p style="color:#9CA3AF; font-size:13px;">Study consistency, accuracy trends, subject rankings, and activity timeline.</p>
+        <p style="color:#9CA3AF; font-size:13px;">TradingView style interactive SVG curves, accuracy trends, and activity heatmap.</p>
       </div>
 
-      <!-- Linear/Vercel Style Clean Text Link Underline Time Filter -->
+      <!-- Linear / Vercel Style Clean Underline Time Range Selector -->
       <div style="display:flex; align-items:center; gap:20px; border-bottom:1px solid #23262D; padding-bottom:4px;">
         <span style="font-size:12px; font-weight:600; color:#9CA3AF; text-transform:uppercase;">Time Range:</span>
         ${['7D', '30D', '90D', '1Y', 'ALL'].map(range => `
@@ -85,7 +129,7 @@ function renderAnalyticsModule() {
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px;">
         <div style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Current Accuracy</div>
         <div style="font-size:24px; font-weight:700; color:#F5F5F5; margin-top:4px;">84.2%</div>
-        <div style="font-size:11px; color:#10B981; margin-top:2px;">↑ +2.8% this month</div>
+        <div style="font-size:11px; color:#10B981; margin-top:2px;">↑ ${currentSet.delta} in ${activeTimeRange}</div>
       </div>
 
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px;">
@@ -119,64 +163,51 @@ function renderAnalyticsModule() {
       </div>
     </div>
 
-    <!-- 2. Distinct Color Palette Visual Charts Grid (2x2) with Milestone Markers -->
+    <!-- 2. TradingView & GitHub Insights Style Smooth SVG Line/Area Charts (2x2 Grid) -->
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
       
-      <!-- Chart 1: Accuracy Trend (Blue + Milestone Markers) -->
+      <!-- Chart 1: Accuracy Trend SVG Smooth Curve Line Chart -->
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-          <div style="font-size:14px; font-weight:700; color:#F5F5F5;">Accuracy Trend & Milestones</div>
-          <span style="font-size:11px; color:#3B82F6; font-weight:600;">Blue Metric</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#F5F5F5;">Accuracy Trend Curve</div>
+            <div style="font-size:11px; color:#9CA3AF;">TradingView Bézier Line &bull; <span style="color:#10B981;">${currentSet.delta} (${activeTimeRange})</span></div>
+          </div>
+          <span style="font-size:11px; background:rgba(16,185,129,0.15); color:#10B981; border:1px solid #10B981; padding:2px 8px; border-radius:12px; font-weight:700;">+ Upward</span>
         </div>
-        <div style="height:140px; display:flex; align-items:flex-end; gap:16px; border-bottom:1px solid #23262D; padding-bottom:8px; position:relative;">
-          <div style="position:absolute; left:18%; bottom:65%; font-size:10px; background:rgba(59,130,246,0.2); color:#3B82F6; padding:2px 6px; border-radius:4px; border:1px solid #3B82F6;">▲ First Mock (65%)</div>
-          <div style="position:absolute; right:15%; bottom:84%; font-size:10px; background:rgba(16,185,129,0.2); color:#10B981; padding:2px 6px; border-radius:4px; border:1px solid #10B981;">▲ GATE 2026 Paper (84%)</div>
 
-          <div style="flex:1; background:rgba(59,130,246,0.2); border-top:2px solid #3B82F6; height:65%; border-radius:4px 4px 0 0;"></div>
-          <div style="flex:1; background:rgba(59,130,246,0.2); border-top:2px solid #3B82F6; height:72%; border-radius:4px 4px 0 0;"></div>
-          <div style="flex:1; background:rgba(59,130,246,0.2); border-top:2px solid #3B82F6; height:78%; border-radius:4px 4px 0 0;"></div>
-          <div style="flex:1; background:rgba(59,130,246,0.2); border-top:2px solid #3B82F6; height:84%; border-radius:4px 4px 0 0;"></div>
-        </div>
-        <div style="display:flex; justify-content:space-between; font-size:11px; color:#9CA3AF; margin-top:6px;">
-          <span>W1 (65%)</span><span>W2 (72%)</span><span>W3 (78%)</span><span>W4 (84%)</span>
+        <div style="height:150px; position:relative; width:100%;">
+          ${generateSVGLineChart(currentSet.accuracy, currentSet.labels, '#10B981', 'accGradient')}
         </div>
       </div>
 
-      <!-- Chart 2: Questions Solved (Cyan #06B6D4) -->
+      <!-- Chart 2: Questions Solved Velocity SVG Area Chart -->
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-          <div style="font-size:14px; font-weight:700; color:#F5F5F5;">Questions Solved Velocity</div>
-          <span style="font-size:11px; color:#06B6D4; font-weight:600;">Cyan Metric</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#F5F5F5;">Questions Solved Velocity</div>
+            <div style="font-size:11px; color:#9CA3AF;">GitHub Insights Area Graph &bull; Cyan Metric</div>
+          </div>
+          <span style="font-size:11px; background:rgba(6,182,212,0.15); color:#06B6D4; border:1px solid #06B6D4; padding:2px 8px; border-radius:12px; font-weight:700;">Active</span>
         </div>
-        <div style="height:140px; display:flex; align-items:flex-end; gap:10px; border-bottom:1px solid #23262D; padding-bottom:8px;">
-          <div style="flex:1; background:#06B6D4; height:70%; border-radius:4px 4px 0 0;"></div>
-          <div style="flex:1; background:#06B6D4; height:45%; border-radius:4px 4px 0 0;"></div>
-          <div style="flex:1; background:#06B6D4; height:90%; border-radius:4px 4px 0 0;"></div>
-          <div style="flex:1; background:#06B6D4; height:30%; border-radius:4px 4px 0 0;"></div>
-          <div style="flex:1; background:#06B6D4; height:60%; border-radius:4px 4px 0 0;"></div>
-          <div style="flex:1; background:#06B6D4; height:85%; border-radius:4px 4px 0 0;"></div>
-          <div style="flex:1; background:#06B6D4; height:50%; border-radius:4px 4px 0 0;"></div>
-        </div>
-        <div style="display:flex; justify-content:space-between; font-size:11px; color:#9CA3AF; margin-top:6px;">
-          <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+
+        <div style="height:150px; position:relative; width:100%;">
+          ${generateSVGLineChart(currentSet.questions, currentSet.labels, '#06B6D4', 'qGradient')}
         </div>
       </div>
 
-      <!-- Chart 3: Study Hours Area (Purple #8B5CF6) -->
+      <!-- Chart 3: Study Hours Velocity SVG Area Chart -->
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-          <div style="font-size:14px; font-weight:700; color:#F5F5F5;">Daily Study Hours</div>
-          <span style="font-size:11px; color:#8B5CF6; font-weight:600;">Purple Metric</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#F5F5F5;">Daily Study Hours</div>
+            <div style="font-size:11px; color:#9CA3AF;">Purple Time Area Graph</div>
+          </div>
+          <span style="font-size:11px; background:rgba(139,92,246,0.15); color:#8B5CF6; border:1px solid #8B5CF6; padding:2px 8px; border-radius:12px; font-weight:700;">Tracked</span>
         </div>
-        <div style="height:140px; display:flex; align-items:flex-end; gap:12px; border-bottom:1px solid #23262D; padding-bottom:8px;">
-          <div style="flex:1; background:rgba(139,92,246,0.25); border-top:2px solid #8B5CF6; height:80%; border-radius:4px 4px 0 0;"></div>
-          <div style="flex:1; background:rgba(139,92,246,0.25); border-top:2px solid #8B5CF6; height:60%; border-radius:4px 4px 0 0;"></div>
-          <div style="flex:1; background:rgba(139,92,246,0.25); border-top:2px solid #8B5CF6; height:95%; border-radius:4px 4px 0 0;"></div>
-          <div style="flex:1; background:rgba(139,92,246,0.25); border-top:2px solid #8B5CF6; height:40%; border-radius:4px 4px 0 0;"></div>
-          <div style="flex:1; background:rgba(139,92,246,0.25); border-top:2px solid #8B5CF6; height:75%; border-radius:4px 4px 0 0;"></div>
-        </div>
-        <div style="display:flex; justify-content:space-between; font-size:11px; color:#9CA3AF; margin-top:6px;">
-          <span>4.2h</span><span>3.0h</span><span>5.1h</span><span>2.0h</span><span>3.8h</span>
+
+        <div style="height:150px; position:relative; width:100%;">
+          ${generateSVGLineChart(currentSet.hours, currentSet.labels, '#8B5CF6', 'hrsGradient')}
         </div>
       </div>
 
@@ -400,6 +431,65 @@ function renderAnalyticsModule() {
       <!-- Day Inspector Panel Container -->
       <div id="heatmap-day-inspector" style="margin-top:14px; display:none;"></div>
     </div>
+  `;
+}
+
+// 🌟 TradingView SVG Smooth Curve Line & Area Chart Generator
+function generateSVGLineChart(dataPoints, labels, strokeColor, gradientId) {
+  const width = 500;
+  const height = 110;
+  const padding = 15;
+
+  const minVal = Math.min(...dataPoints) * 0.9;
+  const maxVal = Math.max(...dataPoints) * 1.1 || 1;
+
+  // Compute X and Y coordinates
+  const pts = dataPoints.map((val, idx) => {
+    const x = padding + (idx / (dataPoints.length - 1)) * (width - 2 * padding);
+    const y = height - padding - ((val - minVal) / (maxVal - minVal)) * (height - 2 * padding);
+    return { x, y, val };
+  });
+
+  // Construct Bézier Smooth Curve Path
+  let pathD = `M ${pts[0].x} ${pts[0].y}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const xc = (pts[i].x + pts[i + 1].x) / 2;
+    const yc = (pts[i].y + pts[i + 1].y) / 2;
+    pathD += ` Q ${pts[i].x} ${pts[i].y}, ${xc} ${yc}`;
+  }
+  pathD += ` T ${pts[pts.length - 1].x} ${pts[pts.length - 1].y}`;
+
+  // Area Fill Path
+  const areaD = `${pathD} L ${pts[pts.length - 1].x} ${height} L ${pts[0].x} ${height} Z`;
+
+  return `
+    <svg viewBox="0 0 ${width} ${height + 25}" style="width:100%; height:100%; overflow:visible;">
+      <defs>
+        <linearGradient id="${gradientId}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="${strokeColor}" stop-opacity="0.35" />
+          <stop offset="100%" stop-color="${strokeColor}" stop-opacity="0.0" />
+        </linearGradient>
+      </defs>
+
+      <!-- Grid Background Lines -->
+      <line x1="0" y1="20" x2="${width}" y2="20" stroke="#23262D" stroke-dasharray="3,3" />
+      <line x1="0" y1="60" x2="${width}" y2="60" stroke="#23262D" stroke-dasharray="3,3" />
+      <line x1="0" y1="95" x2="${width}" y2="95" stroke="#23262D" stroke-dasharray="3,3" />
+
+      <!-- Area Fill -->
+      <path d="${areaD}" fill="url(#${gradientId})" />
+
+      <!-- Smooth Curve Stroke Line -->
+      <path d="${pathD}" fill="none" stroke="${strokeColor}" stroke-width="2.5" stroke-linecap="round" />
+
+      <!-- Data Nodes & Tooltips -->
+      ${pts.map((p, i) => `
+        <circle cx="${p.x}" cy="${p.y}" r="4" fill="${strokeColor}" stroke="#0F1115" stroke-width="2" class="chart-node" style="cursor:pointer; transition:all 0.2s;">
+          <title>${labels[i] || ''}: ${p.val}</title>
+        </circle>
+        <text x="${p.x}" y="${height + 20}" text-anchor="middle" fill="#9CA3AF" font-size="10" font-weight="600">${labels[i] || ''}</text>
+      `).join('')}
+    </svg>
   `;
 }
 
