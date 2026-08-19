@@ -224,24 +224,24 @@
 
     </section>
 
-    <!-- VIEW 2: SYLLABUS EXPLORER -->
+    <!-- VIEW 2: SYLLABUS EXPLORER & WORKSPACE -->
     <section id="view-syllabus" class="view-section">
-      <div class="card" style="margin-bottom:20px; padding:20px 24px;">
+      <div class="card" style="margin-bottom:20px; padding:18px 24px;">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
           <div>
-            <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:4px;">Syllabus Explorer</h2>
-            <p style="color:var(--text-sub); font-size:13px;">Navigate GATE CSE subjects, units, and topic mastery status.</p>
+            <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:2px;">Syllabus Desktop Workspace</h2>
+            <p style="color:var(--text-sub); font-size:13px;">Navigate subjects, units, and topic workspaces.</p>
           </div>
 
-          <!-- Prominent Wide Search Bar -->
+          <!-- Universal Search Bar (Search Everything) -->
           <div style="flex:1; max-width:480px; position:relative;">
-            <input type="text" id="syllabus-search-input" placeholder="Search topics (e.g. Deadlock, SQL, DFA, AVL Tree, K-Maps)..." style="width:100%; background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:10px 14px 10px 38px; border-radius:8px; font-size:13px;" oninput="handleSyllabusSearch(this.value)">
+            <input type="text" id="syllabus-search-input" placeholder="Search everything (e.g. Deadlock, SQL, DFA, AVL Tree, K-Maps)..." style="width:100%; background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:10px 14px 10px 38px; border-radius:8px; font-size:13px;" oninput="handleUniversalSearch(this.value)">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted);"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
           </div>
         </div>
 
         <!-- Filter Pills -->
-        <div style="display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; align-items:center;" id="syllabus-filter-pills">
+        <div style="display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; align-items:center;" id="syllabus-filter-pills">
           <button class="btn-secondary active" data-filter="all" onclick="setSyllabusFilter('all', this)">All Subjects</button>
           <button class="btn-secondary" data-filter="in_progress" onclick="setSyllabusFilter('in_progress', this)">In Progress</button>
           <button class="btn-secondary" data-filter="mastered" onclick="setSyllabusFilter('mastered', this)">Mastered</button>
@@ -249,7 +249,7 @@
         </div>
       </div>
 
-      <!-- Dynamic Syllabus Content Container: Subject Cards Grid OR Unit Explorer -->
+      <!-- Dynamic Desktop App Workspace Container -->
       <div id="syllabus-main-content">
         <!-- Rendered dynamically -->
       </div>

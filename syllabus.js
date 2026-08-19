@@ -1,29 +1,31 @@
-// Notion / Steam Style GATE Syllabus Explorer Module with Breadcrumb Navigation
+// Desktop Application Style GATE Syllabus Explorer & Workspace Engine
 
 let syllabusData = null;
-let currentSubjectView = null; // null = grid view, or subjectId string
+let selectedSubjectId = 'em'; // Default selected subject in desktop sidebar
 let activeFilter = 'all'; // 'all', 'in_progress', 'mastered', 'high_weightage'
 let searchQuery = '';
+let activeTopicWorkspace = null; // { subjectId, uIdx, tIdx, topicName, unitName }
+let collapsedUnits = {}; // { [unitKey]: true/false }
 
 const SUBJECT_SVGS = {
-  em: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 5-7 7-7-7"/><path d="m5 19 7-7 7 7"/></svg>`,
-  dl: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
-  coa: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>`,
-  pds: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><circle cx="6" cy="19" r="3"/><circle cx="18" cy="19" r="3"/><line x1="10" x2="7.5" y1="7.5" y2="16.5"/><line x1="14" x2="16.5" y1="7.5" y2="16.5"/></svg>`,
-  algo: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
-  toc: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>`,
-  cd: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
-  os: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>`,
-  dbms: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
-  cn: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" x2="22" y1="12" y2="12"/></svg>`,
-  ga: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><line x1="9" x2="15" y1="21" y2="21"/></svg>`
+  em: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 5-7 7-7-7"/><path d="m5 19 7-7 7 7"/></svg>`,
+  dl: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  coa: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>`,
+  pds: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><circle cx="6" cy="19" r="3"/><circle cx="18" cy="19" r="3"/><line x1="10" x2="7.5" y1="7.5" y2="16.5"/><line x1="14" x2="16.5" y1="7.5" y2="16.5"/></svg>`,
+  algo: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+  toc: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>`,
+  cd: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+  os: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>`,
+  dbms: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
+  cn: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" x2="22" y1="12" y2="12"/></svg>`,
+  ga: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><line x1="9" x2="15" y1="21" y2="21"/></svg>`
 };
 
 async function loadSyllabusData() {
   try {
     const res = await fetch('syllabus-data.json');
     syllabusData = await res.json();
-    renderSyllabusModule();
+    renderSyllabusAppLayout();
   } catch (err) {
     console.error('Failed to load syllabus-data.json:', err);
   }
@@ -53,6 +55,7 @@ function calculateSubjectProgress(subject) {
   return {
     total,
     completed: Math.round(completed),
+    remaining: total - Math.round(completed),
     pct: total > 0 ? Math.round((completed / total) * 100) : 0
   };
 }
@@ -61,8 +64,7 @@ function setTopicStatus(key, status) {
   const prog = StorageManager.getSyllabusProgress();
   prog[key] = status;
   StorageManager.saveSyllabusProgress(prog);
-  renderSyllabusModule();
-
+  renderSyllabusAppLayout();
   if (window.renderCommandCenter) window.renderCommandCenter();
 }
 
@@ -70,171 +72,127 @@ function setSyllabusFilter(filterType, btn) {
   activeFilter = filterType;
   document.querySelectorAll('#syllabus-filter-pills button').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  renderSyllabusModule();
+  renderSyllabusAppLayout();
 }
 
-function handleSyllabusSearch(val) {
+function handleUniversalSearch(val) {
   searchQuery = val.trim().toLowerCase();
-  renderSyllabusModule();
+  activeTopicWorkspace = null;
+  renderSyllabusAppLayout();
 }
 
-function renderSyllabusModule() {
+function selectSubject(subId) {
+  selectedSubjectId = subId;
+  activeTopicWorkspace = null;
+  renderSyllabusAppLayout();
+}
+
+function toggleUnitCollapse(unitKey) {
+  collapsedUnits[unitKey] = !collapsedUnits[unitKey];
+  renderSyllabusAppLayout();
+}
+
+function openTopicWorkspace(subjectId, uIdx, tIdx, topicName, unitName) {
+  activeTopicWorkspace = { subjectId, uIdx, tIdx, topicName, unitName };
+  renderSyllabusAppLayout();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closeTopicWorkspace() {
+  activeTopicWorkspace = null;
+  renderSyllabusAppLayout();
+}
+
+// Render Master Desktop App Layout
+function renderSyllabusAppLayout() {
   const container = document.getElementById('syllabus-main-content');
   if (!container || !syllabusData) return;
 
-  if (currentSubjectView) {
-    renderSubjectExplorerView(container, currentSubjectView);
-  } else {
-    renderSubjectGrid(container);
-  }
-}
-
-// 1. Grid of Subject Cards (Steam / Notion Style)
-function renderSubjectGrid(container) {
-  let filteredSubjects = syllabusData.subjects.filter(s => {
-    const stats = calculateSubjectProgress(s);
-    if (activeFilter === 'in_progress' && (stats.pct === 0 || stats.pct === 100)) return false;
-    if (activeFilter === 'mastered' && stats.pct !== 100) return false;
-    if (activeFilter === 'high_weightage' && !s.weightage.includes('8') && !s.weightage.includes('10') && !s.weightage.includes('13') && !s.weightage.includes('15')) return false;
-
-    if (searchQuery) {
-      const matchSubject = s.name.toLowerCase().includes(searchQuery);
-      const matchTopic = s.units.some(u => u.topics.some(t => t.toLowerCase().includes(searchQuery)));
-      return matchSubject || matchTopic;
-    }
-    return true;
-  });
-
-  if (filteredSubjects.length === 0) {
-    container.innerHTML = `
-      <div class="card" style="text-align:center; padding:40px 20px;">
-        <div style="font-size:15px; font-weight:600; color:var(--text-sub);">No subjects matched your filter or search criteria.</div>
-      </div>
-    `;
+  // 1. If active search query, render Universal Search Results
+  if (searchQuery) {
+    renderUniversalSearchResults(container);
     return;
   }
 
+  // 2. If active Topic Workspace, render Workspace View
+  if (activeTopicWorkspace) {
+    renderTopicWorkspaceView(container);
+    return;
+  }
+
+  // 3. Main Desktop Explorer: Left Sidebar + Right Subject Panel
   container.innerHTML = `
-    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:20px;">
-      ${filteredSubjects.map(s => {
-        const stats = calculateSubjectProgress(s);
-        const iconSVG = SUBJECT_SVGS[s.id] || SUBJECT_SVGS['em'];
-        const isMastered = stats.pct === 100;
-        const isInProgress = stats.pct > 0 && stats.pct < 100;
+    <div style="display:grid; grid-template-columns: 240px 1fr; gap:20px; align-items:start;">
+      
+      <!-- Persistent Desktop Left Sidebar -->
+      <div class="card" style="padding:14px 10px; position:sticky; top:70px;">
+        <div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:10px; padding:0 8px;">
+          Subjects Library
+        </div>
 
-        return `
-          <div class="card subject-card-rich" style="padding:20px; display:flex; flex-direction:column; justify-space-between; cursor:pointer;" onclick="openSubjectExplorer('${s.id}')">
-            <div>
-              <!-- Top Row: Icon, Title, Weightage Badge -->
-              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
-                <div style="display:flex; align-items:center; gap:12px;">
-                  <div style="width:40px; height:40px; border-radius:8px; background:var(--bg-surface-hover); color:var(--accent-primary); display:flex; align-items:center; justify-content:center; border:1px solid var(--border-color);">
-                    ${iconSVG}
-                  </div>
-                  <div>
-                    <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; line-height:1.2;">${s.name}</h3>
-                    <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${s.code}</div>
-                  </div>
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          ${syllabusData.subjects.map(s => {
+            const stats = calculateSubjectProgress(s);
+            const isSelected = s.id === selectedSubjectId;
+            const iconSVG = SUBJECT_SVGS[s.id] || SUBJECT_SVGS['em'];
+
+            return `
+              <div onclick="selectSubject('${s.id}')" style="display:flex; align-items:center; justify-content:space-between; padding:8px 10px; border-radius:6px; cursor:pointer; font-size:13px; font-weight:${isSelected ? '700' : '500'}; background:${isSelected ? 'var(--accent-subtle)' : 'transparent'}; color:${isSelected ? 'var(--accent-primary)' : 'var(--text-main)'}; border:1px solid ${isSelected ? 'var(--accent-primary)' : 'transparent'};">
+                <div style="display:flex; align-items:center; gap:8px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                  <span>${iconSVG}</span>
+                  <span style="overflow:hidden; text-overflow:ellipsis;">${s.name}</span>
                 </div>
-
-                <span style="font-size:11px; font-weight:600; background:var(--bg-surface-hover); border:1px solid var(--border-color); color:var(--text-sub); padding:3px 8px; border-radius:6px; white-space:nowrap;">
-                  Weightage ${s.weightage}
-                </span>
+                <span style="font-size:11px; font-weight:600; opacity:0.8;">${stats.pct}%</span>
               </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
 
-              <!-- Thicker Progress Bar & Statistics -->
-              <div style="margin:16px 0;">
-                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:600; margin-bottom:6px;">
-                  <span style="color:${isMastered ? 'var(--color-success)' : isInProgress ? 'var(--accent-primary)' : 'var(--text-muted)'};">
-                    ${stats.pct}% Completed
-                  </span>
-                  <span style="color:var(--text-sub);">${stats.completed} / ${stats.total} Topics</span>
-                </div>
+      <!-- Right Main Panel: Selected Subject Outline & Units Explorer -->
+      <div>
+        ${renderSelectedSubjectPanel(selectedSubjectId)}
+      </div>
 
-                <div class="progress-bar-bg" style="height:10px; border-radius:5px;">
-                  <div class="progress-bar-fill" style="width:${stats.pct}%; height:100%; border-radius:5px; background:${isMastered ? 'var(--color-success)' : isInProgress ? 'var(--accent-primary)' : 'var(--border-color)'};"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Footer Quick Info & Action -->
-            <div style="display:flex; justify-content:space-between; align-items:center; pt:12px; border-top:1px solid var(--border-color); margin-top:12px;">
-              <span style="font-size:12px; color:var(--text-sub); font-weight:500;">
-                ${s.units.length} Units • ${stats.total} Topics
-              </span>
-              <button class="btn-secondary" style="font-size:12px; padding:5px 12px;" onclick="event.stopPropagation(); openSubjectExplorer('${s.id}')">
-                Explore Outline ➔
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('')}
     </div>
   `;
 }
 
-// 2. Notion-Style Hierarchical Subject Detail Explorer with Breadcrumb Navigation
-function openSubjectExplorer(subjectId) {
-  currentSubjectView = subjectId;
-  renderSyllabusModule();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function closeSubjectExplorer() {
-  currentSubjectView = null;
-  renderSyllabusModule();
-}
-
-function renderSubjectExplorerView(container, subjectId) {
+// Right Panel Render for Selected Subject
+function renderSelectedSubjectPanel(subjectId) {
   const subject = syllabusData.subjects.find(s => s.id === subjectId);
-  if (!subject) {
-    currentSubjectView = null;
-    renderSubjectGrid(container);
-    return;
-  }
+  if (!subject) return '';
 
   const stats = calculateSubjectProgress(subject);
   const iconSVG = SUBJECT_SVGS[subject.id] || SUBJECT_SVGS['em'];
   const prog = StorageManager.getSyllabusProgress();
 
-  container.innerHTML = `
-    <!-- Sticky Breadcrumb & Navigation Bar -->
-    <div style="background:var(--bg-surface); border:1px solid var(--border-color); border-radius:10px; padding:12px 18px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:70px; z-index:100; backdrop-filter:blur(10px); box-shadow:0 4px 12px rgba(0,0,0,0.15);">
-      <div style="display:flex; align-items:center; gap:8px; font-size:13px;">
-        <span style="color:var(--accent-primary); font-weight:600; cursor:pointer;" onclick="closeSubjectExplorer()">Syllabus</span>
-        <span style="color:var(--text-muted);">/</span>
-        <span style="font-weight:700; color:var(--text-main);">${subject.name}</span>
-      </div>
-
-      <div style="display:flex; gap:8px;">
-        <button class="btn-secondary" style="font-size:12px; padding:5px 12px;" onclick="closeSubjectExplorer()">
-          ← Back to All Subjects
-        </button>
-        <button class="btn-primary" style="font-size:12px; padding:5px 14px;" onclick="startSubjectPractice('${subject.id}')">
-          Practice Subject ➔
-        </button>
-      </div>
-    </div>
-
-    <!-- Main Explorer Header Card -->
-    <div class="card" style="margin-bottom:20px; padding:20px 24px;">
-      <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
-        <div style="width:48px; height:48px; border-radius:10px; background:var(--bg-surface-hover); color:var(--accent-primary); display:flex; align-items:center; justify-content:center; border:1px solid var(--border-color);">
-          ${iconSVG}
-        </div>
-        <div>
-          <h1 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:2px;">${subject.name}</h1>
-          <div style="font-size:12px; color:var(--text-sub);">
-            ${subject.code} • Weightage: <strong>${subject.weightage}</strong> • ${stats.total} Topics
+  return `
+    <!-- Subject Header Banner -->
+    <div class="card" style="margin-bottom:16px; padding:20px 24px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <div style="width:46px; height:46px; border-radius:10px; background:var(--bg-surface-hover); color:var(--accent-primary); display:flex; align-items:center; justify-content:center; border:1px solid var(--border-color);">
+            ${iconSVG}
+          </div>
+          <div>
+            <h1 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:2px;">${subject.name}</h1>
+            <div style="font-size:12px; color:var(--text-sub);">
+              ${subject.code} • Weightage: <strong>${subject.weightage}</strong> • ${stats.total} Total Topics
+            </div>
           </div>
         </div>
+
+        <button class="btn-primary" style="font-size:13px; padding:8px 16px;" onclick="startSubjectPractice('${subject.id}')">
+          Start Practice ➔
+        </button>
       </div>
 
-      <!-- Subject Progress Overview Bar -->
+      <!-- Dense Progress Statistics Strip -->
       <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:12px 16px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:600; margin-bottom:6px;">
-          <span>Subject Overall Completion</span>
-          <span>${stats.pct}% (${stats.completed}/${stats.total} Topics)</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:600; margin-bottom:8px;">
+          <span>Subject Progress Overview</span>
+          <span style="color:var(--accent-primary);">${stats.pct}% Completed (${stats.completed} Completed / ${stats.remaining} Remaining)</span>
         </div>
         <div class="progress-bar-bg" style="height:8px; border-radius:4px;">
           <div class="progress-bar-fill" style="width:${stats.pct}%; height:100%; border-radius:4px; background:${stats.pct === 100 ? 'var(--color-success)' : 'var(--accent-primary)'};"></div>
@@ -242,48 +200,193 @@ function renderSubjectExplorerView(container, subjectId) {
       </div>
     </div>
 
-    <!-- Units & Topics Outline Tree (Notion Style) -->
-    <div style="display:flex; flex-direction:column; gap:16px;">
+    <!-- Units Outline Collapsible Tree (VS Code / Notion Explorer Style) -->
+    <div style="display:flex; flex-direction:column; gap:12px;">
       ${subject.units.map((unit, uIdx) => {
+        const unitKey = `${subject.id}_u${uIdx}`;
+        const isCollapsed = collapsedUnits[unitKey];
+
+        const unitCompletedCount = unit.topics.filter((_, tIdx) => {
+          const k = getTopicKey(subject.id, uIdx, tIdx);
+          return prog[k] === 'mastered';
+        }).length;
+
         return `
-          <div class="card" style="padding:18px 24px;">
-            <div style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
-              <span>Unit ${uIdx + 1}: ${unit.name}</span>
-              <span style="font-size:12px; color:var(--text-sub); font-weight:500;">${unit.topics.length} Topics</span>
+          <div class="card" style="padding:0; overflow:hidden;">
+            <!-- Collapsible Unit Header -->
+            <div onclick="toggleUnitCollapse('${unitKey}')" style="padding:14px 18px; background:var(--bg-surface-hover); border-bottom:${isCollapsed ? 'none' : '1px solid var(--border-color)'}; display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:12px; color:var(--text-muted); font-weight:700;">${isCollapsed ? '▶' : '▼'}</span>
+                <span style="font-family:'Outfit', sans-serif; font-size:15px; font-weight:700;">Unit ${uIdx + 1}: ${unit.name}</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px; font-size:12px; color:var(--text-sub);">
+                <span>${unitCompletedCount} / ${unit.topics.length} Completed</span>
+              </div>
             </div>
 
-            <div style="display:flex; flex-direction:column; gap:8px;">
-              ${unit.topics.map((topic, tIdx) => {
-                const key = getTopicKey(subject.id, uIdx, tIdx);
-                const status = prog[key] || 'not_started';
+            <!-- Unit Topic Rows (Dense VS Code Explorer List) -->
+            ${!isCollapsed ? `
+              <div style="padding:8px 12px; display:flex; flex-direction:column; gap:4px;">
+                ${unit.topics.map((topic, tIdx) => {
+                  const key = getTopicKey(subject.id, uIdx, tIdx);
+                  const status = prog[key] || 'not_started';
 
-                const matchesSearch = searchQuery ? topic.toLowerCase().includes(searchQuery) : true;
-                if (searchQuery && !matchesSearch) return '';
+                  let statusIcon = `<span style="color:var(--text-muted); font-size:14px;">○</span>`;
+                  let statusText = `Not Started`;
+                  let textColor = `var(--text-sub)`;
 
-                return `
-                  <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; flex-wrap:wrap; gap:10px;">
-                    <div style="display:flex; align-items:center; gap:12px; flex:1;">
-                      <span style="font-size:13px; ${status === 'mastered' ? 'opacity:0.75; text-decoration:line-through;' : 'font-weight:500;'}">${topic}</span>
+                  if (status === 'in_progress') {
+                    statusIcon = `<span style="color:var(--accent-primary); font-size:14px;">◉</span>`;
+                    statusText = `In Progress`;
+                    textColor = `var(--text-main)`;
+                  } else if (status === 'mastered') {
+                    statusIcon = `<span style="color:var(--color-success); font-size:14px;">✓</span>`;
+                    statusText = `Mastered`;
+                    textColor = `var(--text-muted); text-decoration:line-through;`;
+                  }
+
+                  return `
+                    <div onclick="openTopicWorkspace('${subject.id}', ${uIdx}, ${tIdx}, '${topic.replace(/'/g, "\\'")}', '${unit.name.replace(/'/g, "\\'")}')" style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px; border-radius:6px; cursor:pointer; background:var(--bg-surface); border:1px solid transparent; transition:background 0.15s ease;" onmouseover="this.style.background='var(--bg-surface-hover)'" onmouseout="this.style.background='var(--bg-surface)'">
+                      <div style="display:flex; align-items:center; gap:12px; font-size:13px;">
+                        ${statusIcon}
+                        <span style="${textColor}">${topic}</span>
+                      </div>
+
+                      <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:11px; color:var(--text-muted);">${statusText}</span>
+                        <span style="font-size:12px; color:var(--accent-primary); font-weight:600;">Workspace ➔</span>
+                      </div>
                     </div>
-
-                    <div style="display:flex; align-items:center; gap:8px;">
-                      <select class="status-select" style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:4px 8px; border-radius:6px; font-size:12px; cursor:pointer;" onchange="setTopicStatus('${key}', this.value)">
-                        <option value="not_started" ${status === 'not_started' ? 'selected' : ''}>Not Started</option>
-                        <option value="in_progress" ${status === 'in_progress' ? 'selected' : ''}>In Progress</option>
-                        <option value="mastered" ${status === 'mastered' ? 'selected' : ''}>Mastered</option>
-                      </select>
-
-                      <button class="btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="practiceSpecificTopic('${subject.id}', '${topic.replace(/'/g, "\\'")}')">
-                        Practice ➔
-                      </button>
-                    </div>
-                  </div>
-                `;
-              }).join('')}
-            </div>
+                  `;
+                }).join('')}
+              </div>
+            ` : ''}
           </div>
         `;
       }).join('')}
+    </div>
+  `;
+}
+
+// Dedicated Topic Workspace View (Drill-Down Level 4: Topic Workspace)
+function renderTopicWorkspaceView(container) {
+  const { subjectId, uIdx, tIdx, topicName, unitName } = activeTopicWorkspace;
+  const subject = syllabusData.subjects.find(s => s.id === subjectId);
+  const key = getTopicKey(subjectId, uIdx, tIdx);
+  const prog = StorageManager.getSyllabusProgress();
+  const currentStatus = prog[key] || 'not_started';
+
+  container.innerHTML = `
+    <!-- Top Breadcrumb Bar -->
+    <div style="background:var(--bg-surface); border:1px solid var(--border-color); border-radius:10px; padding:12px 18px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:70px; z-index:100; backdrop-filter:blur(10px);">
+      <div style="display:flex; align-items:center; gap:8px; font-size:13px;">
+        <span style="color:var(--accent-primary); font-weight:600; cursor:pointer;" onclick="closeTopicWorkspace()">Syllabus</span>
+        <span style="color:var(--text-muted);">/</span>
+        <span style="color:var(--accent-primary); font-weight:600; cursor:pointer;" onclick="closeTopicWorkspace()">${subject.name}</span>
+        <span style="color:var(--text-muted);">/</span>
+        <span style="font-weight:700; color:var(--text-main);">${topicName}</span>
+      </div>
+
+      <button class="btn-secondary" style="font-size:12px; padding:5px 12px;" onclick="closeTopicWorkspace()">
+        ← Back to Subject Outline
+      </button>
+    </div>
+
+    <!-- Main Workspace Title Card -->
+    <div class="card" style="margin-bottom:20px; padding:24px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; margin-bottom:16px;">
+        <div>
+          <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase; margin-bottom:4px;">
+            ${subject.name} • ${unitName}
+          </div>
+          <h1 style="font-family:'Outfit', sans-serif; font-size:24px; font-weight:700; margin-bottom:6px;">${topicName}</h1>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <label style="font-size:12px; font-weight:600;">Status:</label>
+            <select class="status-select" style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:6px 12px; border-radius:6px; font-size:13px;" onchange="setTopicStatus('${key}', this.value)">
+              <option value="not_started" ${currentStatus === 'not_started' ? 'selected' : ''}>Not Started</option>
+              <option value="in_progress" ${currentStatus === 'in_progress' ? 'selected' : ''}>In Progress ◉</option>
+              <option value="mastered" ${currentStatus === 'mastered' ? 'selected' : ''}>Mastered ✓</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-primary" style="font-size:14px; padding:10px 20px;" onclick="practiceSpecificTopic('${subjectId}', '${topicName.replace(/'/g, "\\'")}')">
+          Start Topic Practice ➔
+        </button>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="stats-grid" style="grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-top:20px;">
+        <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); padding:12px; border-radius:8px;">
+          <div style="font-size:11px; color:var(--text-muted); font-weight:600;">AVAILABLE QUESTIONS</div>
+          <div style="font-size:18px; font-weight:700; margin-top:2px;">45 Questions</div>
+        </div>
+        <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); padding:12px; border-radius:8px;">
+          <div style="font-size:11px; color:var(--text-muted); font-weight:600;">ESTIMATED TIME</div>
+          <div style="font-size:18px; font-weight:700; margin-top:2px;">1h 20m</div>
+        </div>
+        <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); padding:12px; border-radius:8px;">
+          <div style="font-size:11px; color:var(--text-muted); font-weight:600;">WEIGHTAGE RANGE</div>
+          <div style="font-size:18px; font-weight:700; margin-top:2px; color:var(--accent-primary);">${subject.weightage}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workspace Action Links -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px;">
+      <div class="card" style="cursor:pointer;" onclick="practiceSpecificTopic('${subjectId}', '${topicName.replace(/'/g, "\\'")}')">
+        <h4 style="font-size:15px; font-weight:700; margin-bottom:4px;">Practice Question Bank ➔</h4>
+        <p style="font-size:12px; color:var(--text-sub);">Solve official GATE questions filtered specifically for ${topicName}.</p>
+      </div>
+
+      <div class="card" style="cursor:pointer;" onclick="document.querySelector('[data-view=\'revision\']').click();">
+        <h4 style="font-size:15px; font-weight:700; margin-bottom:4px;">Bookmarked Formulae & Notes ➔</h4>
+        <p style="font-size:12px; color:var(--text-sub);">Review your saved bookmarks and personal notes for this topic.</p>
+      </div>
+    </div>
+  `;
+}
+
+// Universal Search Results (Search Everything Across All Subjects)
+function renderUniversalSearchResults(container) {
+  let matches = [];
+
+  syllabusData.subjects.forEach(s => {
+    s.units.forEach((u, uIdx) => {
+      u.topics.forEach((t, tIdx) => {
+        if (t.toLowerCase().includes(searchQuery) || u.name.toLowerCase().includes(searchQuery) || s.name.toLowerCase().includes(searchQuery)) {
+          matches.push({ subject: s, unit: u, topic: t, uIdx, tIdx });
+        }
+      });
+    });
+  });
+
+  if (matches.length === 0) {
+    container.innerHTML = `
+      <div class="card" style="text-align:center; padding:40px 20px;">
+        <div style="font-size:15px; font-weight:600; color:var(--text-sub);">No topics matched "${searchQuery}".</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="card" style="margin-bottom:16px;">
+      <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700;">Universal Search Results (${matches.length} Matches)</h3>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      ${matches.map(m => `
+        <div class="card" style="padding:12px 18px; cursor:pointer;" onclick="openTopicWorkspace('${m.subject.id}', ${m.uIdx}, ${m.tIdx}, '${m.topic.replace(/'/g, "\\'")}', '${m.unit.name.replace(/'/g, "\\'")}')">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:11px; color:var(--text-muted); font-weight:600;">${m.subject.name} • ${m.unit.name}</div>
+              <div style="font-size:14px; font-weight:700; margin-top:2px;">${m.topic}</div>
+            </div>
+            <button class="btn-secondary" style="font-size:12px; padding:4px 10px;">Open Workspace ➔</button>
+          </div>
+        </div>
+      `).join('')}
     </div>
   `;
 }
@@ -306,11 +409,13 @@ function practiceSpecificTopic(subjectId, topicName) {
   }
 }
 
-window.renderSyllabusModule = renderSyllabusModule;
+window.renderSyllabusAppLayout = renderSyllabusAppLayout;
 window.setSyllabusFilter = setSyllabusFilter;
-window.handleSyllabusSearch = handleSyllabusSearch;
-window.openSubjectExplorer = openSubjectExplorer;
-window.closeSubjectExplorer = closeSubjectExplorer;
+window.handleUniversalSearch = handleUniversalSearch;
+window.selectSubject = selectSubject;
+window.toggleUnitCollapse = toggleUnitCollapse;
+window.openTopicWorkspace = openTopicWorkspace;
+window.closeTopicWorkspace = closeTopicWorkspace;
 window.setTopicStatus = setTopicStatus;
 window.startSubjectPractice = startSubjectPractice;
 window.practiceSpecificTopic = practiceSpecificTopic;
