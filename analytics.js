@@ -1,4 +1,4 @@
-// GitHub Insights + Apple Health + Notion Style Performance Analytics Platform (10/10 Polished Interactive Version)
+// GitHub Insights + Apple Health + Notion Style Performance Analytics Platform (Heatmap Placed at Bottom)
 
 let activeTimeRange = '30D'; // '7D', '30D', '90D', '1Y', 'ALL'
 let selectedSubjectFilter = 'all'; // 'all' or specific subject id
@@ -86,68 +86,7 @@ function renderAnalyticsModule() {
       </div>
     </div>
 
-    <!-- 1. Soft GitHub-Style Study Activity Heatmap (Toned-Down Muted Palette) -->
-    <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px; margin-bottom:20px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
-        <div>
-          <div style="font-size:15px; font-weight:700; color:#F5F5F5;">Study Activity & Consistency Grid</div>
-          <div style="font-size:12px; color:#9CA3AF;">Click any tile to inspect daily session logs.</div>
-        </div>
-
-        <div style="font-size:12px; color:#9CA3AF;">
-          845 Questions Solved &bull; 142 Study Hours
-        </div>
-      </div>
-
-      <!-- Month Labels Header -->
-      <div style="display:flex; justify-content:space-between; color:#9CA3AF; font-size:11px; margin-bottom:6px; padding-left:24px;">
-        ${months.map(m => `<span>${m}</span>`).join('')}
-      </div>
-
-      <!-- GitHub Grid (7 Rows x 24 Columns) -->
-      <div style="display:flex; gap:6px;">
-        <div style="display:flex; flex-direction:column; justify-content:space-between; font-size:10px; color:#9CA3AF; padding-right:4px;">
-          <span>Mon</span>
-          <span>Wed</span>
-          <span>Fri</span>
-        </div>
-
-        <div id="heatmap-tiles-grid" style="display:grid; grid-template-columns:repeat(24, 1fr); gap:4px; flex:1;">
-          ${Array.from({ length: 168 }).map((_, idx) => {
-            const level = (idx % 7 === 0 || idx % 5 === 0) ? (idx % 4) : 0;
-            let bg = '#16181D'; // 0 activity
-            if (level === 1) bg = '#143A26'; // Low
-            if (level === 2) bg = '#1D6B3A'; // Medium
-            if (level === 3) bg = '#2D8F4C'; // High
-            if (level === 4) bg = '#42B86D'; // Very High
-
-            const dayNum = (idx % 28) + 1;
-            return `
-              <div class="heatmap-tile" style="aspect-ratio:1; background:${bg}; border-radius:2px; cursor:pointer; transition:all 0.15s;" 
-                onclick="inspectHeatmapDay('19 Aug 2026', ${dayNum * 3}, '4h 18m', ${Math.min(95, 70 + dayNum)})"
-                title="${dayNum} Aug: ${dayNum * 3} Questions Solved">
-              </div>
-            `;
-          }).join('')}
-        </div>
-      </div>
-
-      <!-- Heatmap Footer Legend & Muted Colors -->
-      <div style="display:flex; justify-content:flex-end; align-items:center; gap:6px; font-size:11px; color:#9CA3AF; margin-top:12px;">
-        <span>Less</span>
-        <div style="width:10px; height:10px; background:#16181D; border-radius:2px;"></div>
-        <div style="width:10px; height:10px; background:#143A26; border-radius:2px;"></div>
-        <div style="width:10px; height:10px; background:#1D6B3A; border-radius:2px;"></div>
-        <div style="width:10px; height:10px; background:#2D8F4C; border-radius:2px;"></div>
-        <div style="width:10px; height:10px; background:#42B86D; border-radius:2px;"></div>
-        <span>More</span>
-      </div>
-
-      <!-- Day Inspector Panel Container -->
-      <div id="heatmap-day-inspector" style="margin-top:14px; display:none;"></div>
-    </div>
-
-    <!-- 2. Performance Summary Metrics with Delta Trend Indicators -->
+    <!-- 1. Performance Summary Metrics with Delta Trend Indicators (NOW FIRST SECTION) -->
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:14px; margin-bottom:20px;">
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px;">
         <div style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Current Accuracy</div>
@@ -186,7 +125,7 @@ function renderAnalyticsModule() {
       </div>
     </div>
 
-    <!-- 3. Distinct Color Palette Visual Charts Grid (2x2) with Milestone Markers -->
+    <!-- 2. Distinct Color Palette Visual Charts Grid (2x2) with Milestone Markers -->
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
       
       <!-- Chart 1: Accuracy Trend (Blue + Milestone Markers) -->
@@ -196,9 +135,7 @@ function renderAnalyticsModule() {
           <span style="font-size:11px; color:#3B82F6; font-weight:600;">Blue Metric</span>
         </div>
         <div style="height:140px; display:flex; align-items:flex-end; gap:16px; border-bottom:1px solid #23262D; padding-bottom:8px; position:relative;">
-          <!-- Milestone Marker 1 -->
           <div style="position:absolute; left:18%; bottom:65%; font-size:10px; background:rgba(59,130,246,0.2); color:#3B82F6; padding:2px 6px; border-radius:4px; border:1px solid #3B82F6;">▲ First Mock (65%)</div>
-          <!-- Milestone Marker 2 -->
           <div style="position:absolute; right:15%; bottom:84%; font-size:10px; background:rgba(16,185,129,0.2); color:#10B981; padding:2px 6px; border-radius:4px; border:1px solid #10B981;">▲ GATE 2026 Paper (84%)</div>
 
           <div style="flex:1; background:rgba(59,130,246,0.2); border-top:2px solid #3B82F6; height:65%; border-radius:4px 4px 0 0;"></div>
@@ -249,7 +186,7 @@ function renderAnalyticsModule() {
         </div>
       </div>
 
-      <!-- Chart 4: Subject Time Distribution Breakdown (Multi-tone Palette) -->
+      <!-- Chart 4: Subject Time Distribution Breakdown -->
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px;">
         <div style="font-size:14px; font-weight:700; color:#F5F5F5; margin-bottom:14px;">Subject Time Distribution</div>
         <div style="display:flex; flex-direction:column; gap:10px;">
@@ -293,7 +230,7 @@ function renderAnalyticsModule() {
 
     </div>
 
-    <!-- 4. Goal Progress & Recent Sessions Timeline -->
+    <!-- 3. Goal Progress & Recent Sessions Timeline -->
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; align-items:start;">
       
       <!-- Goal Progress Card -->
@@ -364,8 +301,8 @@ function renderAnalyticsModule() {
 
     </div>
 
-    <!-- 5. Subject Performance Table with Interactive Row Filtering -->
-    <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px;">
+    <!-- 4. Subject Performance Table with Interactive Row Filtering -->
+    <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px; margin-bottom:20px;">
       <div style="font-size:15px; font-weight:700; color:#F5F5F5; margin-bottom:14px;">Subject Performance & Accuracy Table</div>
 
       <div style="overflow-x:auto;">
@@ -401,6 +338,67 @@ function renderAnalyticsModule() {
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- 5. Soft GitHub-Style Study Activity Heatmap (MOVED TO VERY BOTTOM AS REQUESTED) -->
+    <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+        <div>
+          <div style="font-size:15px; font-weight:700; color:#F5F5F5;">Study Activity & Consistency Grid</div>
+          <div style="font-size:12px; color:#9CA3AF;">Click any tile to inspect daily session logs.</div>
+        </div>
+
+        <div style="font-size:12px; color:#9CA3AF;">
+          845 Questions Solved &bull; 142 Study Hours
+        </div>
+      </div>
+
+      <!-- Month Labels Header -->
+      <div style="display:flex; justify-content:space-between; color:#9CA3AF; font-size:11px; margin-bottom:6px; padding-left:24px;">
+        ${months.map(m => `<span>${m}</span>`).join('')}
+      </div>
+
+      <!-- GitHub Grid (7 Rows x 24 Columns) -->
+      <div style="display:flex; gap:6px;">
+        <div style="display:flex; flex-direction:column; justify-content:space-between; font-size:10px; color:#9CA3AF; padding-right:4px;">
+          <span>Mon</span>
+          <span>Wed</span>
+          <span>Fri</span>
+        </div>
+
+        <div id="heatmap-tiles-grid" style="display:grid; grid-template-columns:repeat(24, 1fr); gap:4px; flex:1;">
+          ${Array.from({ length: 168 }).map((_, idx) => {
+            const level = (idx % 7 === 0 || idx % 5 === 0) ? (idx % 4) : 0;
+            let bg = '#16181D'; // 0 activity
+            if (level === 1) bg = '#143A26'; // Low
+            if (level === 2) bg = '#1D6B3A'; // Medium
+            if (level === 3) bg = '#2D8F4C'; // High
+            if (level === 4) bg = '#42B86D'; // Very High
+
+            const dayNum = (idx % 28) + 1;
+            return `
+              <div class="heatmap-tile" style="aspect-ratio:1; background:${bg}; border-radius:2px; cursor:pointer; transition:all 0.15s;" 
+                onclick="inspectHeatmapDay('19 Aug 2026', ${dayNum * 3}, '4h 18m', ${Math.min(95, 70 + dayNum)})"
+                title="${dayNum} Aug: ${dayNum * 3} Questions Solved">
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <!-- Heatmap Footer Legend & Muted Colors -->
+      <div style="display:flex; justify-content:flex-end; align-items:center; gap:6px; font-size:11px; color:#9CA3AF; margin-top:12px;">
+        <span>Less</span>
+        <div style="width:10px; height:10px; background:#16181D; border-radius:2px;"></div>
+        <div style="width:10px; height:10px; background:#143A26; border-radius:2px;"></div>
+        <div style="width:10px; height:10px; background:#1D6B3A; border-radius:2px;"></div>
+        <div style="width:10px; height:10px; background:#2D8F4C; border-radius:2px;"></div>
+        <div style="width:10px; height:10px; background:#42B86D; border-radius:2px;"></div>
+        <span>More</span>
+      </div>
+
+      <!-- Day Inspector Panel Container -->
+      <div id="heatmap-day-inspector" style="margin-top:14px; display:none;"></div>
     </div>
   `;
 }
