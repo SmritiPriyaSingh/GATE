@@ -1,0 +1,146 @@
+--- Page 1 ---
+ 
+General Aptitude (GA)
+Q.1 – Q.5 Carry ONE mark Each 
+Q.1 The antonym of the word protagonist is ________. 
+  
+(A) agnostic 
+(B) antagonist 
+(C) arsonist 
+(D) anarchist 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Organizing Institute: IIT Guwahati
+Page 1 of 46
+Computer Science & Information Technology (CS1)
+--- Page 2 ---
+ 
+Q.2 The figure shows two 4-tile patterns.  
+                   
+Either one or both of the patterns can be used any number of times and in any 
+orientation to construct a new pattern. Which one of the options below cannot be 
+constructed by using only these two 4-tile patterns assuming there are no overlaps 
+among them? 
+                       
+(A) 
+ 
+(B) 
+ 
+(C) 
+ 
+(D) 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Organizing Institute: IIT Guwahati
+Page 2 of 46
+Computer Science & Information Technology (CS1)
+--- Page 3 ---
+ 
+Q.3 Consider a knock-out women’s badminton singles tournament where there are no 
+ties. The loser in each game is eliminated from the tournament.  Every player 
+plays until she is defeated or remains the last undefeated player. The last 
+undefeated player is declared the winner of the tournament. If there are 64 players 
+in the beginning of the tournament, how many games should be played in total to 
+declare the winner of the tournament? 
+  
+(A) 127 
+(B) 64 
+(C) 63 
+(D) 32 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Organizing Institute: IIT Guwahati
+Page 3 of 46
+Computer Science & Information Technology (CS1)
+--- Page 4 ---
+ 
+Q.4 A student needs to enroll for a minimum of 60 credits. A student cannot enroll for 
+more than 70 credits. The credits are divided amongst project and three distinct 
+sets of courses namely, core courses, specialization courses, and elective courses.  
+It is compulsory for a student to enroll for exactly 15 credits of core courses and 
+exactly 20 credits of project. In addition, a student has to enroll for a minimum of 
+10 credits of specialization courses. The maximum credits of elective courses that 
+a student can enroll for is ______ 
+  
+(A) 10 
+(B) 15 
+(C) 20 
+(D) 25 
+  
+Q.5  ‘When the teacher is in the room, all students stand silently.’ 
+If the above statement is true, which one of the following statements is not 
+necessarily true?   
+  
+(A) If any student is not standing silently, then the teacher is not in the room.  
+(B) When the teacher is in the room, all students are silent. 
+(C) If all students are standing, then the teacher is in the room. 
+(D) When the teacher is in the room, all students are standing. 
+  
+ 
+Organizing Institute: IIT Guwahati
+Page 4 of 46
+Computer Science & Information Technology (CS1)
+--- Page 5 ---
+ 
+Q.6 – Q.10 Carry TWO marks Each 
+Q.6 Combinatorics deals with problems involving counting. For example, “How many 
+distinct arrangements of N distinct objects in M spaces on a circle are possible?” 
+is a typical problem in combinatorics. This kind of counting is sometimes used in 
+the modeling of several physical phenomena. Often, in such models, the different 
+combinatorial possibilities are assigned probability values. Assigning probabilities 
+enables the computation of the average values of physical quantities. 
+Consider the following statements: 
+P: Combinatorics is always invoked in the modeling of physical phenomena. 
+Q: Modeling some physical phenomena involves assigning probabilities to 
+combinatorial possibilities in order to compute average values of physical 
+quantities. 
+Based on the passage above, what can be inferred about statements P and Q? 
+  
+(A) P is False and Q is False 
+(B) P is False and Q is True 
+(C) P is True and Q is False 
+(D) P is True and Q is True 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Organizing Institute: IIT Guwahati
+Page 5 of 46
+Computer Science & Information Technology (CS1)
