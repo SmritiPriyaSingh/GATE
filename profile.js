@@ -29,14 +29,15 @@ function renderProfileModule() {
   const lastActiveText = lastTopic ? `${lastTopic.subject} (${lastTopic.topic})` : 'No active session recorded yet';
 
   // Default Initials Avatar SVG if no photo uploaded
+  const initials = profile.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
   const defaultAvatarSVG = `
     <div style="width:100px; height:100px; border-radius:50%; background:var(--accent-subtle); color:var(--accent-primary); display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700; border:2px solid var(--accent-primary);">
-      ${profile.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+      ${initials || 'SP'}
     </div>
   `;
 
   const avatarHTML = profile.avatar 
-    ? `<img src="${profile.avatar}" alt="Avatar" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border:2px solid var(--accent-primary);">`
+    ? `<img src="${profile.avatar}" alt="User Avatar" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border:2px solid var(--accent-primary); box-shadow:0 4px 12px rgba(0,0,0,0.15);">`
     : defaultAvatarSVG;
 
   container.innerHTML = `
@@ -44,11 +45,13 @@ function renderProfileModule() {
     <div class="card" style="margin-bottom:24px; padding:24px;">
       <div style="display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
         <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
-          ${avatarHTML}
+          <div id="profile-avatar-display-box">
+            ${avatarHTML}
+          </div>
           <div style="display:flex; gap:6px;">
             <label class="btn-secondary" style="font-size:11px; padding:4px 10px; cursor:pointer;">
               Upload Photo
-              <input type="file" accept="image/*" onchange="handleAvatarUpload(event)" style="display:none;">
+              <input type="file" id="avatar-file-input" accept="image/*" onchange="handleAvatarUpload(event)" style="display:none;">
             </label>
             ${profile.avatar ? `<button class="btn-secondary" style="font-size:11px; padding:4px 10px; color:var(--color-danger);" onclick="removeUserAvatar()">Remove</button>` : ''}
           </div>
@@ -59,7 +62,7 @@ function renderProfileModule() {
             <div>
               <h1 style="font-family:'Outfit', sans-serif; font-size:24px; font-weight:700; margin-bottom:4px;" id="profile-display-name">${profile.name}</h1>
               <div style="font-size:13px; color:var(--text-sub); margin-bottom:8px;">${profile.email}</div>
-              <div style="display:flex; gap:10px; flex-wrap:wrap; font-size:12px; color:var(--text-sub);">
+              <div style="display:flex; gap:12px; flex-wrap:wrap; font-size:12px; color:var(--text-sub);">
                 <span>💻 <strong>${profile.branch}</strong></span>
                 <span>🎯 <strong>${profile.targetYear}</strong></span>
                 <span>📅 Joined <strong>${profile.joinedDate}</strong></span>

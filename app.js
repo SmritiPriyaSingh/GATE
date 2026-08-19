@@ -17,10 +17,11 @@ function toggleAppTheme() {
   const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', newTheme);
   localStorage.setItem('gate2027_theme', newTheme);
+  if (window.renderSettingsModule) window.renderSettingsModule();
 }
 
 function initNavigation() {
-  const navBtns = document.querySelectorAll('.nav-btn, .sidebar-item');
+  const navBtns = document.querySelectorAll('.nav-btn, .sidebar-item, .dropdown-item');
   const viewSections = document.querySelectorAll('.view-section');
 
   navBtns.forEach(btn => {
@@ -50,6 +51,10 @@ function initNavigation() {
 
       if (targetView === 'dashboard' && window.renderCommandCenter) {
         window.renderCommandCenter();
+      } else if (targetView === 'profile' && window.renderProfileModule) {
+        window.renderProfileModule();
+      } else if (targetView === 'settings' && window.renderSettingsModule) {
+        window.renderSettingsModule();
       }
 
       closeSidebarDrawer();
