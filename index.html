@@ -16,15 +16,16 @@
       <span>GATE CSE 2027</span>
     </div>
 
+    <!-- Desktop Navigation Links -->
     <nav class="nav-links">
-      <button class="nav-btn active" data-view="dashboard">Dashboard</button>
-      <button class="nav-btn" data-view="syllabus">Syllabus</button>
-      <button class="nav-btn" data-view="practice">Practice</button>
-      <button class="nav-btn" data-view="pyq">PYQ Papers</button>
-      <button class="nav-btn" data-view="cbt">CBT Simulator</button>
-      <button class="nav-btn" data-view="analytics">Analytics</button>
-      <button class="nav-btn" data-view="revision">Revision</button>
-      <button class="nav-btn" data-view="settings">Settings</button>
+      <button class="nav-btn active" data-view="dashboard">📌 Dashboard</button>
+      <button class="nav-btn" data-view="syllabus">📚 Syllabus</button>
+      <button class="nav-btn" data-view="practice">📝 Practice</button>
+      <button class="nav-btn" data-view="pyq">📜 PYQs</button>
+      <button class="nav-btn" data-view="cbt">🎯 CBT Exam</button>
+      <button class="nav-btn" data-view="analytics">📈 Analytics</button>
+      <button class="nav-btn" data-view="revision">⭐ Revision</button>
+      <button class="nav-btn" data-view="settings">⚙️ Settings</button>
     </nav>
 
     <div style="display:flex; align-items:center; gap:12px;">
@@ -155,10 +156,14 @@
         <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; margin-bottom:0;">
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--border-color); margin-bottom:16px;">
-              <span style="font-weight:700;">GATE 2027 CS Exam</span>
+              <div>
+                <span style="font-weight:700; font-size:16px;">GATE 2027 CS Exam</span>
+                <span style="font-size:12px; color:var(--text-sub); margin-left:8px;">(Session Active)</span>
+              </div>
               <div style="display:flex; gap:10px; align-items:center;">
                 <button class="btn-secondary" onclick="toggleCalculator()">🧮 Calculator</button>
                 <div style="background:rgba(239,68,68,0.1); color:var(--color-danger); padding:4px 12px; border-radius:6px; font-weight:700;" id="cbt-timer-display">⏱️ 03:00:00</div>
+                <button class="btn-secondary" style="border-color:var(--color-danger); color:var(--color-danger);" onclick="quitCBTExam()">🚪 Quit Exam</button>
               </div>
             </div>
 
@@ -220,6 +225,34 @@
     </section>
 
   </main>
+
+  <!-- Fixed Bottom Navigation Bar for Minimized / Mobile Screens -->
+  <nav class="bottom-nav-bar">
+    <button class="nav-btn active" data-view="dashboard">
+      <span class="icon">📌</span>
+      <span>Dash</span>
+    </button>
+    <button class="nav-btn" data-view="syllabus">
+      <span class="icon">📚</span>
+      <span>Syllabus</span>
+    </button>
+    <button class="nav-btn" data-view="practice">
+      <span class="icon">📝</span>
+      <span>Practice</span>
+    </button>
+    <button class="nav-btn" data-view="pyq">
+      <span class="icon">📜</span>
+      <span>PYQs</span>
+    </button>
+    <button class="nav-btn" data-view="cbt">
+      <span class="icon">🎯</span>
+      <span>CBT Exam</span>
+    </button>
+    <button class="nav-btn" data-view="revision">
+      <span class="icon">⭐</span>
+      <span>Notes</span>
+    </button>
+  </nav>
 
   <!-- Calculator Modal -->
   <div class="modal-overlay" id="calc-modal-overlay">

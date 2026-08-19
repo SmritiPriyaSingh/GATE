@@ -1,4 +1,4 @@
-// CBT Exam Simulator Engine with Inline Seamless Question Diagrams
+// CBT Exam Simulator Engine with Strict Exam Lock & Quit System
 
 let questionsData = [];
 let cbtState = {
@@ -81,6 +81,22 @@ function updateCBTTimerDisplay() {
   }
 }
 
+function quitCBTExam() {
+  if (!cbtState.active) return true;
+
+  if (confirm('⚠️ Exam in Progress! Are you sure you want to Quit? Your test progress will be lost.')) {
+    if (cbtState.timerInterval) clearInterval(cbtState.timerInterval);
+    cbtState.active = false;
+    cbtState.userAnswers = {};
+    
+    document.getElementById('cbt-active-screen').style.display = 'none';
+    document.getElementById('cbt-welcome-screen').style.display = 'block';
+    document.getElementById('cbt-results-screen').style.display = 'none';
+    return true;
+  }
+  return false;
+}
+
 function renderCBTQuestion(index) {
   if (index < 0 || index >= cbtState.questions.length) return;
   cbtState.currentIndex = index;
@@ -131,7 +147,6 @@ function renderCBTQuestion(index) {
     `;
   }
 
-  // Sequence: Question Text -> Diagram (if present) -> Options
   container.innerHTML = `
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
       <span style="font-size:13px; font-weight:600; color:var(--accent-primary);">Question ${index + 1} of ${cbtState.questions.length}</span>
@@ -139,15 +154,11 @@ function renderCBTQuestion(index) {
     </div>
     <div style="font-size:13px; color:var(--accent-primary); font-weight:600; margin-bottom:10px;">${q.subjectName} &bull; ${q.topic}</div>
     
-    <!-- 1. Question Text -->
     <div style="font-size:15px; line-height:1.6; font-weight:500;">
       ${q.text}
     </div>
 
-    <!-- 2. Inline Diagram -->
     ${diagramHTML}
-
-    <!-- 3. Options -->
     ${optionsHTML}
   `;
 
@@ -243,6 +254,7 @@ function submitCBTExam(autoSubmitted = false) {
   }
 
   if (cbtState.timerInterval) clearInterval(cbtState.timerInterval);
+  cbtState.active = false;
 
   let totalMarksScored = 0;
   let maxMarks = 0;
@@ -381,6 +393,9 @@ function calcInput(char) {
   }
   disp.textContent = calcExpr || '0';
 }
+
+window.cbtState = cbtState;
+window.quitCBTExam = quitCBTExam;
 
 document.addEventListener('DOMContentLoaded', () => {
   loadQuestionsData();

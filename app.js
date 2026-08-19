@@ -1,4 +1,4 @@
-// Main App Navigation & Modern Minimalist Theme Switcher
+// Main App Controller & Navigation Handler with Strict Exam Lock & Path Sync
 
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
@@ -39,12 +39,21 @@ function initNavigation() {
   const viewSections = document.querySelectorAll('.view-section');
 
   navBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
       const targetView = btn.dataset.view;
       if (!targetView) return;
 
+      // Strict Exam Mode Lock Check:
+      if (window.cbtState && window.cbtState.active) {
+        const confirmQuit = window.quitCBTExam ? window.quitCBTExam() : confirm('Quit current active exam?');
+        if (!confirmQuit) {
+          e.preventDefault();
+          return;
+        }
+      }
+
       navBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      document.querySelectorAll(`[data-view="${targetView}"]`).forEach(b => b.classList.add('active'));
 
       viewSections.forEach(sec => {
         if (sec.id === `view-${targetView}`) {
@@ -57,6 +66,9 @@ function initNavigation() {
       if (targetView === 'dashboard' && window.renderDashboardStats) {
         window.renderDashboardStats();
       }
+
+      // Smooth scroll to top of page on view change
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   });
 }
