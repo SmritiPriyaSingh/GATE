@@ -1,11 +1,90 @@
 {
   "subjects": [
     {
+      "id": "ga",
+      "code": "GA-01",
+      "name": "General Aptitude",
+      "icon": "🧠",
+      "weightage": "15 Marks (15%)",
+      "marks": 15,
+      "color": "#10B981",
+      "units": [
+        {
+          "name": "English & Verbal Reasoning",
+          "topics": [
+            "English Grammar & Tenses",
+            "Vocabulary & Word Groups",
+            "Sentence Completion",
+            "Verbal Analogies",
+            "Critical Reasoning & Verbal Deduction",
+            "Reading Comprehension & Passage Interpretation"
+          ]
+        },
+        {
+          "name": "Quantitative Aptitude",
+          "topics": [
+            "Numerical Computation & Estimation",
+            "Ratios, Percentages, Powers, Exponents, Logarithms",
+            "Permutations & Combinations",
+            "Probability & Statistics",
+            "Mensuration & Geometry",
+            "Data Interpretation (Tables, Charts, Pie Graphs)"
+          ]
+        },
+        {
+          "name": "Analytical & Spatial Aptitude",
+          "topics": [
+            "Logical Reasoning & Analytical Reasoning",
+            "Pattern Recognition",
+            "Spatial Visualization & Transformations",
+            "Paper Folding, Cutting & Assembling Shapes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pds",
+      "code": "CS-04",
+      "name": "Programming & Data Structures",
+      "icon": "🌳",
+      "weightage": "15 Marks (15%)",
+      "marks": 15,
+      "color": "#EC4899",
+      "units": [
+        {
+          "name": "Programming in C & Recursion",
+          "topics": [
+            "Programming in C (Pointers, Arrays, Structs, Functions)",
+            "Recursion & Call Stack Analysis"
+          ]
+        },
+        {
+          "name": "Linear Data Structures",
+          "topics": [
+            "Arrays & Dynamic Allocation",
+            "Stacks (Array & Linked List implementation)",
+            "Queues (Array & Linked List implementation)",
+            "Linked Lists (Singly, Doubly, Circular)"
+          ]
+        },
+        {
+          "name": "Non-Linear Data Structures",
+          "topics": [
+            "Trees & Binary Trees (Pre/In/Post Traversals)",
+            "Binary Search Trees (BST & Operations)",
+            "Binary Heaps & Priority Queues",
+            "Graphs Representation"
+          ]
+        }
+      ]
+    },
+    {
       "id": "em",
       "code": "CS-01",
       "name": "Engineering Mathematics",
       "icon": "📐",
-      "weightage": "13-15%",
+      "weightage": "13 Marks (13%)",
+      "marks": 13,
       "color": "#6366F1",
       "units": [
         {
@@ -49,204 +128,37 @@
       ]
     },
     {
-      "id": "dl",
-      "code": "CS-02",
-      "name": "Digital Logic",
-      "icon": "⚡",
-      "weightage": "5-6%",
-      "color": "#10B981",
+      "id": "cn",
+      "code": "CS-10",
+      "name": "Computer Networks",
+      "icon": "🌐",
+      "weightage": "10 Marks (10%)",
+      "marks": 10,
+      "color": "#A855F7",
       "units": [
         {
-          "name": "Boolean Algebra & Minimization",
+          "name": "Network Layering & Data Link Layer",
           "topics": [
-            "Boolean Algebra Laws and Simplification",
-            "Karnaugh Maps (K-Maps)",
-            "Tabular Method (Quine-McCluskey)"
+            "Concept of Layering (OSI & TCP/IP Protocol Stacks)",
+            "Basics of Packet, Circuit, and Virtual Circuit Switching",
+            "Data Link Layer: Framing, Error Detection/Correction, MAC, Ethernet Bridging"
           ]
         },
         {
-          "name": "Combinational & Sequential Circuits",
+          "name": "Network Layer & Routing Protocols",
           "topics": [
-            "Combinational Circuits: Adders, Subtractors, MUX, Decoders, Encoders",
-            "Sequential Circuits: Latches, Flip-Flops (SR, JK, D, T)",
-            "Registers, Counters (Asynchronous & Synchronous)"
+            "IPv4 Addressing, CIDR Notation, Subnetting",
+            "Fragmentation & Reassembly, IP Support Protocols (ARP, DHCP, ICMP), NAT",
+            "Routing Protocols: Shortest Path, Flooding, Distance Vector (RIP), Link-State (OSPF)"
           ]
         },
         {
-          "name": "Number Representation",
+          "name": "Transport & Application Layer",
           "topics": [
-            "Fixed Point & Floating Point Representation (IEEE 754)",
-            "Computer Arithmetic (Addition, Subtraction, Booth's Algorithm)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "coa",
-      "code": "CS-03",
-      "name": "Computer Organization & Architecture",
-      "icon": "💻",
-      "weightage": "8-10%",
-      "color": "#F59E0B",
-      "units": [
-        {
-          "name": "Machine Instructions & Control Unit",
-          "topics": [
-            "Instruction Set Architecture & Addressing Modes",
-            "Design of Arithmetic and Logic Unit (ALU)",
-            "Control Unit Design: Hardwired vs Microprogrammed"
-          ]
-        },
-        {
-          "name": "Memory Hierarchy & I/O",
-          "topics": [
-            "Memory Hierarchy & Performance Metrics",
-            "Cache Memory: Direct, Set-Associative, Fully Associative Mapping",
-            "Cache Replacement Policies & Write Policies",
-            "I/O Interface: Interrupts and Direct Memory Access (DMA)"
-          ]
-        },
-        {
-          "name": "Pipelining",
-          "topics": [
-            "Instruction Pipelining & Throughput",
-            "Pipeline Hazards: Structural, Data, and Control Hazards"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "pds",
-      "code": "CS-04",
-      "name": "Programming & Data Structures",
-      "icon": "🌳",
-      "weightage": "10-12%",
-      "color": "#EC4899",
-      "units": [
-        {
-          "name": "C Programming & Recursion",
-          "topics": [
-            "C Programming Constructs, Pointers, Arrays, Structs",
-            "Recursion and Call Stack Analysis"
-          ]
-        },
-        {
-          "name": "Linear Data Structures",
-          "topics": [
-            "Arrays, Dynamic Allocation",
-            "Stacks and Queues (Array & Linked List implementation)",
-            "Linked Lists: Singly, Doubly, Circular"
-          ]
-        },
-        {
-          "name": "Non-Linear Data Structures",
-          "topics": [
-            "Trees: Binary Trees, Traversals (Pre/In/Post)",
-            "Binary Search Trees (BST) & Operations",
-            "Binary Heaps & Priority Queues",
-            "Graph Representations (Adjacency Matrix & List)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "algo",
-      "code": "CS-05",
-      "name": "Algorithms",
-      "icon": "⚡",
-      "weightage": "8-10%",
-      "color": "#8B5CF6",
-      "units": [
-        {
-          "name": "Complexity Analysis & Searching/Sorting",
-          "topics": [
-            "Asymptotic Notation (Big-O, Omega, Theta)",
-            "Worst Case Time & Space Complexity",
-            "Searching & Sorting Algorithms (Quick, Merge, Heap Sort)",
-            "Hashing & Collision Resolution Techniques"
-          ]
-        },
-        {
-          "name": "Algorithm Design Techniques",
-          "topics": [
-            "Greedy Algorithms (Fractional Knapsack, Huffman Coding)",
-            "Dynamic Programming (0/1 Knapsack, LCS, Matrix Chain)",
-            "Divide-and-Conquer Paradigm"
-          ]
-        },
-        {
-          "name": "Graph Algorithms",
-          "topics": [
-            "Graph Traversals: BFS and DFS",
-            "Minimum Spanning Trees (Kruskal & Prim)",
-            "Shortest Paths (Dijkstra, Bellman-Ford, Floyd-Warshall)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "toc",
-      "code": "CS-06",
-      "name": "Theory of Computation",
-      "icon": "⚙️",
-      "weightage": "7-9%",
-      "color": "#3B82F6",
-      "units": [
-        {
-          "name": "Automata & Regular Languages",
-          "topics": [
-            "Deterministic & Non-Deterministic Finite Automata (DFA/NFA)",
-            "Regular Expressions & Regular Grammars",
-            "Pumping Lemma for Regular Languages"
-          ]
-        },
-        {
-          "name": "Context-Free Languages & Pushdown Automata",
-          "topics": [
-            "Context-Free Grammars (CFG) & Parsing",
-            "Pushdown Automata (PDA)",
-            "Closure Properties & Pumping Lemma for CFLs"
-          ]
-        },
-        {
-          "name": "Turing Machines & Undecidability",
-          "topics": [
-            "Turing Machines (TM) & Recursively Enumerable Sets",
-            "Halting Problem & Undecidability Theory",
-            "Rice's Theorem and Reduction"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "cd",
-      "code": "CS-07",
-      "name": "Compiler Design",
-      "icon": "🛠️",
-      "weightage": "4-6%",
-      "color": "#14B8A6",
-      "units": [
-        {
-          "name": "Lexical Analysis & Parsing",
-          "topics": [
-            "Lexical Analysis & Token Generation",
-            "Top-Down Parsing (LL(1)) & Bottom-Up Parsing (LR(0), SLR(1), LALR(1), CLR(1))"
-          ]
-        },
-        {
-          "name": "Syntax Directed Translation & Intermediate Code",
-          "topics": [
-            "Syntax-Directed Translation (SDT) & Attributes (S-attributed, L-attributed)",
-            "Intermediate Code Generation (Three-Address Code, DAGs)",
-            "Runtime Environments & Activation Records"
-          ]
-        },
-        {
-          "name": "Code Optimization & Data Flow Analysis",
-          "topics": [
-            "Local Optimization & Basic Blocks",
-            "Data Flow Analysis: Constant Propagation, Liveness Analysis",
-            "Common Subexpression Elimination"
+            "Transport Layer: UDP vs TCP Protocols",
+            "TCP Flow Control (Sliding Window) & Congestion Control",
+            "Socket API Basics",
+            "Application Layer Protocols: DNS, SMTP, HTTP, FTP, Email"
           ]
         }
       ]
@@ -256,32 +168,57 @@
       "code": "CS-08",
       "name": "Operating Systems",
       "icon": "🖥️",
-      "weightage": "8-10%",
+      "weightage": "9 Marks (9%)",
+      "marks": 9,
       "color": "#F43F5E",
       "units": [
         {
           "name": "Processes, Threads & Concurrency",
           "topics": [
             "System Calls & OS Architecture",
-            "Process States, PCB, Threads, Inter-Process Communication (IPC)",
-            "Concurrency, Synchronization, Semaphores, Mutex, Monitors",
-            "Classical Synchronization Problems (Producer-Consumer, Dining Philosophers)"
+            "Processes, Threads, Inter-Process Communication (IPC)",
+            "Concurrency and Synchronization (Semaphores, Mutex, Monitors)"
           ]
         },
         {
           "name": "Deadlock & CPU Scheduling",
           "topics": [
-            "Deadlock Characterization, Prevention, Avoidance (Banker's Algorithm), Detection",
-            "CPU Scheduling Algorithms (FCFS, SJF, SRTF, Round Robin, Priority)"
+            "Deadlock Characterization, Prevention, Avoidance, Detection",
+            "CPU & I/O Scheduling Algorithms"
           ]
         },
         {
           "name": "Memory & Storage Management",
           "topics": [
-            "Memory Management: Paging, Segmentation, Page Tables",
-            "Virtual Memory: Page Replacement Algorithms (FIFO, LRU, Optimal)",
-            "I/O Scheduling & Disk Scheduling Algorithms",
-            "File System Implementation & Directory Structures"
+            "Memory Management & Virtual Memory (Paging, Segmentation)",
+            "Page Replacement Algorithms",
+            "File Systems & Directory Structures"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "coa",
+      "code": "CS-03",
+      "name": "Computer Organization & Architecture",
+      "icon": "💻",
+      "weightage": "8 Marks (8%)",
+      "marks": 8,
+      "color": "#F59E0B",
+      "units": [
+        {
+          "name": "Machine Instructions & Control Unit",
+          "topics": [
+            "Machine Instructions & Addressing Modes",
+            "ALU, Data-Path and Control Unit Design"
+          ]
+        },
+        {
+          "name": "Pipelining & Memory Hierarchy",
+          "topics": [
+            "Instruction Pipelining & Pipeline Hazards",
+            "Memory Hierarchy: Cache, Main Memory, Secondary Storage",
+            "I/O Interface (Interrupt and DMA mode)"
           ]
         }
       ]
@@ -291,108 +228,124 @@
       "code": "CS-09",
       "name": "Databases",
       "icon": "🗄️",
-      "weightage": "7-9%",
+      "weightage": "7 Marks (7%)",
+      "marks": 7,
       "color": "#06B6D4",
       "units": [
         {
-          "name": "Data Models & Relational Query Languages",
+          "name": "Data Models & SQL",
           "topics": [
-            "Entity-Relationship (ER) Modeling",
-            "Relational Model: Relational Algebra & Tuple Relational Calculus",
-            "SQL Queries: DDL, DML, Joins, Aggregations, Subqueries"
+            "ER-Model",
+            "Relational Model: Relational Algebra, Tuple Calculus",
+            "SQL Queries: DDL, DML, Joins, Aggregations"
           ]
         },
         {
-          "name": "Database Design & Normalization",
+          "name": "Normalization & Transactions",
           "topics": [
-            "Functional Dependencies & Attribute Closure",
-            "Integrity Constraints",
-            "Normal Forms: 1NF, 2NF, 3NF, BCNF Decomposition"
-          ]
-        },
-        {
-          "name": "Transactions & File Organization",
-          "topics": [
-            "File Organization & Indexing (B-Trees and B+ Trees)",
-            "Transaction Processing (ACID Properties)",
-            "Concurrency Control: Serializability, Two-Phase Locking (2PL), Timestamp Ordering"
+            "Integrity Constraints, Normal Forms (1NF, 2NF, 3NF, BCNF)",
+            "File Organization & Indexing (B and B+ Trees)",
+            "Transactions & Concurrency Control"
           ]
         }
       ]
     },
     {
-      "id": "cn",
-      "code": "CS-10",
-      "name": "Computer Networks",
-      "icon": "🌐",
-      "weightage": "8-10%",
-      "color": "#A855F7",
+      "id": "algo",
+      "code": "CS-05",
+      "name": "Algorithms",
+      "icon": "⚡",
+      "weightage": "7 Marks (7%)",
+      "marks": 7,
+      "color": "#8B5CF6",
       "units": [
         {
-          "name": "Network Layering & Data Link Layer",
+          "name": "Complexity Analysis & Searching/Sorting",
           "topics": [
-            "Principles of Layering (OSI & TCP/IP Model)",
-            "Basics of Switching: Circuit, Packet, and Virtual Circuit Switching",
-            "Data Link Layer: Error Detection/Correction, Medium Access Control (MAC), Ethernet"
+            "Searching, Sorting & Hashing",
+            "Asymptotic Worst-Case Time & Space Complexity"
           ]
         },
         {
-          "name": "Network Layer & Routing",
+          "name": "Algorithm Design & Graph Algorithms",
           "topics": [
-            "IPv4 Addressing, Subnetting, CIDR Notation",
-            "Fragmentation & Reassembly, NAT (Network Address Translation)",
-            "Routing Algorithms: Distance Vector (RIP) & Link State (OSPF)"
-          ]
-        },
-        {
-          "name": "Transport & Application Layer",
-          "topics": [
-            "Transport Layer: UDP vs TCP Protocols",
-            "TCP Flow Control (Sliding Window) & Congestion Control (Slow Start, Fast Retransmit)",
-            "Socket API Basics",
-            "Application Layer Protocols: DNS and HTTP"
+            "Algorithm Design Techniques: Greedy, Dynamic Programming, Divide-and-Conquer",
+            "Graph Traversals (BFS, DFS)",
+            "Minimum Spanning Trees & Shortest Paths"
           ]
         }
       ]
     },
     {
-      "id": "ga",
-      "code": "GA-01",
-      "name": "General Aptitude",
-      "icon": "🧠",
-      "weightage": "15%",
+      "id": "dl",
+      "code": "CS-02",
+      "name": "Digital Logic",
+      "icon": "⚡",
+      "weightage": "6 Marks (6%)",
+      "marks": 6,
       "color": "#10B981",
       "units": [
         {
-          "name": "Verbal Aptitude",
+          "name": "Boolean Algebra & Minimization",
           "topics": [
-            "Basic English Grammar (Tenses, Articles, Prepositions, Conjunctions, Verb-Noun Agreement)",
-            "Basic Vocabulary (Idioms, Phrases, Contextual Meanings)",
-            "Reading Comprehension & Narrative Sequencing"
+            "Boolean Algebra Laws & Minimization (K-Maps)"
           ]
         },
         {
-          "name": "Quantitative Aptitude",
+          "name": "Circuits & Number Representation",
           "topics": [
-            "Data Interpretation (Bar Graphs, Pie Charts, Tables, Plots)",
-            "Numerical Computation & Estimation (Ratios, Percentages, Powers, Exponents, Logarithms)",
-            "Permutations & Combinations, Series",
-            "Mensuration & Geometry, Elementary Statistics and Probability"
+            "Combinational & Sequential Circuits",
+            "Number Representations & Computer Arithmetic (Fixed & Floating-Point)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "toc",
+      "code": "CS-06",
+      "name": "Theory of Computation",
+      "icon": "⚙️",
+      "weightage": "6 Marks (6%)",
+      "marks": 6,
+      "color": "#3B82F6",
+      "units": [
+        {
+          "name": "Automata & Grammars",
+          "topics": [
+            "Regular Expressions & Finite Automata",
+            "Context-Free Grammars & Push-Down Automata",
+            "Regular and Context-Free Languages, Pumping Lemma"
           ]
         },
         {
-          "name": "Analytical Aptitude",
+          "name": "Turing Machines & Undecidability",
           "topics": [
-            "Deductive & Inductive Logic",
-            "Analogy and Pattern Analysis",
-            "Numerical Relations and Reasoning"
+            "Turing Machines and Undecidability"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cd",
+      "code": "CS-07",
+      "name": "Compiler Design",
+      "icon": "🛠️",
+      "weightage": "4 Marks (4%)",
+      "marks": 4,
+      "color": "#14B8A6",
+      "units": [
+        {
+          "name": "Parsing & Intermediate Code",
+          "topics": [
+            "Lexical Analysis & Parsing",
+            "Syntax-Directed Translation & Intermediate Code Generation",
+            "Runtime Environments"
           ]
         },
         {
-          "name": "Spatial Aptitude",
+          "name": "Code Optimization & Data Flow Analysis",
           "topics": [
-            "Transformation of Shapes (Translation, Rotation, Scaling, Mirroring)",
-            "Paper Folding, Cutting, and 2D/3D Pattern Assembling"
+            "Local Optimization & Data Flow Analyses (Constant Propagation, Liveness Analysis, Common Subexpression Elimination)"
           ]
         }
       ]

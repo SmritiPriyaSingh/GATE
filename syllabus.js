@@ -1,24 +1,24 @@
 // Desktop Application Style GATE Syllabus Explorer & Workspace Engine
 
 let syllabusData = null;
-let selectedSubjectId = 'em'; // Default selected subject in desktop sidebar
+let selectedSubjectId = 'ga'; // Default selected subject (General Aptitude - 15 Marks)
 let activeFilter = 'all'; // 'all', 'in_progress', 'mastered', 'high_weightage'
 let searchQuery = '';
 let activeTopicWorkspace = null; // { subjectId, uIdx, tIdx, topicName, unitName }
 let collapsedUnits = {}; // { [unitKey]: true/false }
 
 const SUBJECT_SVGS = {
-  em: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 5-7 7-7-7"/><path d="m5 19 7-7 7 7"/></svg>`,
-  dl: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
-  coa: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>`,
+  ga: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><line x1="9" x2="15" y1="21" y2="21"/></svg>`,
   pds: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><circle cx="6" cy="19" r="3"/><circle cx="18" cy="19" r="3"/><line x1="10" x2="7.5" y1="7.5" y2="16.5"/><line x1="14" x2="16.5" y1="7.5" y2="16.5"/></svg>`,
-  algo: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
-  toc: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>`,
-  cd: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
-  os: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>`,
-  dbms: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
+  em: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 5-7 7-7-7"/><path d="m5 19 7-7 7 7"/></svg>`,
   cn: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" x2="22" y1="12" y2="12"/></svg>`,
-  ga: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/><line x1="9" x2="15" y1="21" y2="21"/></svg>`
+  os: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>`,
+  coa: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>`,
+  dbms: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
+  algo: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+  dl: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  toc: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>`,
+  cd: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`
 };
 
 async function loadSyllabusData() {
@@ -107,7 +107,7 @@ function isSubjectMatchingFilter(subject) {
     return stats.pct === 100;
   }
   if (activeFilter === 'high_weightage') {
-    return subject.weightage.includes('8') || subject.weightage.includes('10') || subject.weightage.includes('13') || subject.weightage.includes('15');
+    return (subject.marks && subject.marks >= 8) || subject.weightage.includes('8') || subject.weightage.includes('10') || subject.weightage.includes('13') || subject.weightage.includes('15');
   }
   return true;
 }
@@ -181,7 +181,7 @@ function renderSyllabusAppLayout() {
 
   // 3. Main Desktop Explorer: Left Sidebar + Right Subject Panel
   container.innerHTML = `
-    <div style="display:grid; grid-template-columns: 260px 1fr; gap:20px; align-items:start;">
+    <div style="display:grid; grid-template-columns: 270px 1fr; gap:20px; align-items:start;">
       
       <!-- Persistent Desktop Left Sidebar -->
       <div class="card" style="padding:14px 10px; position:sticky; top:70px;">
@@ -195,6 +195,7 @@ function renderSyllabusAppLayout() {
             const stats = calculateSubjectProgress(s);
             const isSelected = s.id === selectedSubjectId;
             const iconSVG = SUBJECT_SVGS[s.id] || SUBJECT_SVGS['em'];
+            const isHigh = s.marks >= 8;
 
             return `
               <div onclick="selectSubject('${s.id}')" style="display:flex; align-items:center; justify-content:space-between; padding:9px 10px; border-radius:6px; cursor:pointer; font-size:13px; font-weight:${isSelected ? '700' : '500'}; background:${isSelected ? 'var(--accent-subtle)' : 'transparent'}; color:${isSelected ? 'var(--accent-primary)' : 'var(--text-main)'}; border:1px solid ${isSelected ? 'var(--accent-primary)' : 'transparent'}; transition:background 0.15s ease;">
@@ -202,7 +203,10 @@ function renderSyllabusAppLayout() {
                   <span>${iconSVG}</span>
                   <span style="overflow:hidden; text-overflow:ellipsis;">${s.name}</span>
                 </div>
-                <span style="font-size:11px; font-weight:600; opacity:0.8; padding:2px 6px; border-radius:4px; background:${stats.pct === 100 ? 'rgba(16,185,129,0.15)' : 'var(--bg-surface-hover)'}; color:${stats.pct === 100 ? 'var(--color-success)' : 'inherit'};">${stats.pct}%</span>
+                <div style="display:flex; align-items:center; gap:4px;">
+                  ${isHigh ? `<span style="font-size:9px; font-weight:700; background:rgba(59,130,246,0.2); color:var(--accent-primary); padding:1px 4px; border-radius:3px;">HIGH</span>` : ''}
+                  <span style="font-size:11px; font-weight:600; opacity:0.8; padding:2px 6px; border-radius:4px; background:${stats.pct === 100 ? 'rgba(16,185,129,0.15)' : 'var(--bg-surface-hover)'}; color:${stats.pct === 100 ? 'var(--color-success)' : 'inherit'};">${stats.pct}%</span>
+                </div>
               </div>
             `;
           }).join('')}
@@ -226,6 +230,7 @@ function renderSelectedSubjectPanel(subjectId) {
   const stats = calculateSubjectProgress(subject);
   const iconSVG = SUBJECT_SVGS[subject.id] || SUBJECT_SVGS['em'];
   const prog = StorageManager.getSyllabusProgress();
+  const isHigh = subject.marks >= 8;
 
   return `
     <!-- Subject Header Banner -->
@@ -236,9 +241,12 @@ function renderSelectedSubjectPanel(subjectId) {
             ${iconSVG}
           </div>
           <div>
-            <h1 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:2px;">${subject.name}</h1>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <h1 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:2px;">${subject.name}</h1>
+              ${isHigh ? `<span style="font-size:11px; font-weight:700; background:rgba(59,130,246,0.15); color:var(--accent-primary); border:1px solid var(--accent-primary); padding:2px 8px; border-radius:6px;">High Weightage (${subject.weightage})</span>` : ''}
+            </div>
             <div style="font-size:12px; color:var(--text-sub);">
-              ${subject.code} • Weightage: <strong>${subject.weightage}</strong> • ${stats.total} Total Topics
+              ${subject.code} • Official Marks Weightage: <strong>${subject.weightage}</strong> • ${stats.total} Total Topics
             </div>
           </div>
         </div>
@@ -402,7 +410,7 @@ function renderTopicWorkspaceView(container) {
           <div style="font-size:18px; font-weight:700; margin-top:2px;">1h 20m</div>
         </div>
         <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); padding:12px; border-radius:8px;">
-          <div style="font-size:11px; color:var(--text-muted); font-weight:600;">WEIGHTAGE RANGE</div>
+          <div style="font-size:11px; color:var(--text-muted); font-weight:600;">OFFICIAL WEIGHTAGE</div>
           <div style="font-size:18px; font-weight:700; margin-top:2px; color:var(--accent-primary);">${subject.weightage}</div>
         </div>
       </div>
