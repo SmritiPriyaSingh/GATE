@@ -1,9 +1,9 @@
-// GitHub Insights + Apple Health + Notion Style Performance Analytics Platform (Heatmap Placed at Bottom)
+// GitHub Insights + Apple Health + Notion Style Performance Analytics Platform (Linear/Vercel Aesthetic Polish)
 
 let activeTimeRange = '30D'; // '7D', '30D', '90D', '1Y', 'ALL'
 let selectedSubjectFilter = 'all'; // 'all' or specific subject id
+let selectedHeatmapYear = '2027';
 let isReplayingProgress = false;
-let selectedHeatmapDay = null;
 
 function renderAnalyticsModule() {
   const container = document.getElementById('analytics-main-content');
@@ -57,7 +57,7 @@ function renderAnalyticsModule() {
   ];
 
   container.innerHTML = `
-    <!-- Top Header, Replay Progress CTA & Time Range Selector -->
+    <!-- Linear / Vercel Aesthetic Header -->
     <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px 24px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
       <div>
         <div style="display:flex; align-items:center; gap:10px;">
@@ -71,22 +71,16 @@ function renderAnalyticsModule() {
         <p style="color:#9CA3AF; font-size:13px;">Study consistency, accuracy trends, subject rankings, and activity timeline.</p>
       </div>
 
-      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-        <!-- Replay Progress Animation Button -->
-        <button class="btn-primary" style="font-size:12px; padding:7px 14px; background:linear-gradient(135deg, #3B82F6, #8B5CF6); border:none; display:flex; align-items:center; gap:6px;" onclick="triggerReplayProgressAnimation()">
-          <span>▶ Replay Progress</span>
-        </button>
-
-        <!-- Time Range Selector Pills -->
-        <div style="display:flex; background:#000000; border:1px solid #23262D; padding:3px; border-radius:8px; gap:2px;">
-          ${['7D', '30D', '90D', '1Y', 'ALL'].map(range => `
-            <button style="background:${activeTimeRange === range ? '#3B82F6' : 'transparent'}; color:${activeTimeRange === range ? '#ffffff' : '#9CA3AF'}; border:none; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.2s;" onclick="setTimeRangeFilter('${range}')">${range}</button>
-          `).join('')}
-        </div>
+      <!-- Linear/Vercel Style Clean Text Link Underline Time Filter -->
+      <div style="display:flex; align-items:center; gap:20px; border-bottom:1px solid #23262D; padding-bottom:4px;">
+        <span style="font-size:12px; font-weight:600; color:#9CA3AF; text-transform:uppercase;">Time Range:</span>
+        ${['7D', '30D', '90D', '1Y', 'ALL'].map(range => `
+          <button style="background:none; border:none; border-bottom:${activeTimeRange === range ? '2px solid #3B82F6' : '2px solid transparent'}; color:${activeTimeRange === range ? '#F5F5F5' : '#9CA3AF'}; font-weight:${activeTimeRange === range ? '700' : '500'}; padding:4px 2px; font-size:13px; cursor:pointer; transition:all 0.2s;" onclick="setTimeRangeFilter('${range}')">${range}</button>
+        `).join('')}
       </div>
     </div>
 
-    <!-- 1. Performance Summary Metrics with Delta Trend Indicators (NOW FIRST SECTION) -->
+    <!-- 1. Performance Summary Metrics with Delta Trend Indicators -->
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:14px; margin-bottom:20px;">
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px;">
         <div style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Current Accuracy</div>
@@ -340,16 +334,22 @@ function renderAnalyticsModule() {
       </div>
     </div>
 
-    <!-- 5. Soft GitHub-Style Study Activity Heatmap (MOVED TO VERY BOTTOM AS REQUESTED) -->
+    <!-- 5. Soft GitHub-Style Study Activity Heatmap with Year Selector & Replay CTA -->
     <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
-        <div>
-          <div style="font-size:15px; font-weight:700; color:#F5F5F5;">Study Activity & Consistency Grid</div>
-          <div style="font-size:12px; color:#9CA3AF;">Click any tile to inspect daily session logs.</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:12px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="font-size:15px; font-weight:700; color:#F5F5F5;">Study Activity Grid</div>
+          <select id="heatmap-year-select" style="background:#000000; border:1px solid #23262D; color:#F5F5F5; font-size:12px; padding:4px 8px; border-radius:6px; font-weight:600; cursor:pointer;" onchange="setHeatmapYear(this.value)">
+            <option value="2027" ${selectedHeatmapYear === '2027' ? 'selected' : ''}>2027</option>
+            <option value="2026" ${selectedHeatmapYear === '2026' ? 'selected' : ''}>2026</option>
+          </select>
         </div>
 
-        <div style="font-size:12px; color:#9CA3AF;">
-          845 Questions Solved &bull; 142 Study Hours
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="btn-secondary" style="font-size:12px; padding:5px 12px; display:inline-flex; align-items:center; gap:6px; color:#3B82F6; border-color:rgba(59,130,246,0.3);" onclick="triggerReplayProgressAnimation()">
+            <span>▶ Replay Timeline</span>
+          </button>
+          <div style="font-size:12px; color:#9CA3AF;">845 Solved &bull; 142 Hours</div>
         </div>
       </div>
 
@@ -378,7 +378,7 @@ function renderAnalyticsModule() {
             const dayNum = (idx % 28) + 1;
             return `
               <div class="heatmap-tile" style="aspect-ratio:1; background:${bg}; border-radius:2px; cursor:pointer; transition:all 0.15s;" 
-                onclick="inspectHeatmapDay('19 Aug 2026', ${dayNum * 3}, '4h 18m', ${Math.min(95, 70 + dayNum)})"
+                onclick="inspectHeatmapDay('${dayNum} Aug ${selectedHeatmapYear}', ${dayNum * 3}, '4h 18m', ${Math.min(95, 70 + dayNum)})"
                 title="${dayNum} Aug: ${dayNum * 3} Questions Solved">
               </div>
             `;
@@ -405,6 +405,11 @@ function renderAnalyticsModule() {
 
 function setTimeRangeFilter(range) {
   activeTimeRange = range;
+  renderAnalyticsModule();
+}
+
+function setHeatmapYear(yr) {
+  selectedHeatmapYear = yr;
   renderAnalyticsModule();
 }
 
@@ -462,6 +467,7 @@ function triggerReplayProgressAnimation() {
 
 window.renderAnalyticsModule = renderAnalyticsModule;
 window.setTimeRangeFilter = setTimeRangeFilter;
+window.setHeatmapYear = setHeatmapYear;
 window.setAnalyticsSubjectFilter = setAnalyticsSubjectFilter;
 window.inspectHeatmapDay = inspectHeatmapDay;
 window.triggerReplayProgressAnimation = triggerReplayProgressAnimation;
