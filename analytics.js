@@ -1,4 +1,4 @@
-// TradingView + GitHub Insights Style SVG Line & Area Charts Engine for GATE CSE 2027
+// Spline Curve Wave Line Chart Engine for Performance Analytics (Exact Meta-Chart / TradingView Sine Wave Pattern)
 
 let activeTimeRange = '30D'; // '7D', '30D', '90D', '1Y', 'ALL'
 let selectedSubjectFilter = 'all'; // 'all' or specific subject id
@@ -9,41 +9,41 @@ let isReplayingProgress = false;
 const CHART_DATASETS = {
   '7D': {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    accuracy: [78, 80, 81, 83, 82, 85, 87],
-    questions: [35, 22, 48, 15, 30, 42, 25],
-    hours: [4.2, 3.0, 5.1, 2.0, 3.8, 5.5, 3.2],
+    accuracy: [65, 88, 70, 65, 80, 88, 80],
+    questions: [30, 48, 25, 18, 40, 52, 35],
+    hours: [3.0, 5.2, 2.5, 1.8, 4.0, 5.5, 3.8],
     trend: 'up',
     delta: '+4.2%'
   },
   '30D': {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-    accuracy: [65, 72, 78, 84],
-    questions: [140, 185, 210, 260],
-    hours: [28, 35, 42, 48],
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    accuracy: [65, 88, 70, 65, 80, 88, 80],
+    questions: [140, 220, 160, 130, 195, 240, 210],
+    hours: [28, 45, 30, 24, 40, 52, 42],
     trend: 'up',
     delta: '+8.4%'
   },
   '90D': {
-    labels: ['Month 1', 'Month 2', 'Month 3'],
-    accuracy: [58, 68, 84],
-    questions: [320, 450, 680],
-    hours: [75, 98, 142],
+    labels: ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'],
+    accuracy: [58, 85, 68, 62, 78, 88],
+    questions: [320, 480, 360, 310, 440, 520],
+    hours: [75, 110, 80, 70, 100, 125],
     trend: 'up',
     delta: '+14.6%'
   },
   '1Y': {
-    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-    accuracy: [52, 64, 75, 84],
-    questions: [600, 950, 1400, 2100],
-    hours: [120, 210, 310, 420],
+    labels: ['Jan', 'Mar', 'May', 'Jul', 'Sep', 'Nov'],
+    accuracy: [52, 78, 62, 85, 74, 88],
+    questions: [600, 950, 780, 1200, 980, 1400],
+    hours: [120, 210, 160, 280, 220, 340],
     trend: 'up',
     delta: '+32.0%'
   },
   'ALL': {
-    labels: ['2025 H1', '2025 H2', '2026 H1', '2026 H2'],
-    accuracy: [45, 58, 72, 85],
-    questions: [800, 1500, 2400, 3200],
-    hours: [180, 320, 480, 640],
+    labels: ['2025 Q1', '2025 Q2', '2025 Q3', '2025 Q4', '2026 Q1', '2026 Q2'],
+    accuracy: [45, 75, 60, 82, 70, 88],
+    questions: [800, 1400, 1100, 1800, 1500, 2200],
+    hours: [180, 300, 240, 400, 320, 480],
     trend: 'up',
     delta: '+40.0%'
   }
@@ -61,7 +61,7 @@ function renderAnalyticsModule() {
     container.innerHTML = `
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px 24px; margin-bottom:20px;">
         <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; color:#F5F5F5; margin-bottom:4px;">Performance Analytics</h2>
-        <p style="color:#9CA3AF; font-size:13px;">Diagnostic study report, TradingView SVG charts, activity heatmap, and goal progress.</p>
+        <p style="color:#9CA3AF; font-size:13px;">Diagnostic study report, Spline Wave line charts, activity heatmap, and goal progress.</p>
       </div>
 
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; text-align:center; padding:48px 24px;">
@@ -112,7 +112,7 @@ function renderAnalyticsModule() {
             </span>
           ` : ''}
         </div>
-        <p style="color:#9CA3AF; font-size:13px;">TradingView style interactive SVG curves, accuracy trends, and activity heatmap.</p>
+        <p style="color:#9CA3AF; font-size:13px;">Spline curve wave line charts, accuracy trends, and activity heatmap.</p>
       </div>
 
       <!-- Linear / Vercel Style Clean Underline Time Range Selector -->
@@ -163,51 +163,51 @@ function renderAnalyticsModule() {
       </div>
     </div>
 
-    <!-- 2. TradingView & GitHub Insights Style Smooth SVG Line/Area Charts (2x2 Grid) -->
+    <!-- 2. Exact Sine Wave Spline Curve Line Charts Pattern (2x2 Grid) -->
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
       
-      <!-- Chart 1: Accuracy Trend SVG Smooth Curve Line Chart -->
+      <!-- Chart 1: Accuracy Spline Curve Line Chart (#10B981 Green) -->
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <div>
-            <div style="font-size:14px; font-weight:700; color:#F5F5F5;">Accuracy Trend Curve</div>
-            <div style="font-size:11px; color:#9CA3AF;">TradingView Bézier Line &bull; <span style="color:#10B981;">${currentSet.delta} (${activeTimeRange})</span></div>
+            <div style="font-size:14px; font-weight:700; color:#F5F5F5;">Accuracy Progress Curve</div>
+            <div style="font-size:11px; color:#9CA3AF;">Spline Curve Line Chart &bull; <span style="color:#10B981;">${currentSet.delta} (${activeTimeRange})</span></div>
           </div>
           <span style="font-size:11px; background:rgba(16,185,129,0.15); color:#10B981; border:1px solid #10B981; padding:2px 8px; border-radius:12px; font-weight:700;">+ Upward</span>
         </div>
 
-        <div style="height:150px; position:relative; width:100%;">
-          ${generateSVGLineChart(currentSet.accuracy, currentSet.labels, '#10B981', 'accGradient')}
+        <div style="height:170px; position:relative; width:100%;">
+          ${generateSplineWaveChart(currentSet.accuracy, currentSet.labels, '#10B981')}
         </div>
       </div>
 
-      <!-- Chart 2: Questions Solved Velocity SVG Area Chart -->
+      <!-- Chart 2: Questions Solved Spline Curve Line Chart (#06B6D4 Cyan) -->
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <div>
-            <div style="font-size:14px; font-weight:700; color:#F5F5F5;">Questions Solved Velocity</div>
-            <div style="font-size:11px; color:#9CA3AF;">GitHub Insights Area Graph &bull; Cyan Metric</div>
+            <div style="font-size:14px; font-weight:700; color:#F5F5F5;">Questions Solved Curve</div>
+            <div style="font-size:11px; color:#9CA3AF;">Spline Curve Line Chart &bull; Cyan Metric</div>
           </div>
-          <span style="font-size:11px; background:rgba(6,182,212,0.15); color:#06B6D4; border:1px solid #06B6D4; padding:2px 8px; border-radius:12px; font-weight:700;">Active</span>
+          <span style="font-size:11px; background:rgba(6,182,212,0.15); color:#06B6D4; border:1px solid #06B6D4; padding:2px 8px; border-radius:12px; font-weight:700;">Velocity</span>
         </div>
 
-        <div style="height:150px; position:relative; width:100%;">
-          ${generateSVGLineChart(currentSet.questions, currentSet.labels, '#06B6D4', 'qGradient')}
+        <div style="height:170px; position:relative; width:100%;">
+          ${generateSplineWaveChart(currentSet.questions, currentSet.labels, '#06B6D4')}
         </div>
       </div>
 
-      <!-- Chart 3: Study Hours Velocity SVG Area Chart -->
+      <!-- Chart 3: Study Hours Spline Curve Line Chart (#8B5CF6 Purple) -->
       <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <div>
-            <div style="font-size:14px; font-weight:700; color:#F5F5F5;">Daily Study Hours</div>
-            <div style="font-size:11px; color:#9CA3AF;">Purple Time Area Graph</div>
+            <div style="font-size:14px; font-weight:700; color:#F5F5F5;">Daily Study Hours Curve</div>
+            <div style="font-size:11px; color:#9CA3AF;">Spline Curve Line Chart &bull; Purple Metric</div>
           </div>
-          <span style="font-size:11px; background:rgba(139,92,246,0.15); color:#8B5CF6; border:1px solid #8B5CF6; padding:2px 8px; border-radius:12px; font-weight:700;">Tracked</span>
+          <span style="font-size:11px; background:rgba(139,92,246,0.15); color:#8B5CF6; border:1px solid #8B5CF6; padding:2px 8px; border-radius:12px; font-weight:700;">Duration</span>
         </div>
 
-        <div style="height:150px; position:relative; width:100%;">
-          ${generateSVGLineChart(currentSet.hours, currentSet.labels, '#8B5CF6', 'hrsGradient')}
+        <div style="height:170px; position:relative; width:100%;">
+          ${generateSplineWaveChart(currentSet.hours, currentSet.labels, '#8B5CF6')}
         </div>
       </div>
 
@@ -434,60 +434,58 @@ function renderAnalyticsModule() {
   `;
 }
 
-// 🌟 TradingView SVG Smooth Curve Line & Area Chart Generator
-function generateSVGLineChart(dataPoints, labels, strokeColor, gradientId) {
+// 🌟 Spline Curve Wave Line Chart Generator (Matching User's Meta-Chart / Sine Wave Image Pattern)
+function generateSplineWaveChart(dataPoints, labels, strokeColor) {
   const width = 500;
-  const height = 110;
-  const padding = 15;
+  const height = 120;
+  const paddingX = 30;
+  const paddingY = 20;
 
-  const minVal = Math.min(...dataPoints) * 0.9;
-  const maxVal = Math.max(...dataPoints) * 1.1 || 1;
+  const minVal = Math.min(...dataPoints);
+  const maxVal = Math.max(...dataPoints);
+  const range = maxVal - minVal || 1;
 
-  // Compute X and Y coordinates
+  // Compute exact coordinates
   const pts = dataPoints.map((val, idx) => {
-    const x = padding + (idx / (dataPoints.length - 1)) * (width - 2 * padding);
-    const y = height - padding - ((val - minVal) / (maxVal - minVal)) * (height - 2 * padding);
-    return { x, y, val };
+    const x = paddingX + (idx / (dataPoints.length - 1)) * (width - 2 * paddingX);
+    const y = height - paddingY - ((val - minVal) / range) * (height - 2 * paddingY);
+    return { x, y, val, label: labels[idx] || '' };
   });
 
-  // Construct Bézier Smooth Curve Path
+  // Build Cubic Spline path with smooth wave controls
   let pathD = `M ${pts[0].x} ${pts[0].y}`;
   for (let i = 0; i < pts.length - 1; i++) {
-    const xc = (pts[i].x + pts[i + 1].x) / 2;
-    const yc = (pts[i].y + pts[i + 1].y) / 2;
-    pathD += ` Q ${pts[i].x} ${pts[i].y}, ${xc} ${yc}`;
-  }
-  pathD += ` T ${pts[pts.length - 1].x} ${pts[pts.length - 1].y}`;
+    const p0 = pts[i === 0 ? i : i - 1];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[i + 2 < pts.length ? i + 2 : i + 1];
 
-  // Area Fill Path
-  const areaD = `${pathD} L ${pts[pts.length - 1].x} ${height} L ${pts[0].x} ${height} Z`;
+    const cp1x = p1.x + (p2.x - p0.x) / 6;
+    const cp1y = p1.y + (p2.y - p0.y) / 6;
+    const cp2x = p2.x - (p3.x - p1.x) / 6;
+    const cp2y = p2.y - (p3.y - p1.y) / 6;
+
+    pathD += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`;
+  }
 
   return `
-    <svg viewBox="0 0 ${width} ${height + 25}" style="width:100%; height:100%; overflow:visible;">
-      <defs>
-        <linearGradient id="${gradientId}" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="${strokeColor}" stop-opacity="0.35" />
-          <stop offset="100%" stop-color="${strokeColor}" stop-opacity="0.0" />
-        </linearGradient>
-      </defs>
+    <svg viewBox="0 0 ${width} ${height + 35}" style="width:100%; height:100%; border:1px solid #23262D; border-radius:8px; background:#000000; padding:6px; box-sizing:border-box;">
+      <!-- Grid Horizontal Reference Lines -->
+      <line x1="${paddingX}" y1="20" x2="${width - paddingX}" y2="20" stroke="#23262D" stroke-width="1" />
+      <line x1="${paddingX}" y1="50" x2="${width - paddingX}" y2="50" stroke="#23262D" stroke-width="1" />
+      <line x1="${paddingX}" y1="80" x2="${width - paddingX}" y2="80" stroke="#23262D" stroke-width="1" />
+      <line x1="${paddingX}" y1="110" x2="${width - paddingX}" y2="110" stroke="#23262D" stroke-width="1" />
 
-      <!-- Grid Background Lines -->
-      <line x1="0" y1="20" x2="${width}" y2="20" stroke="#23262D" stroke-dasharray="3,3" />
-      <line x1="0" y1="60" x2="${width}" y2="60" stroke="#23262D" stroke-dasharray="3,3" />
-      <line x1="0" y1="95" x2="${width}" y2="95" stroke="#23262D" stroke-dasharray="3,3" />
+      <!-- Spline Wave Curve Line -->
+      <path d="${pathD}" fill="none" stroke="${strokeColor}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
 
-      <!-- Area Fill -->
-      <path d="${areaD}" fill="url(#${gradientId})" />
-
-      <!-- Smooth Curve Stroke Line -->
-      <path d="${pathD}" fill="none" stroke="${strokeColor}" stroke-width="2.5" stroke-linecap="round" />
-
-      <!-- Data Nodes & Tooltips -->
-      ${pts.map((p, i) => `
-        <circle cx="${p.x}" cy="${p.y}" r="4" fill="${strokeColor}" stroke="#0F1115" stroke-width="2" class="chart-node" style="cursor:pointer; transition:all 0.2s;">
-          <title>${labels[i] || ''}: ${p.val}</title>
+      <!-- Data Point Circles & X-Axis Labels -->
+      ${pts.map((p) => `
+        <circle cx="${p.x}" cy="${p.y}" r="5" fill="${strokeColor}" stroke="#000000" stroke-width="2" style="cursor:pointer;" title="${p.label}: ${p.val}">
+          <title>${p.label}: ${p.val}</title>
         </circle>
-        <text x="${p.x}" y="${height + 20}" text-anchor="middle" fill="#9CA3AF" font-size="10" font-weight="600">${labels[i] || ''}</text>
+        <line x1="${p.x}" y1="110" x2="${p.x}" y2="115" stroke="#3B82F6" stroke-width="1" />
+        <text x="${p.x}" y="130" text-anchor="middle" fill="#9CA3AF" font-size="10" font-weight="500">${p.label}</text>
       `).join('')}
     </svg>
   `;
