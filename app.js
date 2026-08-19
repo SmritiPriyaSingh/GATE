@@ -96,6 +96,14 @@ function navigateToView(targetView) {
 
   if (targetView === 'dashboard' && window.renderCommandCenter) {
     window.renderCommandCenter();
+  } else if (targetView === 'syllabus' && window.renderSyllabusAppLayout) {
+    window.renderSyllabusAppLayout();
+  } else if (targetView === 'practice' && window.renderPracticeModule) {
+    window.renderPracticeModule();
+  } else if (targetView === 'pyq' && window.renderPYQLibrary) {
+    window.renderPYQLibrary();
+  } else if (targetView === 'cbt' && window.renderCBTWelcomeHub) {
+    window.renderCBTWelcomeHub();
   } else if (targetView === 'profile' && window.renderProfileModule) {
     window.renderProfileModule();
   } else if (targetView === 'settings' && window.renderSettingsModule) {

@@ -218,9 +218,13 @@ function promptPreExamModal(type) {
 
 function openInstructionsModal() {
   const modal = document.getElementById('cbt-instructions-modal');
-  if (!modal) return;
+  const config = pendingExamConfig || { type: 'full', title: 'Official GATE CSE Examination', count: 65, mins: 180 };
 
-  const config = pendingExamConfig || { title: 'Official GATE CSE Examination', count: 65, mins: 180 };
+  if (!modal) {
+    // Fallback execution if modal container is missing
+    startCBTExam(config.type, config);
+    return;
+  }
 
   const detailsContainer = document.getElementById('cbt-modal-details-summary');
   if (detailsContainer) {
