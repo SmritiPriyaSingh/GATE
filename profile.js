@@ -40,7 +40,7 @@ function renderProfileModule() {
   const completedTopics = Object.values(prog).filter(v => v === 'completed').length;
   const syllabusPct = totalTopics > 0 ? Math.round((completedTopics / totalTopics) * 100) : 0;
 
-  const testHistory = JSON.parse(localStorage.getItem('gate2027_test_history')) || [];
+  const testHistory = StorageManager.getTestHistory();
   const mockCount = testHistory.length;
   let accuracy = 0;
   if (mockCount > 0) {

@@ -4,7 +4,7 @@ function renderAnalyticsModule() {
   const container = document.getElementById('analytics-main-content');
   if (!container) return;
 
-  const testHistory = JSON.parse(localStorage.getItem('gate2027_test_history')) || [];
+  const testHistory = StorageManager.getTestHistory();
   const prog = StorageManager.getSyllabusProgress();
   const heatmap = StorageManager.getHeatmapData();
 

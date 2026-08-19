@@ -10,6 +10,7 @@ const STORAGE_KEYS = {
   STUDY_HEATMAP: 'gate2027_study_heatmap',
   USER_PROFILE: 'gate2027_user_profile',
   USER_SETTINGS: 'gate2027_user_settings',
+  PYQ_PROGRESS: 'gate2027_pyq_progress',
   DEMO_MODE: 'gate2027_demo_mode'
 };
 
@@ -55,7 +56,18 @@ const DEMO_DATA = {
     '2026-08-11': 7, '2026-08-10': 13, '2026-08-09': 5, '2026-08-08': 10
   },
 
-  bookmarks: ['pyq_2026_q1', 'pyq_2025_q5', 'pyq_2024_q12']
+  bookmarks: ['pyq_2026_q1', 'pyq_2025_q5', 'pyq_2024_q12'],
+
+  notes: {
+    'Linear Algebra': 'Eigenvalues: det(A - lambda*I) = 0. Trace = sum of eigenvalues.',
+    'Deadlock Conditions': '1. Mutual Exclusion\n2. Hold and Wait\n3. No Preemption\n4. Circular Wait'
+  },
+
+  pyqProgress: {
+    '2026': { completed: 65, accuracy: 88, bestScore: '72.10', lastAttempt: 'Today' },
+    '2025': { completed: 42, accuracy: 82, bestScore: '68.40', lastAttempt: '3 days ago' },
+    '2024': { completed: 65, accuracy: 80, bestScore: '61.00', lastAttempt: '1 week ago' }
+  }
 };
 
 const StorageManager = {
@@ -65,7 +77,17 @@ const StorageManager = {
   },
   setDemoMode(enabled) {
     localStorage.setItem(STORAGE_KEYS.DEMO_MODE, enabled ? 'true' : 'false');
-    window.location.reload();
+    
+    // Instantly re-render all modules without full page reload
+    if (window.renderDashboardStats) window.renderDashboardStats();
+    if (window.renderCommandCenter) window.renderCommandCenter();
+    if (window.renderAnalyticsModule) window.renderAnalyticsModule();
+    if (window.renderPracticeModule) window.renderPracticeModule();
+    if (window.renderPYQLibrary) window.renderPYQLibrary();
+    if (window.renderCBTWelcomeHub) window.renderCBTWelcomeHub();
+    if (window.initRevisionModule) window.initRevisionModule();
+    if (window.renderProfileModule) window.renderProfileModule();
+    if (window.renderSettingsModule) window.renderSettingsModule();
   },
 
   // User Profile
@@ -118,27 +140,6 @@ const StorageManager = {
   saveTodayTasks(tasks) {
     localStorage.setItem(STORAGE_KEYS.TODAY_TASKS, JSON.stringify(tasks));
   },
-  toggleTask(taskId) {
-    const tasks = this.getTodayTasks();
-    const task = tasks.find(t => t.id === taskId);
-    if (task) {
-      task.done = !task.done;
-      this.saveTodayTasks(tasks);
-    }
-    return tasks;
-  },
-  addTask(text) {
-    if (!text.trim()) return;
-    const tasks = this.getTodayTasks();
-    tasks.push({ id: 't_' + Date.now(), text: text.trim(), done: false });
-    this.saveTodayTasks(tasks);
-    return tasks;
-  },
-  deleteTask(taskId) {
-    const tasks = this.getTodayTasks().filter(t => t.id !== taskId);
-    this.saveTodayTasks(tasks);
-    return tasks;
-  },
 
   // Last Studied Topic
   getLastTopic() {
@@ -181,6 +182,29 @@ const StorageManager = {
   getTestHistory() {
     if (this.isDemoMode()) return DEMO_DATA.testHistory;
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.TEST_HISTORY)) || [];
+  },
+  saveTestHistory(history) {
+    localStorage.setItem(STORAGE_KEYS.TEST_HISTORY, JSON.stringify(history));
+  },
+
+  // PYQ Paper Progress
+  getPYQProgress() {
+    if (this.isDemoMode()) return DEMO_DATA.pyqProgress;
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.PYQ_PROGRESS)) || {};
+  },
+  savePYQProgress(progress) {
+    localStorage.setItem(STORAGE_KEYS.PYQ_PROGRESS, JSON.stringify(progress));
+  },
+
+  // Notes
+  getAllTopicNotes() {
+    if (this.isDemoMode()) return DEMO_DATA.notes;
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_NOTES)) || {};
+  },
+  saveTopicNotes(key, text) {
+    const notes = this.getAllTopicNotes();
+    notes[key] = text;
+    localStorage.setItem(STORAGE_KEYS.USER_NOTES, JSON.stringify(notes));
   },
 
   // Clear All Data

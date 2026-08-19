@@ -30,7 +30,7 @@ function renderCBTWelcomeHub() {
   const container = document.getElementById('cbt-welcome-screen');
   if (!container) return;
 
-  const testHistory = JSON.parse(localStorage.getItem('gate2027_test_history')) || [];
+  const testHistory = StorageManager.getTestHistory();
   const fullMocksCount = testHistory.filter(t => t.maxMarks >= 60).length;
   const miniMocksCount = testHistory.filter(t => t.maxMarks < 60).length;
   
@@ -584,7 +584,7 @@ function submitCBTExam(autoSubmitted = false) {
     detailedReport.push({ question: q, userAns, isCorrect });
   });
 
-  const testHistory = JSON.parse(localStorage.getItem('gate2027_test_history')) || [];
+  const testHistory = StorageManager.getTestHistory();
   testHistory.push({
     date: new Date().toLocaleDateString(),
     score: Math.max(0, totalMarksScored).toFixed(2),
@@ -594,7 +594,7 @@ function submitCBTExam(autoSubmitted = false) {
     wrongCount,
     unattemptedCount
   });
-  localStorage.setItem('gate2027_test_history', JSON.stringify(testHistory));
+  StorageManager.saveTestHistory(testHistory);
 
   renderCBTResults(totalMarksScored, maxMarks, correctCount, wrongCount, unattemptedCount, detailedReport);
   if (window.renderDashboardStats) window.renderDashboardStats();

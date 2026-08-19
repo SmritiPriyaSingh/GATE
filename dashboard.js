@@ -152,7 +152,7 @@ function renderSubjectProgress() {
 
 // 5. Diagnostics & Activity Feed
 function renderActivityAndDiagnostics() {
-  const testHistory = JSON.parse(localStorage.getItem('gate2027_test_history')) || [];
+  const testHistory = StorageManager.getTestHistory();
   const heatmap = StorageManager.getHeatmapData();
 
   const activityContainer = document.getElementById('cmd-activity-feed');
