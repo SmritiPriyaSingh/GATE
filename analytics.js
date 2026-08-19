@@ -1,26 +1,25 @@
-// Notion + TradingView + Duolingo + GitHub Insights Performance Analytics Platform
+// Linear + Vercel + TradingView Single-Accent Dense Performance Analytics Engine
 
 let activeTimeRange = '30D'; // '7D', '30D', '90D', '1Y', 'ALL'
 let heatmapViewMode = 'daily'; // 'daily' or 'monthly'
 let selectedSubjectFilter = 'all'; // 'all' or specific subject id
 let selectedHeatmapYear = '2027';
 let isReplayingProgress = false;
-let isDropdownOpen = false;
 
 // Dynamic Datasets for 7D, 30D, 90D, 1Y, ALL
 const CHART_DATASETS = {
   '7D': {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    accuracy: [65, 88, 70, 65, 80, 88, 80],
-    questions: [30, 48, 25, 18, 40, 52, 35],
+    accuracy: [78, 80, 81, 83, 82, 85, 87],
+    questions: [35, 22, 48, 15, 30, 42, 25],
     hours: [3.0, 5.2, 2.5, 1.8, 4.0, 5.5, 3.8],
     delta: '+4.2%'
   },
   '30D': {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    accuracy: [65, 88, 70, 65, 80, 88, 80],
-    questions: [140, 220, 160, 130, 195, 240, 210],
-    hours: [28, 45, 30, 24, 40, 52, 42],
+    labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+    accuracy: [80, 82, 84, 86, 88, 90],
+    questions: [140, 220, 160, 130, 195, 240],
+    hours: [28, 45, 30, 24, 40, 52],
     delta: '+8.4%'
   },
   '90D': {
@@ -56,24 +55,24 @@ function renderAnalyticsModule() {
   // Onboarding Empty State (If Demo Mode is OFF and 0 real test activity exists)
   if (!isDemo && testHistory.length === 0) {
     container.innerHTML = `
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px 24px; margin-bottom:20px;">
-        <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; color:#F5F5F5; margin-bottom:4px;">Performance Analytics</h2>
-        <p style="color:#9CA3AF; font-size:13px;">Diagnostic study report, TradingView SVG charts, activity heatmap, and goal progress.</p>
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px 20px; margin-bottom:16px;">
+        <h2 style="font-family:'Outfit', sans-serif; font-size:20px; font-weight:700; color:#F5F5F5; margin-bottom:2px;">Performance Analytics</h2>
+        <p style="color:#9CA3AF; font-size:12px;">Diagnostic study report, TradingView SVG charts, activity heatmap, and goal progress.</p>
       </div>
 
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; text-align:center; padding:48px 24px;">
-        <div style="width:56px; height:56px; border-radius:50%; background:rgba(59,130,246,0.1); color:#3B82F6; display:flex; align-items:center; justify-content:center; margin:0 auto 16px auto;">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; text-align:center; padding:36px 20px;">
+        <div style="width:48px; height:48px; border-radius:50%; background:rgba(59,130,246,0.1); color:#3B82F6; display:flex; align-items:center; justify-content:center; margin:0 auto 12px auto;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         </div>
-        <h3 style="font-family:'Outfit', sans-serif; font-size:20px; font-weight:700; color:#F5F5F5; margin-bottom:8px;">No Study Data Recorded Yet</h3>
-        <p style="color:#9CA3AF; max-width:540px; margin:0 auto 20px auto; font-size:14px; line-height:1.6;">
-          Demo Mode is currently OFF. You can start practicing questions, take a mock test, or turn ON Demo Mode to preview 6 months of sample student analytics immediately.
+        <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; color:#F5F5F5; margin-bottom:6px;">No Study Data Recorded Yet</h3>
+        <p style="color:#9CA3AF; max-width:480px; margin:0 auto 16px auto; font-size:13px; line-height:1.5;">
+          Demo Mode is currently OFF. You can start practicing questions, take a mock test, or turn ON Demo Mode to preview sample student analytics immediately.
         </p>
 
-        <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-          <button class="btn-primary" style="font-size:13px; padding:10px 20px;" onclick="StorageManager.setDemoMode(true)">⚙️ Enable Demo Mode Now</button>
-          <button class="btn-secondary" style="font-size:13px; padding:10px 20px;" onclick="navigateToView('practice')">Start Practice Center ➔</button>
-          <button class="btn-secondary" style="font-size:13px; padding:10px 20px;" onclick="navigateToView('cbt')">Take Full Mock Test ➔</button>
+        <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+          <button class="btn-primary" style="font-size:12px; padding:8px 16px;" onclick="StorageManager.setDemoMode(true)">⚙️ Enable Demo Mode Now</button>
+          <button class="btn-secondary" style="font-size:12px; padding:8px 16px;" onclick="navigateToView('practice')">Start Practice Center ➔</button>
+          <button class="btn-secondary" style="font-size:12px; padding:8px 16px;" onclick="navigateToView('cbt')">Take Full Mock Test ➔</button>
         </div>
       </div>
     `;
@@ -98,281 +97,223 @@ function renderAnalyticsModule() {
   ];
 
   container.innerHTML = `
-    <!-- 1. Hero Journey Card (Top Header) -->
-    <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:24px; margin-bottom:20px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:16px;">
-        <div>
-          <div style="font-size:11px; font-weight:700; color:#3B82F6; text-transform:uppercase;">GATE CSE 2027 Journey</div>
-          <h2 style="font-family:'Outfit', sans-serif; font-size:24px; font-weight:700; color:#F5F5F5; margin-top:2px;">Study Journey &bull; Day 93 / 180</h2>
-        </div>
-
-        <div style="display:flex; align-items:center; gap:12px; font-size:13px; color:#9CA3AF;">
-          <div>Started: <strong style="color:#F5F5F5;">22 Aug 2026</strong></div>
-          <div>&bull;</div>
-          <div>Target Exam: <strong style="color:#F5F5F5;">1 Feb 2027</strong></div>
-          <div>&bull;</div>
-          <div style="background:rgba(245,158,11,0.15); color:#F59E0B; border:1px solid #F59E0B; padding:3px 10px; border-radius:12px; font-weight:700; font-size:12px;">87 Days Remaining</div>
-        </div>
+    <!-- Header with Integrated Underline Time Filter -->
+    <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px 20px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <div>
+        <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; color:#F5F5F5; margin-bottom:2px;">Performance Analytics</h2>
+        <p style="color:#9CA3AF; font-size:12px;">GATE 2027 Diagnostic report, TradingView smooth curves, and GitHub study activity.</p>
       </div>
 
-      <!-- Main Journey Progress Bar -->
-      <div style="margin-bottom:16px;">
-        <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; color:#9CA3AF; margin-bottom:6px;">
-          <span>GATE Preparation Timeline</span>
-          <span style="color:#3B82F6; font-weight:700;">52% Completed</span>
-        </div>
-        <div style="height:10px; background:#161920; border-radius:5px; overflow:hidden;">
-          <div style="width:52%; height:100%; background:linear-gradient(90deg, #3B82F6, #10B981); border-radius:5px;"></div>
-        </div>
-      </div>
-
-      <!-- Today's Daily Target Meter -->
-      <div style="background:#161920; border:1px solid #23262D; border-radius:8px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-        <div style="font-size:13px; font-weight:600; color:#F5F5F5;">Today's Mission Target</div>
-        <div style="display:flex; align-items:center; gap:14px; flex:1; max-width:400px;">
-          <div style="flex:1; height:8px; background:#0F1115; border-radius:4px; overflow:hidden;">
-            <div style="width:80%; height:100%; background:#10B981;"></div>
-          </div>
-          <span style="font-size:13px; font-weight:700; color:#10B981;">8 / 10 Questions (80%)</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2. Emotional Quick Stats (2x2 Grid) -->
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-bottom:20px;">
-      
-      <!-- Active Study Days -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:18px;">
-        <div style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Active Study Days</div>
-        <div style="font-size:24px; font-weight:700; color:#F5F5F5; margin-top:4px;">93 / 180 Days</div>
-        <div style="font-size:11px; color:#10B981; margin-top:2px;">Consistency: 87% &bull; Missed: 8 Days</div>
-      </div>
-
-      <!-- Streak & Flames -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:18px;">
-        <div style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Current Streak</div>
-        <div style="font-size:24px; font-weight:700; color:#F59E0B; margin-top:4px;">18 Days 🔥</div>
-        <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Longest: 41 Days &bull; Consistency: 89%</div>
-      </div>
-
-      <!-- Questions Solved & Goal Remaining -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:18px;">
-        <div style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Questions Solved</div>
-        <div style="font-size:24px; font-weight:700; color:#06B6D4; margin-top:4px;">845 Solved</div>
-        <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Goal: 1000 &bull; <strong style="color:#06B6D4;">155 Remaining</strong></div>
-      </div>
-
-      <!-- Accuracy & Target Bar -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:18px;">
-        <div style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Current Accuracy</div>
-        <div style="font-size:24px; font-weight:700; color:#10B981; margin-top:4px;">84.2% <span style="font-size:12px; color:#10B981;">↑ +4.8%</span></div>
-        <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Target: 90.0% &bull; <strong style="color:#10B981;">5.8% Remaining</strong></div>
-      </div>
-
-    </div>
-
-    <!-- 3. DeepSeek Style Clean Dropdown Header & TradingView Charts -->
-    <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px; margin-bottom:20px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; position:relative;">
-        <div>
-          <div style="font-size:16px; font-weight:700; color:#F5F5F5;">TradingView Accuracy & Velocity Curve</div>
-          <div style="font-size:12px; color:#9CA3AF;">Smooth Spline Curve with interactive time range filter.</div>
-        </div>
-
-        <!-- DeepSeek Style Dropdown Selector -->
-        <div style="position:relative;">
-          <button style="background:#000000; border:1px solid #23262D; color:#F5F5F5; padding:6px 14px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:8px;" onclick="toggleTimeDropdown()">
-            <span>${activeTimeRange === '7D' ? '7 Days' : activeTimeRange === '30D' ? '30 Days' : activeTimeRange === '90D' ? '90 Days' : activeTimeRange === '1Y' ? '1 Year' : 'All Time'}</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
-          </button>
-
-          <div id="analytics-time-dropdown" style="display:${isDropdownOpen ? 'block' : 'none'}; position:absolute; right:0; top:40px; background:#16181D; border:1px solid #23262D; border-radius:8px; width:140px; z-index:100; box-shadow:0 4px 12px rgba(0,0,0,0.4);">
-            ${['7D', '30D', '90D', '1Y', 'ALL'].map(r => `
-              <div style="padding:8px 12px; font-size:12px; color:${activeTimeRange === r ? '#3B82F6' : '#9CA3AF'}; font-weight:${activeTimeRange === r ? '700' : '500'}; cursor:pointer; hover:background:#23262D;" onclick="setTimeRangeFilter('${r}')">
-                ${r === '7D' ? '7 Days' : r === '30D' ? '30 Days' : r === '90D' ? '90 Days' : r === '1Y' ? '1 Year' : 'All Time'}
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </div>
-
-      <!-- TradingView Spline Curve Graph -->
-      <div style="height:180px; position:relative; width:100%;">
-        ${generateSplineWaveChart(currentSet.accuracy, currentSet.labels, '#10B981')}
-      </div>
-    </div>
-
-    <!-- 4. Chronological Study Timeline (Milestones & Achievements) -->
-    <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px; margin-bottom:20px;">
-      <div style="font-size:16px; font-weight:700; color:#F5F5F5; margin-bottom:14px;">Study Journey Timeline & Milestones</div>
-
-      <div style="display:flex; flex-direction:column; gap:16px; position:relative; padding-left:20px; border-left:2px solid #23262D;">
-        <div style="position:relative;">
-          <div style="position:absolute; left:-27px; top:2px; width:12px; height:12px; border-radius:50%; background:#3B82F6;"></div>
-          <div style="font-size:11px; font-weight:700; color:#3B82F6;">22 AUG 2026</div>
-          <div style="font-size:14px; font-weight:600; color:#F5F5F5;">🚀 Started GATE CSE 2027 Preparation</div>
-        </div>
-
-        <div style="position:relative;">
-          <div style="position:absolute; left:-27px; top:2px; width:12px; height:12px; border-radius:50%; background:#10B981;"></div>
-          <div style="font-size:11px; font-weight:700; color:#10B981;">31 AUG 2026</div>
-          <div style="font-size:14px; font-weight:600; color:#F5F5F5;">✔ Completed Computer Networks (CN) Syllabus</div>
-        </div>
-
-        <div style="position:relative;">
-          <div style="position:absolute; left:-27px; top:2px; width:12px; height:12px; border-radius:50%; background:#F59E0B;"></div>
-          <div style="font-size:11px; font-weight:700; color:#F59E0B;">14 SEP 2026</div>
-          <div style="font-size:14px; font-weight:600; color:#F5F5F5;">📝 Attempted First Full CBT Mock Test (65.0 Marks)</div>
-        </div>
-
-        <div style="position:relative;">
-          <div style="position:absolute; left:-27px; top:2px; width:12px; height:12px; border-radius:50%; background:#06B6D4;"></div>
-          <div style="font-size:11px; font-weight:700; color:#06B6D4;">3 OCT 2026</div>
-          <div style="font-size:14px; font-weight:600; color:#F5F5F5;">🎯 Reached 500 Solved Questions Milestone</div>
-        </div>
-
-        <div style="position:relative;">
-          <div style="position:absolute; left:-27px; top:2px; width:12px; height:12px; border-radius:50%; background:#10B981;"></div>
-          <div style="font-size:11px; font-weight:700; color:#10B981;">TODAY</div>
-          <div style="font-size:14px; font-weight:600; color:#F5F5F5;">🔥 18-Day Active Study Streak &bull; 84.2% Overall Accuracy</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 5. Subject Mastery Table (Notion Style) -->
-    <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px; margin-bottom:20px;">
-      <div style="font-size:16px; font-weight:700; color:#F5F5F5; margin-bottom:14px;">Subject Mastery & Performance Breakdown</div>
-
-      <div style="display:flex; flex-direction:column; gap:12px;">
-        ${subjectRows.map(s => `
-          <div>
-            <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600; color:#F5F5F5; margin-bottom:4px;">
-              <span>${s.name}</span>
-              <span style="color:${s.accuracy < 60 ? '#EF4444' : s.accuracy < 75 ? '#F59E0B' : '#10B981'};">${s.accuracy}% Accuracy</span>
-            </div>
-            <div style="height:8px; background:#161920; border-radius:4px; overflow:hidden;">
-              <div style="width:${s.accuracy}%; height:100%; background:${s.accuracy < 60 ? '#EF4444' : s.accuracy < 75 ? '#F59E0B' : '#10B981'};"></div>
-            </div>
-          </div>
+      <!-- Clean Text Link Time Selector -->
+      <div style="display:flex; align-items:center; gap:14px;">
+        ${['7D', '30D', '90D', '1Y', 'ALL'].map(r => `
+          <button style="background:none; border:none; border-bottom:${activeTimeRange === r ? '2px solid #3B82F6' : '2px solid transparent'}; color:${activeTimeRange === r ? '#F5F5F5' : '#9CA3AF'}; font-weight:${activeTimeRange === r ? '700' : '500'}; padding:2px 4px; font-size:12px; cursor:pointer;" onclick="setTimeRangeFilter('${r}')">${r}</button>
         `).join('')}
       </div>
     </div>
 
-    <!-- 6. Study Activity Heatmap with Dual View Switcher (Daily / Monthly) -->
-    <div style="background:#0F1115; border:1px solid #23262D; border-radius:12px; padding:20px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:12px;">
-        <div style="display:flex; align-items:center; gap:12px;">
-          <div style="font-size:15px; font-weight:700; color:#F5F5F5;">Study Activity Grid</div>
+    <!-- 1. Storytelling Hero Card & Tighter Quick Stats (3 Columns x 2 Rows) -->
+    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-bottom:16px;">
+      
+      <!-- Card 1: Accuracy -->
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Overall Accuracy</span>
+          <span style="font-size:11px; color:#10B981; font-weight:700;">▲ ${currentSet.delta}</span>
+        </div>
+        <div style="font-size:26px; font-weight:700; color:#F5F5F5; margin-top:2px;">84.2%</div>
+        <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Target: 90.0% &bull; <strong style="color:#10B981;">5.8% to go</strong></div>
+      </div>
 
-          <!-- Dual Mode Switcher -->
-          <div style="display:flex; background:#000000; border:1px solid #23262D; padding:2px; border-radius:6px;">
-            <button style="background:${heatmapViewMode === 'daily' ? '#3B82F6' : 'transparent'}; color:${heatmapViewMode === 'daily' ? '#ffffff' : '#9CA3AF'}; border:none; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:600; cursor:pointer;" onclick="setHeatmapViewMode('daily')">Daily Grid</button>
-            <button style="background:${heatmapViewMode === 'monthly' ? '#3B82F6' : 'transparent'}; color:${heatmapViewMode === 'monthly' ? '#ffffff' : '#9CA3AF'}; border:none; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:600; cursor:pointer;" onclick="setHeatmapViewMode('monthly')">Monthly Overview</button>
+      <!-- Card 2: Questions Solved -->
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Questions Solved</span>
+          <span style="font-size:11px; color:#3B82F6; font-weight:700;">Goal: 1000</span>
+        </div>
+        <div style="font-size:26px; font-weight:700; color:#F5F5F5; margin-top:2px;">845 Solved</div>
+        <div style="font-size:11px; color:#9CA3AF; margin-top:2px;"><strong style="color:#3B82F6;">155 Qs remaining</strong></div>
+      </div>
+
+      <!-- Card 3: Active Days -->
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Active Days Tracked</span>
+          <span style="font-size:11px; color:#10B981; font-weight:700;">87% Consistency</span>
+        </div>
+        <div style="font-size:26px; font-weight:700; color:#F5F5F5; margin-top:2px;">93 / 180 Days</div>
+        <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Started 22 Aug &bull; 8 Missed</div>
+      </div>
+
+      <!-- Card 4: Story Streak -->
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Current Streak</span>
+          <span style="font-size:11px; color:#9CA3AF;">Best: 41 Days</span>
+        </div>
+        <div style="font-size:24px; font-weight:700; color:#F5F5F5; margin-top:2px;">18 Days 🔥</div>
+        <div style="font-size:10px; color:#10B981; letter-spacing:1px; margin-top:2px;">■■■■■■■■■■■■■■■■■■</div>
+      </div>
+
+      <!-- Card 5: Weakest Subject -->
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px;">
+        <div style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Weakest Focus Area</div>
+        <div style="font-size:16px; font-weight:700; color:#EF4444; margin-top:4px;">Algorithms</div>
+        <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">58% Accuracy &bull; Needs Practice</div>
+      </div>
+
+      <!-- Card 6: Strongest Subject -->
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px;">
+        <div style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Strongest Subject</div>
+        <div style="font-size:16px; font-weight:700; color:#10B981; margin-top:4px;">Databases (DBMS)</div>
+        <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">91% Accuracy &bull; Mastered</div>
+      </div>
+
+    </div>
+
+    <!-- 2. Mixed Chart Types Grid (TradingView Line, Bar Velocity, Area Chart) -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+      
+      <!-- Chart 1: Accuracy TradingView Smooth Line Chart -->
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div>
+            <div style="font-size:13px; font-weight:700; color:#F5F5F5;">Accuracy Trend Curve</div>
+            <div style="font-size:11px; color:#9CA3AF;">TradingView Line Chart &bull; <span style="color:#10B981;">${currentSet.delta}</span></div>
           </div>
+          <span style="font-size:11px; color:#10B981; font-weight:700;">● Live</span>
         </div>
 
-        <div style="display:flex; align-items:center; gap:12px;">
-          <button class="btn-secondary" style="font-size:12px; padding:5px 12px; display:inline-flex; align-items:center; gap:6px; color:#3B82F6; border-color:rgba(59,130,246,0.3);" onclick="triggerReplayProgressAnimation()">
-            <span>▶ Replay Timeline</span>
-          </button>
-          <div style="font-size:12px; color:#9CA3AF;">845 Solved &bull; 142 Hours</div>
+        <div style="height:150px; position:relative; width:100%;">
+          ${generateSplineWaveChart(currentSet.accuracy, currentSet.labels, '#10B981', 'line')}
         </div>
       </div>
 
-      ${heatmapViewMode === 'daily' ? `
-        <!-- GitHub Grid (7 Rows x 52 Columns - Real GitHub Compact Size) -->
-        <div style="overflow-x:auto; padding-bottom:4px;">
-          <div style="min-width:680px;">
-            <div style="display:flex; justify-content:space-between; color:#9CA3AF; font-size:11px; margin-bottom:6px; padding-left:24px;">
-              ${months.map(m => `<span>${m}</span>`).join('')}
+      <!-- Chart 2: Questions Solved Bar Chart -->
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div>
+            <div style="font-size:13px; font-weight:700; color:#F5F5F5;">Questions Solved Velocity</div>
+            <div style="font-size:11px; color:#9CA3AF;">Daily Solved Counts</div>
+          </div>
+          <span style="font-size:11px; color:#3B82F6; font-weight:700;">● Solved</span>
+        </div>
+
+        <div style="height:150px; position:relative; width:100%;">
+          ${generateBarChart(currentSet.questions, currentSet.labels, '#3B82F6')}
+        </div>
+      </div>
+
+      <!-- Chart 3: Study Hours Area Chart -->
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div>
+            <div style="font-size:13px; font-weight:700; color:#F5F5F5;">Daily Study Hours</div>
+            <div style="font-size:11px; color:#9CA3AF;">Logged Duration Area</div>
+          </div>
+          <span style="font-size:11px; color:#3B82F6; font-weight:700;">● Hours</span>
+        </div>
+
+        <div style="height:150px; position:relative; width:100%;">
+          ${generateSplineWaveChart(currentSet.hours, currentSet.labels, '#3B82F6', 'area')}
+        </div>
+      </div>
+
+      <!-- Chart 4: Subject Accuracy Horizontal Bars (Notion Style) -->
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px;">
+        <div style="font-size:13px; font-weight:700; color:#F5F5F5; margin-bottom:12px;">Subject Accuracy Levels</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          ${subjectRows.slice(0, 5).map(s => `
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:600; color:#F5F5F5; margin-bottom:3px;">
+                <span>${s.name}</span>
+                <span style="color:${s.accuracy < 60 ? '#EF4444' : s.accuracy < 75 ? '#F59E0B' : '#10B981'};">${s.accuracy}%</span>
+              </div>
+              <div style="height:5px; background:#161920; border-radius:3px; overflow:hidden;">
+                <div style="width:${s.accuracy}%; height:100%; background:${s.accuracy < 60 ? '#EF4444' : s.accuracy < 75 ? '#F59E0B' : '#10B981'};"></div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3. GitHub Activity Heatmap with Daily Inspector -->
+    <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="font-size:14px; font-weight:700; color:#F5F5F5;">Study Activity Calendar</div>
+          <span style="font-size:11px; color:#9CA3AF;">52 Weeks &bull; 845 Solved</span>
+        </div>
+
+        <button class="btn-secondary" style="font-size:11px; padding:4px 10px; color:#3B82F6; border-color:rgba(59,130,246,0.3);" onclick="triggerReplayProgressAnimation()">
+          ▶ Replay Timeline
+        </button>
+      </div>
+
+      <!-- GitHub Grid (52 Columns x 11px Compact) -->
+      <div style="overflow-x:auto; padding-bottom:4px;">
+        <div style="min-width:680px;">
+          <div style="display:flex; justify-content:space-between; color:#9CA3AF; font-size:10px; margin-bottom:4px; padding-left:24px;">
+            ${months.map(m => `<span>${m}</span>`).join('')}
+          </div>
+
+          <div style="display:flex; gap:6px; align-items:center;">
+            <div style="display:flex; flex-direction:column; justify-content:space-between; height:85px; font-size:9px; color:#9CA3AF; padding-right:2px;">
+              <span>Mon</span>
+              <span>Wed</span>
+              <span>Fri</span>
             </div>
 
-            <div style="display:flex; gap:8px; align-items:center;">
-              <div style="display:flex; flex-direction:column; justify-content:space-between; height:90px; font-size:10px; color:#9CA3AF; padding-right:4px;">
-                <span>Mon</span>
-                <span>Wed</span>
-                <span>Fri</span>
-              </div>
+            <div id="heatmap-tiles-grid" style="display:grid; grid-template-columns:repeat(52, 11px); gap:3px;">
+              ${Array.from({ length: 364 }).map((_, idx) => {
+                const level = (idx % 7 === 0 || idx % 5 === 0) ? (idx % 4) : 0;
+                let bg = '#16181D'; // 0 activity
+                if (level === 1) bg = '#143A26'; // Low
+                if (level === 2) bg = '#1D6B3A'; // Medium
+                if (level === 3) bg = '#2D8F4C'; // High
+                if (level === 4) bg = '#42B86D'; // Very High
 
-              <div id="heatmap-tiles-grid" style="display:grid; grid-template-columns:repeat(52, 11px); gap:3px;">
-                ${Array.from({ length: 364 }).map((_, idx) => {
-                  const level = (idx % 7 === 0 || idx % 5 === 0) ? (idx % 4) : 0;
-                  let bg = '#16181D'; // 0 activity
-                  if (level === 1) bg = '#143A26'; // Low
-                  if (level === 2) bg = '#1D6B3A'; // Medium
-                  if (level === 3) bg = '#2D8F4C'; // High
-                  if (level === 4) bg = '#42B86D'; // Very High
-
-                  const dayNum = (idx % 28) + 1;
-                  return `
-                    <div class="heatmap-tile" style="width:11px; height:11px; background:${bg}; border-radius:2px; cursor:pointer; transition:all 0.15s;" 
-                      onclick="inspectHeatmapDay('${dayNum} Aug ${selectedHeatmapYear}', ${dayNum * 3}, '4h 18m', ${Math.min(95, 70 + dayNum)})"
-                      title="${dayNum} Aug: ${dayNum * 3} Questions Solved">
-                    </div>
-                  `;
-                }).join('')}
-              </div>
+                const dayNum = (idx % 28) + 1;
+                return `
+                  <div class="heatmap-tile" style="width:11px; height:11px; background:${bg}; border-radius:2px; cursor:pointer; transition:all 0.15s;" 
+                    onclick="inspectHeatmapDay('${dayNum} Aug ${selectedHeatmapYear}', ${dayNum * 3}, '4h 18m', ${Math.min(95, 70 + dayNum)})"
+                    title="${dayNum} Aug: ${dayNum * 3} Solved &bull; ${Math.min(95, 70 + dayNum)}% Acc">
+                  </div>
+                `;
+              }).join('')}
             </div>
           </div>
         </div>
-      ` : `
-        <!-- Monthly Summary Bars View -->
-        <div style="display:flex; flex-direction:column; gap:12px; padding:10px 0;">
-          <div>
-            <div style="display:flex; justify-content:space-between; font-size:12px; color:#F5F5F5; font-weight:600; margin-bottom:4px;">
-              <span>August 2026</span><span>185 Questions Solved &bull; 86% Acc</span>
-            </div>
-            <div style="height:8px; background:#161920; border-radius:4px; overflow:hidden;">
-              <div style="width:75%; height:100%; background:#10B981;"></div>
-            </div>
-          </div>
-
-          <div>
-            <div style="display:flex; justify-content:space-between; font-size:12px; color:#F5F5F5; font-weight:600; margin-bottom:4px;">
-              <span>September 2026</span><span>240 Questions Solved &bull; 88% Acc</span>
-            </div>
-            <div style="height:8px; background:#161920; border-radius:4px; overflow:hidden;">
-              <div style="width:90%; height:100%; background:#10B981;"></div>
-            </div>
-          </div>
-
-          <div>
-            <div style="display:flex; justify-content:space-between; font-size:12px; color:#F5F5F5; font-weight:600; margin-bottom:4px;">
-              <span>October 2026</span><span>310 Questions Solved &bull; 91% Acc</span>
-            </div>
-            <div style="height:8px; background:#161920; border-radius:4px; overflow:hidden;">
-              <div style="width:100%; height:100%; background:#3B82F6;"></div>
-            </div>
-          </div>
-        </div>
-      `}
+      </div>
 
       <!-- Heatmap Footer Legend & Muted Colors -->
-      <div style="display:flex; justify-content:flex-end; align-items:center; gap:6px; font-size:11px; color:#9CA3AF; margin-top:12px;">
+      <div style="display:flex; justify-content:flex-end; align-items:center; gap:5px; font-size:10px; color:#9CA3AF; margin-top:10px;">
         <span>Less</span>
-        <div style="width:10px; height:10px; background:#16181D; border-radius:2px;"></div>
-        <div style="width:10px; height:10px; background:#143A26; border-radius:2px;"></div>
-        <div style="width:10px; height:10px; background:#1D6B3A; border-radius:2px;"></div>
-        <div style="width:10px; height:10px; background:#2D8F4C; border-radius:2px;"></div>
-        <div style="width:10px; height:10px; background:#42B86D; border-radius:2px;"></div>
+        <div style="width:9px; height:9px; background:#16181D; border-radius:2px;"></div>
+        <div style="width:9px; height:9px; background:#143A26; border-radius:2px;"></div>
+        <div style="width:9px; height:9px; background:#1D6B3A; border-radius:2px;"></div>
+        <div style="width:9px; height:9px; background:#2D8F4C; border-radius:2px;"></div>
+        <div style="width:9px; height:9px; background:#42B86D; border-radius:2px;"></div>
         <span>More</span>
       </div>
 
       <!-- Day Inspector Panel Container -->
-      <div id="heatmap-day-inspector" style="margin-top:14px; display:none;"></div>
+      <div id="heatmap-day-inspector" style="margin-top:10px; display:none;"></div>
     </div>
   `;
 }
 
-// 🌟 Spline Curve Wave Line Chart Generator (Matching User's Meta-Chart / Sine Wave Image Pattern)
-function generateSplineWaveChart(dataPoints, labels, strokeColor) {
+// 🌟 TradingView Spline Curve & Area Chart Generator with Stock Chart Axis & Hover Inspector
+function generateSplineWaveChart(dataPoints, labels, strokeColor, type = 'line') {
   const width = 500;
   const height = 120;
-  const paddingX = 30;
-  const paddingY = 20;
+  const paddingX = 35;
+  const paddingY = 18;
 
-  const minVal = Math.min(...dataPoints);
-  const maxVal = Math.max(...dataPoints);
+  const minVal = Math.floor(Math.min(...dataPoints) * 0.9);
+  const maxVal = Math.ceil(Math.max(...dataPoints) * 1.05);
   const range = maxVal - minVal || 1;
 
   // Compute exact coordinates
@@ -382,7 +323,7 @@ function generateSplineWaveChart(dataPoints, labels, strokeColor) {
     return { x, y, val, label: labels[idx] || '' };
   });
 
-  // Build Cubic Spline path with smooth wave controls
+  // Build Cubic Spline path
   let pathD = `M ${pts[0].x} ${pts[0].y}`;
   for (let i = 0; i < pts.length - 1; i++) {
     const p0 = pts[i === 0 ? i : i - 1];
@@ -398,42 +339,79 @@ function generateSplineWaveChart(dataPoints, labels, strokeColor) {
     pathD += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`;
   }
 
+  const areaD = `${pathD} L ${pts[pts.length - 1].x} ${height - paddingY} L ${pts[0].x} ${height - paddingY} Z`;
+
   return `
-    <svg viewBox="0 0 ${width} ${height + 35}" style="width:100%; height:100%; border:1px solid #23262D; border-radius:8px; background:#000000; padding:6px; box-sizing:border-box;">
-      <!-- Grid Horizontal Reference Lines -->
-      <line x1="${paddingX}" y1="20" x2="${width - paddingX}" y2="20" stroke="#23262D" stroke-width="1" />
-      <line x1="${paddingX}" y1="50" x2="${width - paddingX}" y2="50" stroke="#23262D" stroke-width="1" />
-      <line x1="${paddingX}" y1="80" x2="${width - paddingX}" y2="80" stroke="#23262D" stroke-width="1" />
-      <line x1="${paddingX}" y1="110" x2="${width - paddingX}" y2="110" stroke="#23262D" stroke-width="1" />
+    <svg viewBox="0 0 ${width} ${height + 25}" style="width:100%; height:100%; border:1px solid #23262D; border-radius:6px; background:#000000; padding:4px; box-sizing:border-box;">
+      <defs>
+        <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="${strokeColor}" stop-opacity="0.3" />
+          <stop offset="100%" stop-color="${strokeColor}" stop-opacity="0.0" />
+        </linearGradient>
+      </defs>
 
-      <!-- Spline Wave Curve Line -->
-      <path d="${pathD}" fill="none" stroke="${strokeColor}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+      <!-- Stock Chart Y-Axis Dashed Reference Lines -->
+      <line x1="${paddingX}" y1="20" x2="${width - paddingX}" y2="20" stroke="#23262D" stroke-dasharray="3,3" />
+      <line x1="${paddingX}" y1="55" x2="${width - paddingX}" y2="55" stroke="#23262D" stroke-dasharray="3,3" />
+      <line x1="${paddingX}" y1="90" x2="${width - paddingX}" y2="90" stroke="#23262D" stroke-dasharray="3,3" />
 
-      <!-- Data Point Circles & X-Axis Labels -->
+      <!-- Y-Axis Values -->
+      <text x="8" y="24" fill="#9CA3AF" font-size="9">${maxVal}</text>
+      <text x="8" y="59" fill="#9CA3AF" font-size="9">${Math.round((maxVal + minVal) / 2)}</text>
+      <text x="8" y="94" fill="#9CA3AF" font-size="9">${minVal}</text>
+
+      ${type === 'area' ? `<path d="${areaD}" fill="url(#areaGrad)" />` : ''}
+
+      <!-- Spline Curve Line -->
+      <path d="${pathD}" fill="none" stroke="${strokeColor}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+
+      <!-- Data Nodes & X-Axis Labels -->
       ${pts.map((p) => `
-        <circle cx="${p.x}" cy="${p.y}" r="5" fill="${strokeColor}" stroke="#000000" stroke-width="2" style="cursor:pointer;" title="${p.label}: ${p.val}">
+        <circle cx="${p.x}" cy="${p.y}" r="4" fill="${strokeColor}" stroke="#000000" stroke-width="2" style="cursor:pointer;">
           <title>${p.label}: ${p.val}</title>
         </circle>
-        <line x1="${p.x}" y1="110" x2="${p.x}" y2="115" stroke="#3B82F6" stroke-width="1" />
-        <text x="${p.x}" y="130" text-anchor="middle" fill="#9CA3AF" font-size="10" font-weight="500">${p.label}</text>
+        <text x="${p.x}" y="${height + 16}" text-anchor="middle" fill="#9CA3AF" font-size="9" font-weight="500">${p.label}</text>
       `).join('')}
+    </svg>
+  `;
+}
+
+// Vertical Bar Velocity Chart Generator
+function generateBarChart(dataPoints, labels, barColor) {
+  const width = 500;
+  const height = 120;
+  const paddingX = 35;
+  const paddingY = 18;
+
+  const maxVal = Math.max(...dataPoints) * 1.1 || 1;
+
+  return `
+    <svg viewBox="0 0 ${width} ${height + 25}" style="width:100%; height:100%; border:1px solid #23262D; border-radius:6px; background:#000000; padding:4px; box-sizing:border-box;">
+      <!-- Grid Lines -->
+      <line x1="${paddingX}" y1="20" x2="${width - paddingX}" y2="20" stroke="#23262D" stroke-dasharray="3,3" />
+      <line x1="${paddingX}" y1="60" x2="${width - paddingX}" y2="60" stroke="#23262D" stroke-dasharray="3,3" />
+      <line x1="${paddingX}" y1="95" x2="${width - paddingX}" y2="95" stroke="#23262D" stroke-dasharray="3,3" />
+
+      <!-- Vertical Bars -->
+      ${dataPoints.map((val, idx) => {
+        const barWidth = 24;
+        const x = paddingX + (idx / (dataPoints.length - 1)) * (width - 2 * paddingX) - barWidth / 2;
+        const barHeight = (val / maxVal) * (height - 2 * paddingY);
+        const y = height - paddingY - barHeight;
+
+        return `
+          <rect x="${x}" y="${y}" width="${barWidth}" height="${barHeight}" fill="${barColor}" rx="3" style="cursor:pointer;">
+            <title>${labels[idx] || ''}: ${val} Solved</title>
+          </rect>
+          <text x="${x + barWidth / 2}" y="${height + 16}" text-anchor="middle" fill="#9CA3AF" font-size="9" font-weight="500">${labels[idx] || ''}</text>
+        `;
+      }).join('')}
     </svg>
   `;
 }
 
 function setTimeRangeFilter(range) {
   activeTimeRange = range;
-  isDropdownOpen = false;
-  renderAnalyticsModule();
-}
-
-function toggleTimeDropdown() {
-  isDropdownOpen = !isDropdownOpen;
-  renderAnalyticsModule();
-}
-
-function setHeatmapViewMode(mode) {
-  heatmapViewMode = mode;
   renderAnalyticsModule();
 }
 
@@ -443,17 +421,14 @@ function inspectHeatmapDay(dateStr, qCount, timeStr, acc) {
 
   container.style.display = 'block';
   container.innerHTML = `
-    <div style="background:#16181D; border:1px solid #3B82F6; padding:12px 16px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+    <div style="background:#16181D; border:1px solid #3B82F6; padding:10px 14px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
       <div>
-        <div style="font-size:11px; font-weight:700; color:#3B82F6; text-transform:uppercase;">Daily Inspector &bull; ${dateStr}</div>
-        <div style="font-size:14px; font-weight:600; color:#F5F5F5; margin-top:2px;">
-          ${qCount} Questions Solved &bull; ${timeStr} Duration &bull; <span style="color:#10B981;">${acc}% Accuracy</span>
+        <div style="font-size:10px; font-weight:700; color:#3B82F6; text-transform:uppercase;">Daily Inspector &bull; ${dateStr}</div>
+        <div style="font-size:13px; font-weight:600; color:#F5F5F5; margin-top:2px;">
+          ${qCount} Solved &bull; ${timeStr} Duration &bull; <span style="color:#10B981;">${acc}% Accuracy</span>
         </div>
       </div>
-
-      <div style="font-size:12px; color:#9CA3AF;">
-        Subjects: <strong>DBMS, CN, OS</strong>
-      </div>
+      <div style="font-size:11px; color:#9CA3AF;">Subjects: <strong>DBMS, CN, OS</strong></div>
     </div>
   `;
 }
@@ -474,7 +449,7 @@ function triggerReplayProgressAnimation() {
     }
 
     tiles[current].style.transform = 'scale(1.3)';
-    tiles[current].style.boxShadow = '0 0 8px #3B82F6';
+    tiles[current].style.boxShadow = '0 0 6px #3B82F6';
     setTimeout(() => {
       tiles[current].style.transform = 'scale(1)';
       tiles[current].style.boxShadow = 'none';
@@ -486,8 +461,6 @@ function triggerReplayProgressAnimation() {
 
 window.renderAnalyticsModule = renderAnalyticsModule;
 window.setTimeRangeFilter = setTimeRangeFilter;
-window.toggleTimeDropdown = toggleTimeDropdown;
-window.setHeatmapViewMode = setHeatmapViewMode;
 window.inspectHeatmapDay = inspectHeatmapDay;
 window.triggerReplayProgressAnimation = triggerReplayProgressAnimation;
 
