@@ -14,17 +14,17 @@ function renderSettingsModule() {
   container.innerHTML = `
     <!-- 1. Appearance Settings -->
     <div class="card" style="margin-bottom:20px;">
-      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:6px;">🎨 Appearance & Theme</h3>
+      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:6px;">Appearance & Theme</h3>
       <p style="font-size:13px; color:var(--text-sub); margin-bottom:14px;">Select your preferred workspace theme to reduce eye fatigue during long study sessions.</p>
       <div style="display:flex; gap:12px; align-items:center;">
-        <button class="btn-secondary ${currentTheme === 'dark' ? 'active' : ''}" onclick="setAppTheme('dark')">🌙 Dark Mode</button>
-        <button class="btn-secondary ${currentTheme === 'light' ? 'active' : ''}" onclick="setAppTheme('light')">☀️ Light Mode</button>
+        <button class="btn-secondary ${currentTheme === 'dark' ? 'active' : ''}" onclick="setAppTheme('dark')">Dark Mode</button>
+        <button class="btn-secondary ${currentTheme === 'light' ? 'active' : ''}" onclick="setAppTheme('light')">Light Mode</button>
       </div>
     </div>
 
     <!-- 2. Notification Preferences -->
     <div class="card" style="margin-bottom:20px;">
-      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:6px;">🔔 Reminders & Notifications</h3>
+      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:6px;">Reminders & Notifications</h3>
       <p style="font-size:13px; color:var(--text-sub); margin-bottom:14px;">Configure local study reminders and revision alerts.</p>
       
       <div style="display:flex; flex-direction:column; gap:12px;">
@@ -42,14 +42,14 @@ function renderSettingsModule() {
 
     <!-- 3. Data Backup, Export & Import -->
     <div class="card" style="margin-bottom:20px;">
-      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:6px;">💾 Data Management & Backup</h3>
+      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:6px;">Data Management & Backup</h3>
       <p style="font-size:13px; color:var(--text-sub); margin-bottom:14px;">
         Export your complete preparation progress, bookmarks, notes, and test history as a JSON file, or restore from a previous backup.
       </p>
       <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
-        <button class="btn-primary" onclick="exportUserDataBackup()">💾 Export Progress JSON</button>
+        <button class="btn-primary" onclick="exportUserDataBackup()">Export Progress JSON</button>
         <label class="btn-secondary" style="cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
-          📥 Import Backup JSON
+          Import Backup JSON
           <input type="file" accept=".json" onchange="importUserDataBackup(event)" style="display:none;">
         </label>
       </div>
@@ -57,7 +57,7 @@ function renderSettingsModule() {
 
     <!-- 4. Danger Zone: Reset & Clear Progress -->
     <div class="card" style="border-color:rgba(239,68,68,0.3); margin-bottom:20px;">
-      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; color:var(--color-danger); margin-bottom:6px;">⚠️ Danger Zone</h3>
+      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; color:var(--color-danger); margin-bottom:6px;">Danger Zone</h3>
       <p style="font-size:13px; color:var(--text-sub); margin-bottom:14px;">
         Erase all local preparation data and reset the platform to a brand-new 0% empty state.
       </p>
@@ -66,9 +66,9 @@ function renderSettingsModule() {
 
     <!-- 5. About Platform -->
     <div class="card">
-      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:6px;">ℹ️ About Platform</h3>
+      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:6px;">About Platform</h3>
       <div style="font-size:13px; color:var(--text-sub); line-height:1.6;">
-        <div><strong>Version:</strong> GATE CSE 2027 v2.0 (Offline Single-Page Application)</div>
+        <div><strong>Version:</strong> GATE CSE v2.0 (Offline Single-Page Application)</div>
         <div><strong>Data Source:</strong> Official GATE Syllabus & 2007–2026 Previous Year Papers</div>
         <div><strong>Storage:</strong> 100% Client-Side LocalStorage (No external servers or tracking)</div>
       </div>
@@ -105,7 +105,7 @@ function exportUserDataBackup() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `GATE_2027_Backup_${new Date().toISOString().split('T')[0]}.json`;
+  a.download = `GATE_Backup_${new Date().toISOString().split('T')[0]}.json`;
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -136,7 +136,7 @@ function importUserDataBackup(e) {
 }
 
 function confirmResetAllData() {
-  if (confirm('🚨 ARE YOU SURE?\n\nThis will permanently erase all syllabus progress, test history, bookmarks, and daily tasks, resetting the website to a 0% empty state.')) {
+  if (confirm('ARE YOU SURE?\n\nThis will permanently erase all syllabus progress, test history, bookmarks, and daily tasks, resetting the website to a 0% empty state.')) {
     StorageManager.clearAllData();
   }
 }

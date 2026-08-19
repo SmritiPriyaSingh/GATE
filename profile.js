@@ -54,7 +54,6 @@ function renderProfileModule() {
   const lastTopic = StorageManager.getLastTopic();
   const lastActiveText = lastTopic ? `${lastTopic.subject} (${lastTopic.topic})` : 'No active session recorded yet';
 
-  // Default Initials Avatar SVG if no photo uploaded
   const initials = profile.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
   const defaultAvatarSVG = `
     <div style="width:100px; height:100px; border-radius:50%; background:var(--accent-subtle); color:var(--accent-primary); display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700; border:2px solid var(--accent-primary);">
@@ -67,7 +66,7 @@ function renderProfileModule() {
     : defaultAvatarSVG;
 
   container.innerHTML = `
-    <!-- 1. Profile Header Card (GitHub / Discord Style) -->
+    <!-- 1. Profile Header Card -->
     <div class="card" style="margin-bottom:24px; padding:24px;">
       <div style="display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
         <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
@@ -89,16 +88,16 @@ function renderProfileModule() {
               <h1 style="font-family:'Outfit', sans-serif; font-size:24px; font-weight:700; margin-bottom:4px;" id="profile-display-name">${profile.name}</h1>
               <div style="font-size:13px; color:var(--text-sub); margin-bottom:8px;">${profile.email}</div>
               <div style="display:flex; gap:12px; flex-wrap:wrap; font-size:12px; color:var(--text-sub);">
-                <span>💻 <strong>${profile.branch}</strong></span>
-                <span>🎯 <strong>${profile.targetYear}</strong></span>
-                <span>📅 Joined <strong>${profile.joinedDate}</strong></span>
+                <span>Branch: <strong>${profile.branch}</strong></span>
+                <span>Target: <strong>${profile.targetYear}</strong></span>
+                <span>Joined: <strong>${profile.joinedDate}</strong></span>
               </div>
             </div>
 
             <!-- Profile Quick Actions -->
             <div style="display:flex; gap:8px;">
               <button class="btn-primary" style="font-size:13px; padding:6px 14px;" onclick="openEditProfileModal()">Edit Profile</button>
-              <button class="btn-secondary" style="font-size:13px; padding:6px 14px;" onclick="navigateToView('settings')">Settings ⚙️</button>
+              <button class="btn-secondary" style="font-size:13px; padding:6px 14px;" onclick="navigateToView('settings')">Settings</button>
             </div>
           </div>
         </div>
@@ -106,11 +105,10 @@ function renderProfileModule() {
     </div>
 
     <!-- 2. Read-Only Automated Study Statistics Grid -->
-    <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:14px;">📊 Live Preparation Metrics (Read-Only)</h3>
+    <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:14px;">Preparation Metrics (Read-Only)</h3>
     
     <div class="stats-grid" style="grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); margin-bottom:24px;">
       <div class="card stat-box">
-        <div class="stat-icon">📚</div>
         <div>
           <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Syllabus Completed</div>
           <div class="stat-val" style="color:var(--accent-primary);">${syllabusPct}%</div>
@@ -118,7 +116,6 @@ function renderProfileModule() {
       </div>
 
       <div class="card stat-box">
-        <div class="stat-icon">📝</div>
         <div>
           <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Questions Solved</div>
           <div class="stat-val">${solvedCount}</div>
@@ -126,7 +123,6 @@ function renderProfileModule() {
       </div>
 
       <div class="card stat-box">
-        <div class="stat-icon" style="color:var(--color-success); background:rgba(16,185,129,0.1);">🎯</div>
         <div>
           <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Overall Accuracy</div>
           <div class="stat-val" style="color:var(--color-success);">${accuracy}%</div>
@@ -134,7 +130,6 @@ function renderProfileModule() {
       </div>
 
       <div class="card stat-box">
-        <div class="stat-icon">🏆</div>
         <div>
           <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Mock Tests Attempted</div>
           <div class="stat-val">${mockCount}</div>
@@ -143,7 +138,7 @@ function renderProfileModule() {
     </div>
 
     <div class="card">
-      <h4 style="font-size:14px; font-weight:700; margin-bottom:8px;">⏱️ Last Active Session</h4>
+      <h4 style="font-size:14px; font-weight:700; margin-bottom:8px;">Last Active Session</h4>
       <div style="font-size:13px; color:var(--text-sub);">${lastActiveText}</div>
     </div>
 

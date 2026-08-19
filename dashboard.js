@@ -31,7 +31,7 @@ function renderContinueCard() {
   if (!last) {
     container.innerHTML = `
       <div style="padding:8px 0;">
-        <div style="font-size:12px; font-weight:600; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">🌱 Begin Your Preparation</div>
+        <div style="font-size:11px; font-weight:600; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">Begin Your Preparation</div>
         <div style="font-size:15px; font-weight:600;">You haven't started your GATE journey yet.</div>
         <div style="font-size:13px; color:var(--text-sub); margin-top:4px;">Explore the syllabus or start practicing topic-wise questions to track your progress here.</div>
         <div style="margin-top:14px; display:flex; gap:10px;">
@@ -42,7 +42,7 @@ function renderContinueCard() {
     `;
   } else {
     container.innerHTML = `
-      <div style="font-size:11px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">▶️ Resume Learning</div>
+      <div style="font-size:11px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">Resume Learning</div>
       <div style="font-size:17px; font-weight:700; font-family:'Outfit', sans-serif;">${last.subject}</div>
       <div style="font-size:13px; color:var(--text-sub); margin-top:2px;">Topic: <strong>${last.topic}</strong></div>
       <div style="margin-top:12px;">
@@ -133,7 +133,6 @@ function renderSubjectProgress() {
   ];
 
   container.innerHTML = subjects.map(s => {
-    // Count real completed topics from storage
     const doneCount = Object.keys(prog).filter(k => k.startsWith(s.id) && prog[k] === 'completed').length;
     const pct = Math.round((doneCount / s.total) * 100);
 
@@ -151,7 +150,7 @@ function renderSubjectProgress() {
   }).join('');
 }
 
-// 5. Diagnostics & Activity Feed (Shows placeholder if no real data yet)
+// 5. Diagnostics & Activity Feed
 function renderActivityAndDiagnostics() {
   const testHistory = JSON.parse(localStorage.getItem('gate2027_test_history')) || [];
   const heatmap = StorageManager.getHeatmapData();

@@ -30,8 +30,8 @@ function renderPYQYearGrid() {
           Computer Science Paper • ${count} Questions
         </div>
         <div style="display:flex; flex-direction:column; gap:8px;">
-          <button class="btn-primary" onclick="launchPYQPaper(${yr}, 'exam')">⏱️ Exam Mode</button>
-          <button class="btn-secondary" onclick="launchPYQPaper(${yr}, 'practice')">📖 Practice Mode</button>
+          <button class="btn-primary" onclick="launchPYQPaper(${yr}, 'exam')">Exam Mode</button>
+          <button class="btn-secondary" onclick="launchPYQPaper(${yr}, 'practice')">Practice Mode</button>
         </div>
       </div>
     `;
