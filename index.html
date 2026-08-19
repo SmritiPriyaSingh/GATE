@@ -3,332 +3,398 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GATE 2027 CS & GA Preparation Platform</title>
-  <meta name="description" content="Complete GATE 2027 Computer Science & Information Technology Study Platform, Syllabus Tracker, PYQs, and CBT Simulator.">
+  <title>GATE CSE 2027 | Exam Mastery Lab</title>
+  <meta name="description" content="GATE CSE 2027 Preparation Platform, Study Streak, Subject Mastery, CBT Simulator, and Analytics.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app-container">
+
+  <div class="layout-container">
     
-    <!-- Navbar Header -->
-    <header class="navbar">
-      <div class="brand">
-        <div class="brand-icon">⚡</div>
-        <div>
-          <div class="brand-title">GATE 2027 CS Platform</div>
-          <div class="brand-subtitle">IIT Madras Organizing</div>
+    <!-- Left Sidebar Navigation -->
+    <aside class="sidebar">
+      <div>
+        <div class="brand-header">
+          <div class="brand-badge">⚡</div>
+          <div>
+            <div class="brand-name">GATE CSE 2027</div>
+            <div class="brand-sub">Exam Mastery Lab</div>
+          </div>
         </div>
+
+        <nav class="nav-menu">
+          <button class="nav-item active" data-view="dashboard">
+            <span class="icon">📌</span>
+            <span>Dashboard</span>
+          </button>
+          <button class="nav-item" data-view="syllabus">
+            <span class="icon">📚</span>
+            <span>Syllabus</span>
+          </button>
+          <button class="nav-item" data-view="practice">
+            <span class="icon">📝</span>
+            <span>Practice</span>
+          </button>
+          <button class="nav-item" data-view="pyq">
+            <span class="icon">📜</span>
+            <span>PYQ Papers</span>
+          </button>
+          <button class="nav-item" data-view="cbt">
+            <span class="icon">🎯</span>
+            <span>CBT Simulator</span>
+          </button>
+          <button class="nav-item" data-view="analytics">
+            <span class="icon">📈</span>
+            <span>Analytics</span>
+          </button>
+          <button class="nav-item" data-view="revision">
+            <span class="icon">⭐</span>
+            <span>Revision & Notes</span>
+          </button>
+          <button class="nav-item" data-view="settings">
+            <span class="icon">⚙️</span>
+            <span>Settings</span>
+          </button>
+        </nav>
       </div>
 
-      <nav class="nav-links">
-        <button class="nav-btn active" data-view="dashboard">📌 Dashboard</button>
-        <button class="nav-btn" data-view="syllabus">📚 Syllabus</button>
-        <button class="nav-btn" data-view="practice">📝 Practice</button>
-        <button class="nav-btn" data-view="pyq">📜 PYQ Papers</button>
-        <button class="nav-btn" data-view="cbt">🎯 CBT Simulator</button>
-        <button class="nav-btn" data-view="analytics">📈 Analytics</button>
-        <button class="nav-btn" data-view="revision">⭐ Revision & Notes</button>
-        <button class="nav-btn" data-view="settings">⚙️ Settings</button>
-      </nav>
-
-      <div class="header-widgets">
-        <div class="countdown-box">
-          <span style="font-size: 13px; color: var(--text-muted);">GATE 2027:</span>
-          <span class="countdown-value" id="gate-countdown-timer">--d --h</span>
-        </div>
-        <a href="https://github.com/SmritiPriyaSingh/GATE" target="_blank" class="repo-btn">
-          <span>GitHub Repo ↗</span>
+      <div style="padding-top: 16px; border-top: 1px solid var(--border-subtle);">
+        <a href="https://github.com/SmritiPriyaSingh/GATE" target="_blank" style="text-decoration: none;">
+          <div style="display: flex; align-items: center; gap: 10px; color: var(--text-sub); font-size: 13px;">
+            <span>🌐</span>
+            <span>GitHub Repository ↗</span>
+          </div>
         </a>
       </div>
-    </header>
+    </aside>
 
-    <!-- Main Content Area -->
-    <main class="main-content">
-
-      <!-- View 1: Dashboard -->
-      <section id="view-dashboard" class="view-section active">
-        <div class="glass-card" style="margin-bottom: 24px; background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(99, 102, 241, 0.15));">
-          <h1 style="font-family: var(--font-heading); font-size: 26px; font-weight: 700; margin-bottom: 8px;">
-            GATE 2027 CS Preparation Hub 🚀
-          </h1>
-          <p style="color: var(--text-secondary); max-width: 800px;">
-            Track your study progress across 14 syllabus modules, solve 1,600+ authentic GATE PYQs, and simulate official CBT exam sessions.
-          </p>
-          <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
-            <button class="btn-primary" onclick="document.querySelector('[data-view=\'cbt\']').click(); startCBTExam('all');">
-              ⚡ Start Full GATE Mock Test
-            </button>
-            <button class="btn-secondary" onclick="document.querySelector('[data-view=\'practice\']').click();">
-              📝 Practice Questions
-            </button>
-            <button class="btn-secondary" onclick="document.querySelector('[data-view=\'syllabus\']').click();">
-              📖 Syllabus Checklist
-            </button>
-          </div>
+    <!-- Main Wrapper Area -->
+    <div class="main-wrapper">
+      
+      <!-- Top Application Bar -->
+      <header class="top-header">
+        <div class="search-bar-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="global-app-search" placeholder="Search topics, questions, notes...">
         </div>
 
-        <div class="stats-grid">
-          <div class="glass-card stat-card">
-            <div class="stat-icon">📚</div>
-            <div class="stat-info" style="width: 100%;">
-              <h4>Overall Syllabus Progress</h4>
-              <div class="stat-number" id="dash-syllabus-pct">0%</div>
-              <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="global-progress-fill" style="width: 0%;"></div>
+        <div class="date-widget">
+          <div class="date-pill" id="today-date-display">TODAY &bull; 19 AUGUST 2026</div>
+        </div>
+      </header>
+
+      <!-- Main Page Views Container -->
+      <main class="page-container">
+
+        <!-- VIEW 1: DASHBOARD (Exam Mastery Lab Style) -->
+        <section id="view-dashboard" class="view-page active">
+          
+          <!-- Hero Motivation Banner -->
+          <div class="hero-banner">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+              <div>
+                <h1 class="hero-title">GATE CSE 2027</h1>
+                <p class="hero-sub">One focused session today puts you closer to your target score.</p>
+                <div style="display:flex; gap:12px; margin-top:16px;">
+                  <button class="btn-primary" onclick="document.querySelector('[data-view=\'cbt\']').click(); startCBTExam('all');">
+                    🚀 Start Full Mock Test
+                  </button>
+                  <button class="btn-secondary" onclick="document.querySelector('[data-view=\'syllabus\']').click();">
+                    📖 View Syllabus
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="glass-card stat-card">
-            <div class="stat-icon" style="color:var(--color-success); background:rgba(16,185,129,0.15);">📝</div>
-            <div class="stat-info">
-              <h4>Mock Tests Attempted</h4>
-              <div class="stat-number" id="dash-tests-count">0</div>
+          <!-- Key Metrics Stat Row (Exam Mastery Lab Cards) -->
+          <div class="stats-row">
+            
+            <!-- Study Streak Panel -->
+            <div class="glass-panel stat-panel">
+              <div class="stat-panel-icon" style="background: rgba(245, 158, 11, 0.15); color: var(--amber-accent);">🔥</div>
+              <div>
+                <div class="stat-panel-label">STUDY STREAK</div>
+                <div class="stat-panel-value" style="color: var(--amber-accent);" id="dash-streak-count">14 Days</div>
+                <div class="stat-panel-sub">Best: 18 days</div>
+              </div>
             </div>
-          </div>
 
-          <div class="glass-card stat-card">
-            <div class="stat-icon" style="color:var(--color-warning); background:rgba(245,158,11,0.15);">🎯</div>
-            <div class="stat-info">
-              <h4>Average Accuracy</h4>
-              <div class="stat-number" id="dash-avg-accuracy">0%</div>
+            <!-- Target Countdown Panel -->
+            <div class="glass-panel stat-panel">
+              <div class="stat-panel-icon" style="background: rgba(99, 102, 241, 0.15); color: var(--indigo-accent);">🎯</div>
+              <div>
+                <div class="stat-panel-label">TARGET COUNTDOWN</div>
+                <div class="stat-panel-value" style="color: var(--indigo-accent);" id="dash-target-countdown">171 Days</div>
+                <div class="stat-panel-sub">GATE 2027 &bull; Feb 6, 2027</div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div class="dashboard-grid">
-          <div class="glass-card">
-            <h3 class="section-title">📊 Recent Mock Test History</h3>
-            <div id="dash-recent-tests-list">
-              <!-- Rendered via analytics.js -->
+            <!-- Overall Mastery Panel -->
+            <div class="glass-panel stat-panel">
+              <div class="stat-panel-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--emerald-accent);">📊</div>
+              <div style="width: 100%;">
+                <div class="stat-panel-label">COVERAGE & MASTERY</div>
+                <div class="stat-panel-value" style="color: var(--emerald-accent);" id="dash-syllabus-pct">0%</div>
+                <div class="progress-track">
+                  <div class="progress-fill" id="global-progress-fill" style="width: 0%; background: linear-gradient(90deg, var(--indigo-accent), var(--emerald-accent));"></div>
+                </div>
+              </div>
             </div>
+
           </div>
 
-          <div class="glass-card">
-            <h3 class="section-title">💡 GATE Exam Blueprint</h3>
-            <ul style="color: var(--text-secondary); padding-left: 18px; font-size: 14px; line-height: 1.8;">
-              <li><strong>General Aptitude:</strong> 15 Marks (15% Weightage)</li>
-              <li><strong>Engineering Maths:</strong> 13 Marks (13% Weightage)</li>
-              <li><strong>CS Core Subjects:</strong> 72 Marks (72% Weightage)</li>
-              <li><strong>Total Score:</strong> 100 Marks (65 Questions, 180 Minutes)</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- View 2: Syllabus Tracker -->
-      <section id="view-syllabus" class="view-section">
-        <div class="syllabus-controls">
-          <div>
-            <h2 class="section-title" style="margin-bottom: 4px;">GATE 2027 Syllabus Tracker</h2>
-            <p style="color: var(--text-secondary); font-size: 14px;">Mark topics as Mastered or In Progress to track your preparation percentage.</p>
-          </div>
-          <div class="search-filter-box">
-            <input type="text" id="syllabus-search" class="search-input" placeholder="🔍 Search topic or subject...">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="mastered">Mastered</button>
-            <button class="filter-btn" data-filter="in_progress">In Progress</button>
-            <button class="filter-btn" data-filter="not_started">Pending</button>
-          </div>
-        </div>
-
-        <div id="syllabus-subjects-list">
-          <!-- Rendered dynamically by syllabus.js -->
-        </div>
-      </section>
-
-      <!-- View 3: Topic Practice -->
-      <section id="view-practice" class="view-section">
-        <div class="glass-card" style="margin-bottom: 20px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-            <div>
-              <h2 class="section-title" style="margin-bottom:4px;">Topic-Wise Practice Engine</h2>
-              <p style="color:var(--text-secondary); font-size:14px;">Practice questions filtered by subject and question type (MCQ, MSQ, NAT).</p>
+          <!-- AI Smart Recommendation Card -->
+          <div class="recommendation-card">
+            <div style="display:flex; align-items:center; gap:16px;">
+              <div style="font-size:28px;">⚡</div>
+              <div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="rec-tag">RECOMMENDED REVISION</span>
+                  <span style="font-size:12px; color:var(--text-sub);">AI Insight</span>
+                </div>
+                <div style="font-weight:700; font-size:16px; margin-top:4px;">Review Operating Systems (CPU Scheduling & Deadlock)</div>
+                <div style="font-size:13px; color:var(--text-sub);">8 questions &bull; ~25 min &bull; Practice weak areas to boost accuracy</div>
+              </div>
             </div>
-            <div style="display:flex; gap:10px;">
-              <select id="practice-subject-select" class="search-input">
+            <button class="btn-primary" onclick="document.querySelector('[data-view=\'practice\']').click();">Start Revision →</button>
+          </div>
+
+          <!-- Main Grid: Your Subjects & Recent Activity -->
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+            
+            <!-- Your Subjects Section -->
+            <div class="glass-panel">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="font-family:var(--font-heading); font-size:20px; font-weight:700;">Your Subjects</h3>
+                <button class="btn-secondary" style="padding:4px 12px; font-size:12px;" onclick="document.querySelector('[data-view=\'syllabus\']').click();">Manage All →</button>
+              </div>
+
+              <div class="subjects-grid" id="dash-subjects-grid">
+                <!-- Populated dynamically by app.js -->
+              </div>
+            </div>
+
+            <!-- Recent Activity Timeline -->
+            <div class="glass-panel">
+              <h3 style="font-family:var(--font-heading); font-size:20px; font-weight:700; margin-bottom:20px;">Recent Activity</h3>
+              <div id="dash-recent-tests-list">
                 <!-- Populated dynamically -->
-              </select>
-              <select id="practice-type-select" class="search-input">
-                <option value="all">All Question Types</option>
-                <option value="MCQ">MCQ (Multiple Choice)</option>
-                <option value="MSQ">MSQ (Multiple Select)</option>
-                <option value="NAT">NAT (Numerical)</option>
-              </select>
-              <button class="btn-secondary" onclick="randomizePracticeQuestions()">🎲 Randomize</button>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- VIEW 2: SYLLABUS -->
+        <section id="view-syllabus" class="view-page">
+          <div class="glass-panel" style="margin-bottom: 24px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+              <div>
+                <h2 style="font-family:var(--font-heading); font-size:24px; font-weight:700;">GATE 2027 Syllabus Tracker</h2>
+                <p style="color:var(--text-sub); font-size:14px;">Mark topics as Mastered or In Progress to track your preparation percentage.</p>
+              </div>
+              <div style="display:flex; gap:10px;">
+                <input type="text" id="syllabus-search" class="search-input" placeholder="🔍 Filter topics..." style="width:220px; background:var(--bg-input); border:1px solid var(--border-subtle); color:#fff; padding:8px 12px; border-radius:8px;">
+                <button class="btn-secondary filter-btn active" data-filter="all">All</button>
+                <button class="btn-secondary filter-btn" data-filter="mastered">Mastered</button>
+                <button class="btn-secondary filter-btn" data-filter="in_progress">In Progress</button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="glass-card" id="practice-question-card">
-          <!-- Rendered dynamically by practice.js -->
-        </div>
-      </section>
+          <div id="syllabus-subjects-list">
+            <!-- Populated dynamically -->
+          </div>
+        </section>
 
-      <!-- View 4: Previous Year Papers -->
-      <section id="view-pyq" class="view-section">
-        <div class="glass-card" style="margin-bottom:24px;">
-          <h2 class="section-title">📜 GATE Previous Year Papers (2007 - 2026)</h2>
-          <p style="color:var(--text-secondary);">Select any year to solve the full paper in Practice Mode or 3-Hour CBT Exam Mode.</p>
-        </div>
-
-        <div class="stats-grid" id="pyq-years-grid">
-          <!-- Rendered dynamically by pyq.js -->
-        </div>
-      </section>
-
-      <!-- View 5: CBT Simulator -->
-      <section id="view-cbt" class="view-section">
-        <div id="cbt-welcome-screen" class="glass-card" style="text-align: center; padding: 40px 20px;">
-          <div style="font-size: 48px; margin-bottom: 12px;">💻</div>
-          <h2 style="font-family: var(--font-heading); font-size: 26px; font-weight: 700; margin-bottom: 12px;">
-            GATE Computer-Based Test (CBT) Simulator
-          </h2>
-          <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto 24px auto;">
-            Experience the real GATE exam interface with countdown timer, TCS iON question palette, official marking scheme (+1/-0.33, +2/-0.66), and scientific calculator!
-          </p>
-
-          <div style="max-width: 400px; margin: 0 auto 24px auto; text-align: left;">
-            <label style="font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 6px;">Select Subject Test / Mock:</label>
-            <select id="cbt-subject-select" class="search-input" style="width: 100%;">
-              <option value="all">Full GATE Mock Test (All Subjects)</option>
-              <option value="pds">Programming & Data Structures</option>
-              <option value="algo">Algorithms</option>
-              <option value="os">Operating Systems</option>
-              <option value="dbms">Databases</option>
-              <option value="toc">Theory of Computation</option>
-              <option value="dl">Digital Logic</option>
-              <option value="cn">Computer Networks</option>
-              <option value="ga">General Aptitude</option>
-            </select>
+        <!-- VIEW 3: PRACTICE -->
+        <section id="view-practice" class="view-page">
+          <div class="glass-panel" style="margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+              <div>
+                <h2 style="font-family:var(--font-heading); font-size:22px; font-weight:700;">Topic Practice Engine</h2>
+                <p style="color:var(--text-sub); font-size:14px;">Practice questions filtered by subject and question type (MCQ, MSQ, NAT).</p>
+              </div>
+              <div style="display:flex; gap:10px;">
+                <select id="practice-subject-select" class="search-input" style="background:var(--bg-input); border:1px solid var(--border-subtle); color:#fff; padding:8px 12px; border-radius:8px;">
+                  <!-- Populated dynamically -->
+                </select>
+                <select id="practice-type-select" class="search-input" style="background:var(--bg-input); border:1px solid var(--border-subtle); color:#fff; padding:8px 12px; border-radius:8px;">
+                  <option value="all">All Question Types</option>
+                  <option value="MCQ">MCQ (Multiple Choice)</option>
+                  <option value="MSQ">MSQ (Multiple Select)</option>
+                  <option value="NAT">NAT (Numerical)</option>
+                </select>
+                <button class="btn-secondary" onclick="randomizePracticeQuestions()">🎲 Randomize</button>
+              </div>
+            </div>
           </div>
 
-          <button class="btn-primary" style="font-size: 16px; padding: 14px 32px;" onclick="startCBTExam(document.getElementById('cbt-subject-select').value)">
-            🚀 Start CBT Practice Exam
-          </button>
-        </div>
+          <div class="glass-panel" id="practice-question-card">
+            <!-- Populated dynamically -->
+          </div>
+        </section>
 
-        <div id="cbt-active-screen" class="cbt-container" style="display: none;">
-          <div class="cbt-main">
-            <div>
-              <div class="cbt-header">
-                <div>
-                  <h3 style="font-family: var(--font-heading); font-size: 18px;">GATE 2027 Examination Simulation</h3>
-                  <span style="font-size: 12px; color: var(--text-secondary);">Computer Science & Information Technology</span>
+        <!-- VIEW 4: PYQ PAPERS -->
+        <section id="view-pyq" class="view-page">
+          <div class="glass-panel" style="margin-bottom:24px;">
+            <h2 style="font-family:var(--font-heading); font-size:24px; font-weight:700;">📜 GATE Previous Year Papers (2007 - 2026)</h2>
+            <p style="color:var(--text-sub);">Select any year to solve the full paper in Practice Mode or 3-Hour CBT Exam Mode.</p>
+          </div>
+
+          <div class="stats-row" id="pyq-years-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <!-- Populated dynamically -->
+          </div>
+        </section>
+
+        <!-- VIEW 5: CBT SIMULATOR -->
+        <section id="view-cbt" class="view-page">
+          <div id="cbt-welcome-screen" class="glass-panel" style="text-align: center; padding: 40px 20px;">
+            <div style="font-size: 48px; margin-bottom: 12px;">💻</div>
+            <h2 style="font-family: var(--font-heading); font-size: 26px; font-weight: 700; margin-bottom: 12px;">
+              GATE Computer-Based Test (CBT) Simulator
+            </h2>
+            <p style="color: var(--text-sub); max-width: 600px; margin: 0 auto 24px auto;">
+              Experience the real GATE exam interface with countdown timer, TCS iON question palette, official marking scheme (+1/-0.33, +2/-0.66), and scientific calculator!
+            </p>
+
+            <div style="max-width: 400px; margin: 0 auto 24px auto; text-align: left;">
+              <label style="font-size: 13px; color: var(--text-sub); display: block; margin-bottom: 6px;">Select Subject Test / Mock:</label>
+              <select id="cbt-subject-select" style="width: 100%; background:var(--bg-input); border:1px solid var(--border-subtle); color:#fff; padding:10px 14px; border-radius:8px;">
+                <option value="all">Full GATE Mock Test (All Subjects)</option>
+                <option value="pds">Programming & Data Structures</option>
+                <option value="algo">Algorithms</option>
+                <option value="os">Operating Systems</option>
+                <option value="dbms">Databases</option>
+                <option value="toc">Theory of Computation</option>
+                <option value="dl">Digital Logic</option>
+                <option value="cn">Computer Networks</option>
+                <option value="ga">General Aptitude</option>
+              </select>
+            </div>
+
+            <button class="btn-primary" style="font-size: 16px; padding: 14px 32px;" onclick="startCBTExam(document.getElementById('cbt-subject-select').value)">
+              🚀 Start CBT Practice Exam
+            </button>
+          </div>
+
+          <div id="cbt-active-screen" class="cbt-container" style="display: none;">
+            <div class="cbt-main">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--border-subtle);">
+                  <div>
+                    <h3 style="font-family: var(--font-heading); font-size: 18px;">GATE 2027 Examination Simulation</h3>
+                    <span style="font-size: 12px; color: var(--text-sub);">Computer Science & Information Technology</span>
+                  </div>
+                  <div style="display: flex; gap: 12px; align-items: center;">
+                    <button class="btn-secondary" onclick="toggleCalculator()">🧮 Calculator</button>
+                    <div style="background:rgba(244,63,94,0.15); color:var(--rose-accent); padding:6px 14px; border-radius:8px; font-family:var(--font-heading); font-weight:700;" id="cbt-timer-display">⏱️ 03:00:00</div>
+                  </div>
                 </div>
-                <div style="display: flex; gap: 12px; align-items: center;">
-                  <button class="btn-secondary" onclick="toggleCalculator()">🧮 Calculator</button>
-                  <div class="cbt-timer-box" id="cbt-timer-display">⏱️ 03:00:00</div>
+
+                <div id="cbt-question-container">
+                  <!-- Rendered dynamically -->
                 </div>
               </div>
 
-              <div id="cbt-question-container">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px; padding-top:20px; border-top:1px solid var(--border-subtle);">
+                <div style="display: flex; gap: 10px;">
+                  <button class="btn-secondary" style="background:var(--purple-accent); border:none;" onclick="markForReviewAndNext()">Mark for Review & Next</button>
+                  <button class="btn-secondary" onclick="clearCBTResponse()">Clear Response</button>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                  <button class="btn-primary" onclick="saveAndNext()">Save & Next ➔</button>
+                  <button class="btn-secondary" style="background:var(--emerald-accent); border:none;" onclick="submitCBTExam()">Submit Test</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="cbt-sidebar">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--border-subtle);">
+                <div style="width:40px; height:40px; border-radius:50%; background:var(--indigo-accent); display:flex; align-items:center; justify-content:center; font-weight:700;">GATE</div>
+                <div>
+                  <div style="font-weight: 700; font-size: 14px;">GATE Aspirant</div>
+                  <div style="font-size: 12px; color: var(--text-sub);">GATE 2027 CS</div>
+                </div>
+              </div>
+
+              <div style="font-weight: 600; font-size: 14px; margin-bottom:10px;">Question Palette</div>
+              <div class="palette-grid" id="question-palette-grid">
                 <!-- Rendered dynamically -->
               </div>
             </div>
+          </div>
 
-            <div class="cbt-actions">
-              <div style="display: flex; gap: 10px;">
-                <button class="btn-purple" onclick="markForReviewAndNext()">Mark for Review & Next</button>
-                <button class="btn-secondary" onclick="clearCBTResponse()">Clear Response</button>
+          <div id="cbt-results-screen" style="display: none;">
+            <!-- Rendered dynamically -->
+          </div>
+        </section>
+
+        <!-- VIEW 6: ANALYTICS -->
+        <section id="view-analytics" class="view-page">
+          <div class="glass-panel" style="margin-bottom: 24px;">
+            <h2 style="font-family:var(--font-heading); font-size:24px; font-weight:700;">📈 Performance Analytics</h2>
+            <p style="color:var(--text-sub);">Track your test accuracy rates, subject strengths, and overall readiness.</p>
+          </div>
+        </section>
+
+        <!-- VIEW 7: REVISION & NOTES -->
+        <section id="view-revision" class="view-page">
+          <div class="glass-panel" style="margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+              <h2 style="font-family:var(--font-heading); font-size:22px; font-weight:700;">⭐ Revision & Topic Notes</h2>
+              <div style="display:flex; gap:10px;">
+                <button class="btn-secondary" onclick="renderRevisionCategory('bookmarks')">⭐ Bookmarked Questions</button>
+                <button class="btn-secondary" onclick="renderRevisionCategory('notes')">📝 Topic Notes</button>
               </div>
-              <div style="display: flex; gap: 10px;">
-                <button class="btn-primary" onclick="saveAndNext()">Save & Next ➔</button>
-                <button class="btn-success" onclick="submitCBTExam()">Submit Test</button>
+            </div>
+          </div>
+
+          <div id="revision-content-area">
+            <!-- Rendered dynamically -->
+          </div>
+        </section>
+
+        <!-- VIEW 8: SETTINGS -->
+        <section id="view-settings" class="view-page">
+          <div class="glass-panel" style="margin-bottom:24px;">
+            <h2 style="font-family:var(--font-heading); font-size:24px; font-weight:700;">⚙️ Platform Settings & Data Backup</h2>
+            <p style="color:var(--text-sub); margin-bottom:20px;">Manage your offline browser data, backup your study progress as a JSON file, or restore a backup.</p>
+
+            <div style="display:flex; flex-direction:column; gap:16px; max-width:600px;">
+              <div class="glass-panel">
+                <h4 style="margin-bottom:6px;">💾 Export JSON Data Backup</h4>
+                <p style="font-size:13px; color:var(--text-sub); margin-bottom:12px;">Download a JSON file containing all your syllabus checkmarks, mock test history, bookmarks, and topic notes.</p>
+                <button class="btn-primary" onclick="exportUserDataBackup()">⬇️ Export Backup JSON</button>
+              </div>
+
+              <div class="glass-panel">
+                <h4 style="margin-bottom:6px;">📂 Restore Backup JSON</h4>
+                <p style="font-size:13px; color:var(--text-sub); margin-bottom:12px;">Upload a previously saved `.json` backup file to restore your progress on any browser or device.</p>
+                <input type="file" accept=".json" onchange="importUserDataBackup(event)" style="font-size:14px; color:var(--text-sub);">
+              </div>
+
+              <div class="glass-panel" style="border-color:rgba(244,63,94,0.3); background:rgba(244,63,94,0.05);">
+                <h4 style="color:var(--rose-accent); margin-bottom:6px;">⚠️ Reset Application Progress</h4>
+                <p style="font-size:13px; color:var(--text-sub); margin-bottom:12px;">Clear all local data and reset syllabus progress back to 0%.</p>
+                <button class="btn-secondary" style="border-color:var(--rose-accent); color:var(--rose-accent);" onclick="confirmResetAllData()">Reset All Data</button>
               </div>
             </div>
           </div>
+        </section>
 
-          <div class="cbt-sidebar">
-            <div class="candidate-card">
-              <div class="candidate-avatar">GATE</div>
-              <div>
-                <div style="font-weight: 700; font-size: 14px;">GATE Aspirant</div>
-                <div style="font-size: 12px; color: var(--text-secondary);">GATE 2027 CS</div>
-              </div>
-            </div>
+      </main>
 
-            <div style="font-weight: 600; font-size: 14px;">Question Palette</div>
-            <div class="palette-grid" id="question-palette-grid">
-              <!-- Rendered dynamically -->
-            </div>
-
-            <div style="font-weight: 600; font-size: 13px; margin-top: 10px;">Legend</div>
-            <div class="legend-box">
-              <div class="legend-item"><div class="dot answered"></div> Answered</div>
-              <div class="legend-item"><div class="dot not-answered"></div> Not Answered</div>
-              <div class="legend-item"><div class="dot marked"></div> Marked Review</div>
-              <div class="legend-item"><div class="dot not-visited"></div> Not Visited</div>
-            </div>
-          </div>
-        </div>
-
-        <div id="cbt-results-screen" style="display: none;">
-          <!-- Rendered dynamically -->
-        </div>
-      </section>
-
-      <!-- View 6: Analytics -->
-      <section id="view-analytics" class="view-section">
-        <div class="glass-card" style="margin-bottom: 24px;">
-          <h2 class="section-title">📈 GATE 2027 Performance Analytics</h2>
-          <p style="color: var(--text-secondary);">Track your test accuracy rates, subject strengths, and overall readiness.</p>
-        </div>
-      </section>
-
-      <!-- View 7: Revision & Notes -->
-      <section id="view-revision" class="view-section">
-        <div class="glass-card" style="margin-bottom:20px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-            <h2 class="section-title" style="margin-bottom:0;">⭐ Revision & Topic Notes</h2>
-            <div style="display:flex; gap:10px;">
-              <button class="btn-secondary" onclick="renderRevisionCategory('bookmarks')">⭐ Bookmarked Questions</button>
-              <button class="btn-secondary" onclick="renderRevisionCategory('notes')">📝 Topic Notes</button>
-            </div>
-          </div>
-        </div>
-
-        <div id="revision-content-area">
-          <!-- Rendered dynamically by revision.js -->
-        </div>
-      </section>
-
-      <!-- View 8: Settings -->
-      <section id="view-settings" class="view-section">
-        <div class="glass-card" style="margin-bottom:24px;">
-          <h2 class="section-title">⚙️ Platform Settings & Data Backup</h2>
-          <p style="color:var(--text-secondary); margin-bottom:20px;">Manage your offline browser data, backup your study progress as a JSON file, or restore a backup.</p>
-
-          <div style="display:flex; flex-direction:column; gap:16px; max-width:600px;">
-            <div class="glass-card">
-              <h4 style="margin-bottom:6px;">💾 Export JSON Data Backup</h4>
-              <p style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">Download a JSON file containing all your syllabus checkmarks, mock test history, bookmarks, and topic notes.</p>
-              <button class="btn-primary" onclick="exportUserDataBackup()">⬇️ Export Backup JSON</button>
-            </div>
-
-            <div class="glass-card">
-              <h4 style="margin-bottom:6px;">📂 Restore Backup JSON</h4>
-              <p style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">Upload a previously saved `.json` backup file to restore your progress on any browser or device.</p>
-              <input type="file" accept=".json" onchange="importUserDataBackup(event)" style="font-size:14px; color:var(--text-secondary);">
-            </div>
-
-            <div class="glass-card" style="border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.05);">
-              <h4 style="color:var(--color-danger); margin-bottom:6px;">⚠️ Reset Application Progress</h4>
-              <p style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">Clear all local data and reset syllabus progress back to 0%.</p>
-              <button class="btn-secondary" style="border-color:var(--color-danger); color:var(--color-danger);" onclick="confirmResetAllData()">Reset All Data</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </main>
+    </div>
 
     <!-- Calculator Modal -->
     <div class="modal-overlay" id="calc-modal-overlay">
       <div class="calc-modal">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
           <span style="font-weight: 700; font-size: 14px;">GATE Scientific Calculator</span>
-          <button style="background: none; border: none; color: var(--text-secondary); font-size: 18px; cursor: pointer;" onclick="toggleCalculator()">✕</button>
+          <button style="background: none; border: none; color: var(--text-sub); font-size: 18px; cursor: pointer;" onclick="toggleCalculator()">✕</button>
         </div>
         <div class="calc-display" id="calc-display-screen">0</div>
         <div class="calc-grid">
@@ -354,7 +420,7 @@
 
           <button class="calc-btn" onclick="calcInput('0')">0</button>
           <button class="calc-btn" onclick="calcInput('.')">.</button>
-          <button class="calc-btn op" style="grid-column: span 2; background: var(--accent-primary);" onclick="calcInput('=')">=</button>
+          <button class="calc-btn op" style="grid-column: span 2; background: var(--indigo-accent);" onclick="calcInput('=')">=</button>
         </div>
       </div>
     </div>
