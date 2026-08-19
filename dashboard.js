@@ -35,8 +35,8 @@ function renderContinueCard() {
         <div style="font-size:15px; font-weight:600;">You haven't started your GATE journey yet.</div>
         <div style="font-size:13px; color:var(--text-sub); margin-top:4px;">Explore the syllabus or start practicing topic-wise questions to track your progress here.</div>
         <div style="margin-top:14px; display:flex; gap:10px;">
-          <button class="btn-primary" style="font-size:13px; padding:7px 14px;" onclick="document.querySelector('[data-view=\'syllabus\']').click();">Explore Syllabus</button>
-          <button class="btn-secondary" style="font-size:13px; padding:7px 14px;" onclick="document.querySelector('[data-view=\'practice\']').click();">Start Practice</button>
+          <button class="btn-primary" style="font-size:13px; padding:7px 14px;" onclick="navigateToView('syllabus')">Explore Syllabus</button>
+          <button class="btn-secondary" style="font-size:13px; padding:7px 14px;" onclick="navigateToView('practice')">Start Practice</button>
         </div>
       </div>
     `;
@@ -53,7 +53,7 @@ function renderContinueCard() {
 }
 
 function resumeLastStudySession(subId) {
-  document.querySelector('[data-view="practice"]')?.click();
+  navigateToView('practice');
   const select = document.getElementById('practice-subject-select');
   if (select) {
     select.value = subId || 'all';

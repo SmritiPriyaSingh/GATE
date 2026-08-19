@@ -129,7 +129,7 @@ function renderPracticeHome(container) {
           <p style="font-size:12px; color:var(--text-sub); margin-bottom:14px;">Practice official GATE questions year by year from 2007 to 2026.</p>
         </div>
 
-        <button class="btn-primary" style="font-size:13px; padding:8px 16px;" onclick="document.querySelector('[data-view=\'pyq\']').click();">
+        <button class="btn-primary" style="font-size:13px; padding:8px 16px;" onclick="navigateToView('pyq')">
           Browse PYQ Papers ➔
         </button>
       </div>

@@ -42,7 +42,7 @@ function launchPYQPaper(year, mode) {
   const paperQuestions = pyqDatabase.filter(q => q.year == year);
 
   if (mode === 'exam') {
-    document.querySelector('[data-view="cbt"]')?.click();
+    navigateToView('cbt');
     cbtState.active = true;
     cbtState.questions = paperQuestions.length > 0 ? paperQuestions : pyqDatabase;
     cbtState.currentIndex = 0;
@@ -61,11 +61,13 @@ function launchPYQPaper(year, mode) {
     renderCBTQuestion(0);
     renderQuestionPalette();
   } else {
-    document.querySelector('[data-view="practice"]')?.click();
+    navigateToView('practice');
     filteredPracticeQuestions = paperQuestions.length > 0 ? paperQuestions : pyqDatabase;
     currentPracticeIndex = 0;
     practiceUserAnswers = {};
-    renderPracticeQuestion();
+    activePracticeSession = { type: 'pyq', year };
+    startPracticeTimer();
+    renderPracticeModule();
   }
 }
 

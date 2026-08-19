@@ -423,7 +423,7 @@ function renderTopicWorkspaceView(container) {
         <p style="font-size:12px; color:var(--text-sub);">Solve official GATE questions filtered specifically for ${topicName}.</p>
       </div>
 
-      <div class="card" style="cursor:pointer;" onclick="document.querySelector('[data-view=\'revision\']').click();">
+      <div class="card" style="cursor:pointer;" onclick="navigateToView('revision')">
         <h4 style="font-size:15px; font-weight:700; margin-bottom:4px;">Bookmarked Formulae & Notes ➔</h4>
         <p style="font-size:12px; color:var(--text-sub);">Review your saved bookmarks and personal notes for this topic.</p>
       </div>
@@ -448,27 +448,31 @@ function renderUniversalSearchResults(container) {
   if (matches.length === 0) {
     container.innerHTML = `
       <div class="card" style="text-align:center; padding:40px 20px;">
-        <div style="font-size:15px; font-weight:600; color:var(--text-sub);">No topics matched "${searchQuery}".</div>
+        <div style="font-size:15px; font-weight:600; color:var(--text-sub);">
+          No topics or units matched your search query ("${searchQuery}").
+        </div>
       </div>
     `;
     return;
   }
 
   container.innerHTML = `
-    <div class="card" style="margin-bottom:16px;">
-      <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700;">Universal Search Results (${matches.length} Matches)</h3>
+    <div style="margin-bottom:14px; font-size:13px; font-weight:600; color:var(--accent-primary);">
+      Found ${matches.length} matches for "${searchQuery}" across all subjects:
     </div>
 
     <div style="display:flex; flex-direction:column; gap:8px;">
       ${matches.map(m => `
-        <div class="card" style="padding:12px 18px; cursor:pointer;" onclick="openTopicWorkspace('${m.subject.id}', ${m.uIdx}, ${m.tIdx}, '${m.topic.replace(/'/g, "\\'")}', '${m.unit.name.replace(/'/g, "\\'")}')">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <div style="font-size:11px; color:var(--text-muted); font-weight:600;">${m.subject.name} • ${m.unit.name}</div>
-              <div style="font-size:14px; font-weight:700; margin-top:2px;">${m.topic}</div>
+        <div class="card" onclick="openTopicWorkspace('${m.subject.id}', ${m.uIdx}, ${m.tIdx}, '${m.topic.replace(/'/g, "\\'")}', '${m.unit.name.replace(/'/g, "\\'")}')" style="cursor:pointer; padding:14px 18px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:11px; font-weight:600; color:var(--text-muted); text-transform:uppercase;">
+              ${m.subject.name} • ${m.unit.name}
             </div>
-            <button class="btn-secondary" style="font-size:12px; padding:4px 10px;">Open Workspace ➔</button>
+            <div style="font-size:15px; font-weight:700; color:var(--text-main); margin-top:2px;">
+              ${m.topic}
+            </div>
           </div>
+          <button class="btn-secondary" style="font-size:12px; padding:4px 10px;">Open Workspace ➔</button>
         </div>
       `).join('')}
     </div>
@@ -476,21 +480,13 @@ function renderUniversalSearchResults(container) {
 }
 
 function startSubjectPractice(subjectId) {
-  document.querySelector('[data-view="practice"]')?.click();
-  const select = document.getElementById('practice-subject-select');
-  if (select) {
-    select.value = subjectId;
-    select.dispatchEvent(new Event('change'));
-  }
+  navigateToView('practice');
+  startSubjectSession(subjectId);
 }
 
 function practiceSpecificTopic(subjectId, topicName) {
-  document.querySelector('[data-view="practice"]')?.click();
-  const select = document.getElementById('practice-subject-select');
-  if (select) {
-    select.value = subjectId;
-    select.dispatchEvent(new Event('change'));
-  }
+  navigateToView('practice');
+  startSubjectSession(subjectId);
 }
 
 window.renderSyllabusAppLayout = renderSyllabusAppLayout;
