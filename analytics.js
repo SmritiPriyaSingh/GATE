@@ -384,36 +384,40 @@ function renderAnalyticsModule() {
         </div>
       </div>
 
-      <!-- Month Labels Header -->
-      <div style="display:flex; justify-content:space-between; color:#9CA3AF; font-size:11px; margin-bottom:6px; padding-left:24px;">
-        ${months.map(m => `<span>${m}</span>`).join('')}
-      </div>
+      <!-- GitHub Grid (7 Rows x 52 Columns - Real GitHub Compact Size) -->
+      <div style="overflow-x:auto; padding-bottom:4px;">
+        <div style="min-width:680px;">
+          <!-- Month Labels Header -->
+          <div style="display:flex; justify-content:space-between; color:#9CA3AF; font-size:11px; margin-bottom:6px; padding-left:24px;">
+            ${months.map(m => `<span>${m}</span>`).join('')}
+          </div>
 
-      <!-- GitHub Grid (7 Rows x 24 Columns) -->
-      <div style="display:flex; gap:6px;">
-        <div style="display:flex; flex-direction:column; justify-content:space-between; font-size:10px; color:#9CA3AF; padding-right:4px;">
-          <span>Mon</span>
-          <span>Wed</span>
-          <span>Fri</span>
-        </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <div style="display:flex; flex-direction:column; justify-content:space-between; height:90px; font-size:10px; color:#9CA3AF; padding-right:4px;">
+              <span>Mon</span>
+              <span>Wed</span>
+              <span>Fri</span>
+            </div>
 
-        <div id="heatmap-tiles-grid" style="display:grid; grid-template-columns:repeat(24, 1fr); gap:4px; flex:1;">
-          ${Array.from({ length: 168 }).map((_, idx) => {
-            const level = (idx % 7 === 0 || idx % 5 === 0) ? (idx % 4) : 0;
-            let bg = '#16181D'; // 0 activity
-            if (level === 1) bg = '#143A26'; // Low
-            if (level === 2) bg = '#1D6B3A'; // Medium
-            if (level === 3) bg = '#2D8F4C'; // High
-            if (level === 4) bg = '#42B86D'; // Very High
+            <div id="heatmap-tiles-grid" style="display:grid; grid-template-columns:repeat(52, 11px); gap:3px;">
+              ${Array.from({ length: 364 }).map((_, idx) => {
+                const level = (idx % 7 === 0 || idx % 5 === 0) ? (idx % 4) : 0;
+                let bg = '#16181D'; // 0 activity
+                if (level === 1) bg = '#143A26'; // Low
+                if (level === 2) bg = '#1D6B3A'; // Medium
+                if (level === 3) bg = '#2D8F4C'; // High
+                if (level === 4) bg = '#42B86D'; // Very High
 
-            const dayNum = (idx % 28) + 1;
-            return `
-              <div class="heatmap-tile" style="aspect-ratio:1; background:${bg}; border-radius:2px; cursor:pointer; transition:all 0.15s;" 
-                onclick="inspectHeatmapDay('${dayNum} Aug ${selectedHeatmapYear}', ${dayNum * 3}, '4h 18m', ${Math.min(95, 70 + dayNum)})"
-                title="${dayNum} Aug: ${dayNum * 3} Questions Solved">
-              </div>
-            `;
-          }).join('')}
+                const dayNum = (idx % 28) + 1;
+                return `
+                  <div class="heatmap-tile" style="width:11px; height:11px; background:${bg}; border-radius:2px; cursor:pointer; transition:all 0.15s;" 
+                    onclick="inspectHeatmapDay('${dayNum} Aug ${selectedHeatmapYear}', ${dayNum * 3}, '4h 18m', ${Math.min(95, 70 + dayNum)})"
+                    title="${dayNum} Aug: ${dayNum * 3} Questions Solved">
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
         </div>
       </div>
 
