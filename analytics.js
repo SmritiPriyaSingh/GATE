@@ -4,15 +4,15 @@ function renderAnalyticsModule() {
   const container = document.getElementById('analytics-main-content');
   if (!container) return;
 
+  const isDemo = StorageManager.isDemoMode();
   const testHistory = StorageManager.getTestHistory();
   const prog = StorageManager.getSyllabusProgress();
   const heatmap = StorageManager.getHeatmapData();
 
-  const totalAttemptedQuestions = testHistory.reduce((acc, t) => acc + (t.correctCount + t.wrongCount), 0);
-  const totalCorrect = testHistory.reduce((acc, t) => acc + t.correctCount, 0);
+  const totalAttemptedQuestions = testHistory.reduce((acc, t) => acc + ((t.correctCount || 0) + (t.wrongCount || 0)), 0);
 
-  // 1. Clean Onboarding State (If 0 tests or 0 activity recorded)
-  if (testHistory.length === 0 && totalAttemptedQuestions === 0) {
+  // 1. Clean Onboarding State (If Demo Mode is OFF and 0 real test activity exists)
+  if (!isDemo && testHistory.length === 0 && totalAttemptedQuestions === 0) {
     container.innerHTML = `
       <div class="card" style="margin-bottom:20px; padding:20px 24px;">
         <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:4px;">Performance Analytics</h2>
@@ -25,11 +25,12 @@ function renderAnalyticsModule() {
         </div>
         <h3 style="font-family:'Outfit', sans-serif; font-size:20px; font-weight:700; margin-bottom:8px;">No Study Data Recorded Yet</h3>
         <p style="color:var(--text-sub); max-width:540px; margin:0 auto 20px auto; font-size:14px; line-height:1.6;">
-          Start practicing questions or attempt your first mock test. Your accuracy, subject performance, study time, and progress graphs will appear here automatically.
+          Demo Mode is currently OFF. You can start practicing questions, take a mock test, or turn ON Demo Mode to preview 6 months of sample student analytics immediately.
         </p>
 
         <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-          <button class="btn-primary" style="font-size:13px; padding:10px 20px;" onclick="navigateToView('practice')">Start Practice Center ➔</button>
+          <button class="btn-primary" style="font-size:13px; padding:10px 20px;" onclick="StorageManager.setDemoMode(true)">⚙️ Enable Demo Mode Now</button>
+          <button class="btn-secondary" style="font-size:13px; padding:10px 20px;" onclick="navigateToView('practice')">Start Practice Center ➔</button>
           <button class="btn-secondary" style="font-size:13px; padding:10px 20px;" onclick="navigateToView('cbt')">Take Full Mock Test ➔</button>
         </div>
       </div>
@@ -39,18 +40,18 @@ function renderAnalyticsModule() {
 
   // Calculate Metrics
   const avgAccuracy = testHistory.length > 0 
-    ? Math.round(testHistory.reduce((acc, t) => acc + t.accuracy, 0) / testHistory.length) 
-    : 78;
+    ? Math.round(testHistory.reduce((acc, t) => acc + parseFloat(t.accuracy || 0), 0) / testHistory.length) 
+    : 82;
 
   const scores = testHistory.map(t => parseFloat(t.score) || 0);
-  const bestScore = scores.length > 0 ? Math.max(...scores).toFixed(2) : '64.50';
+  const bestScore = scores.length > 0 ? Math.max(...scores).toFixed(2) : '72.10';
 
   let rankEst = 'AIR 240 (Top 0.5%)';
   if (parseFloat(bestScore) >= 75) rankEst = 'AIR 1 - 50 (Top 0.1%)';
   else if (parseFloat(bestScore) >= 60) rankEst = 'AIR 51 - 300 (Top 0.5%)';
   else if (parseFloat(bestScore) >= 45) rankEst = 'AIR 301 - 1200 (Top 2%)';
 
-  const solvedCount = totalAttemptedQuestions > 0 ? totalAttemptedQuestions : 642;
+  const solvedCount = totalAttemptedQuestions > 0 ? totalAttemptedQuestions : 845;
   const targetCount = 1000;
   const targetPct = Math.min(100, Math.round((solvedCount / targetCount) * 100));
 
@@ -68,9 +69,18 @@ function renderAnalyticsModule() {
 
   container.innerHTML = `
     <!-- Top Header Banner -->
-    <div class="card" style="margin-bottom:20px; padding:20px 24px;">
-      <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:2px;">Performance Analytics Dashboard</h2>
-      <p style="color:var(--text-sub); font-size:13px;">Diagnostic study report, score forecasting, and weak area analysis.</p>
+    <div class="card" style="margin-bottom:20px; padding:20px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <div>
+        <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:2px;">Performance Analytics Dashboard</h2>
+        <p style="color:var(--text-sub); font-size:13px;">Diagnostic study report, score forecasting, and weak area analysis.</p>
+      </div>
+
+      ${isDemo ? `
+        <div style="background:var(--accent-subtle); border:1px solid var(--accent-primary); padding:6px 14px; border-radius:20px; font-size:12px; font-weight:700; color:var(--accent-primary); display:flex; align-items:center; gap:8px;">
+          <span>⚙️ Developer Demo Mode Active</span>
+          <button class="btn-secondary" style="font-size:11px; padding:2px 8px;" onclick="StorageManager.setDemoMode(false)">Turn Off</button>
+        </div>
+      ` : ''}
     </div>
 
     <!-- 1. Top Summary Statistics Bar -->
@@ -89,7 +99,7 @@ function renderAnalyticsModule() {
 
       <div class="card" style="padding:16px;">
         <div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Mock Tests</div>
-        <div style="font-size:22px; font-weight:700; margin-top:2px;">${testHistory.length > 0 ? testHistory.length : 5} Attempted</div>
+        <div style="font-size:22px; font-weight:700; margin-top:2px;">${testHistory.length} Attempted</div>
         <div style="font-size:11px; color:var(--text-sub); margin-top:2px;">Full + Mini Mocks</div>
       </div>
 
