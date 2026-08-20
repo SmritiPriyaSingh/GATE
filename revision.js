@@ -1,15 +1,15 @@
 // Learn Center Module - Computer Networks (CN) Study Modules
 
 const LEARN_CN_TOPICS = [
-  { id: 'cn_1', num: '01', title: 'IP Addressing, Subnetting & Supernetting', pages: '11.1 – 11.3', status: 'Ready' },
-  { id: 'cn_2', num: '02', title: 'Error Control', pages: '11.4 – 11.6', status: 'Ready' },
-  { id: 'cn_3', num: '03', title: 'Flow Control', pages: '11.7 – 11.10', status: 'Ready' },
-  { id: 'cn_4', num: '04', title: 'IPv4 Header', pages: '11.11 – 11.14', status: 'Ready' },
-  { id: 'cn_5', num: '05', title: 'TCP & UDP', pages: '11.15 – 11.19', status: 'Ready' },
-  { id: 'cn_6', num: '06', title: 'Medium Access Control [MAC]', pages: '11.20 – 11.22', status: 'Ready' },
-  { id: 'cn_7', num: '07', title: 'Routing Algorithms, Switching & IP Support Protocol', pages: '11.23 – 11.27', status: 'Ready' },
-  { id: 'cn_8', num: '08', title: 'Application Layer Protocol', pages: '11.28 – 11.33', status: 'Ready' },
-  { id: 'cn_9', num: '09', title: 'OSI and TCP/IP Protocol Stack', pages: '11.34 – 11.37', status: 'Ready' }
+  { id: 'cn_1', num: '01', title: 'IP Addressing, Subnetting & Supernetting', status: 'Ready' },
+  { id: 'cn_2', num: '02', title: 'Error Control', status: 'Ready' },
+  { id: 'cn_3', num: '03', title: 'Flow Control', status: 'Ready' },
+  { id: 'cn_4', num: '04', title: 'IPv4 Header', status: 'Ready' },
+  { id: 'cn_5', num: '05', title: 'TCP & UDP', status: 'Ready' },
+  { id: 'cn_6', num: '06', title: 'Medium Access Control [MAC]', status: 'Ready' },
+  { id: 'cn_7', num: '07', title: 'Routing Algorithms, Switching & IP Support Protocol', status: 'Ready' },
+  { id: 'cn_8', num: '08', title: 'Application Layer Protocol', status: 'Ready' },
+  { id: 'cn_9', num: '09', title: 'OSI and TCP/IP Protocol Stack', status: 'Ready' }
 ];
 
 let activeLearnTopicId = null;
@@ -49,7 +49,6 @@ function renderLearnTopicList(container) {
             </div>
             <div>
               <div style="font-size:13px; font-weight:700; color:#F5F5F5;">${t.title}</div>
-              <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Pages ${t.pages}</div>
             </div>
           </div>
           <button class="btn-primary" style="font-size:11px; padding:4px 10px; height:28px;" onclick="event.stopPropagation(); openLearnTopic('${t.id}')">Open ➔</button>
@@ -76,7 +75,7 @@ function renderLearnTopicViewer(container, topicId) {
     <!-- Top Action Bar -->
     <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:12px 16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
       <button class="btn-secondary" style="font-size:12px; padding:4px 12px; height:30px;" onclick="closeLearnTopicViewer()">← Back to Modules</button>
-      <span style="font-size:12px; color:#9CA3AF; font-weight:600;">Module ${topic.num} of 09 &bull; Pages ${topic.pages}</span>
+      <span style="font-size:12px; color:#9CA3AF; font-weight:600;">Module ${topic.num} of 09</span>
     </div>
 
     <!-- Article Reader Card -->
@@ -84,7 +83,6 @@ function renderLearnTopicViewer(container, topicId) {
       <div style="border-bottom:1px solid #23262D; padding-bottom:12px; margin-bottom:16px;">
         <span style="font-size:11px; font-weight:700; color:#3B82F6; text-transform:uppercase;">Computer Networks &bull; Unit ${topic.num}</span>
         <h1 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; color:#F5F5F5; margin-top:4px;">${topic.title}</h1>
-        <div style="font-size:12px; color:#9CA3AF; margin-top:4px;">Reference Range: Pages ${topic.pages}</div>
       </div>
 
       <!-- Placeholder content container ready for user notes/text -->
