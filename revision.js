@@ -183,12 +183,6 @@ const CN_TOPIC_CONTENTS = {
   'cn_1': `
     <div style="font-family:'Inter', system-ui, sans-serif; color: #E5E7EB; font-size: 13px; line-height: 1.6; max-width: 860px; margin: 0 auto;">
 
-      <!-- Clickable Helper Banner -->
-      <div style="background:rgba(59,130,246,0.12); border:1px solid #3B82F6; border-radius:6px; padding:10px 14px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between;">
-        <span style="font-size:12px; color:#F5F5F5; font-weight:600;">Click any topic block below to open its Simplified Explanation & Solved GATE Example!</span>
-        <span style="font-size:11px; background:#3B82F6; color:#FFF; font-weight:700; padding:2px 8px; border-radius:4px;">Interactive Mode</span>
-      </div>
-
       <!-- 1.1 IP Addressing & Classes -->
       <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('ip_classes')">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 6px; margin-bottom: 12px;">
