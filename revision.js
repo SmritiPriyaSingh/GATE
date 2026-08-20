@@ -1,5 +1,163 @@
 // Learn Center Module - Computer Networks (CN) Study Modules
 
+const CN_TOPIC_CONTENTS = {
+  'cn_1': `
+    <div style="font-family: inherit; line-height: 1.6; color: #D1D5DB; font-size: 13px;">
+      
+      <!-- Section 1.1 -->
+      <div style="margin-bottom: 20px; background: rgba(255,255,255,0.02); border: 1px solid #23262D; border-radius: 8px; padding: 14px 16px;">
+        <h3 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin-bottom: 8px;">1.1 IP Addressing</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; font-family: monospace; font-size: 12px;">
+          <div style="background:#0F1115; border:1px solid #23262D; padding:6px 10px; border-radius:6px;"><strong>Class A:</strong> 0 &rarr; (1 &ndash; 126)<br><span style="color:#10B981;">No. of IP Addresses = 2<sup>31</sup></span></div>
+          <div style="background:#0F1115; border:1px solid #23262D; padding:6px 10px; border-radius:6px;"><strong>Class B:</strong> 10 &rarr; (128 &ndash; 191)<br><span style="color:#10B981;">No. of IP Addresses = 2<sup>30</sup></span></div>
+          <div style="background:#0F1115; border:1px solid #23262D; padding:6px 10px; border-radius:6px;"><strong>Class C:</strong> 110 &rarr; (192 &ndash; 223)<br><span style="color:#10B981;">No. of IP Addresses = 2<sup>29</sup></span></div>
+          <div style="background:#0F1115; border:1px solid #23262D; padding:6px 10px; border-radius:6px;"><strong>Class D:</strong> 1110 &rarr; (224 &ndash; 239)<br><span style="color:#10B981;">No. of IP Addresses = 2<sup>28</sup></span></div>
+          <div style="background:#0F1115; border:1px solid #23262D; padding:6px 10px; border-radius:6px;"><strong>Class E:</strong> 1111 &rarr; (240 &ndash; 255)<br><span style="color:#10B981;">No. of IP Addresses = 2<sup>28</sup></span></div>
+        </div>
+      </div>
+
+      <!-- Section 1.2 & 1.3 Grid -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px;">
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid #23262D; border-radius: 8px; padding: 14px 16px;">
+          <h3 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin-bottom: 8px;">1.2 Default Subnet Mask</h3>
+          <ul style="margin: 0; padding-left: 18px; font-family: monospace; font-size: 12px; color: #F5F5F5;">
+            <li><strong>Class A:</strong> 255.0.0.0</li>
+            <li><strong>Class B:</strong> 255.255.0.0</li>
+            <li><strong>Class C:</strong> 255.255.255.0</li>
+          </ul>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid #23262D; border-radius: 8px; padding: 14px 16px;">
+          <h3 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin-bottom: 8px;">1.3 Private Addresses Range</h3>
+          <ul style="margin: 0; padding-left: 18px; font-size: 12px;">
+            <li><code style="color:#3B82F6;">10.0.0.0</code> to <code style="color:#3B82F6;">10.255.255.255</code> &rarr; 1 Class A Network</li>
+            <li><code style="color:#3B82F6;">172.16.0.0</code> to <code style="color:#3B82F6;">172.31.255.255</code> &rarr; 16 Class B Networks</li>
+            <li><code style="color:#3B82F6;">192.168.0.0</code> to <code style="color:#3B82F6;">192.168.255.255</code> &rarr; 256 Class C Networks</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Class Table -->
+      <div style="margin-bottom: 20px; overflow-x: auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:12px; border:1px solid #23262D; background:#0F1115; text-align:left;">
+          <thead>
+            <tr style="background:#161920; border-bottom:1px solid #23262D; color:#F5F5F5;">
+              <th style="padding:8px 12px;">Class</th>
+              <th style="padding:8px 12px;">Number of Networks</th>
+              <th style="padding:8px 12px;">Number of Hosts per Network</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:8px 12px; font-weight:700; color:#3B82F6;">Class A</td>
+              <td style="padding:8px 12px;">2<sup>7</sup> &ndash; 2 = 126</td>
+              <td style="padding:8px 12px;">2<sup>24</sup> &ndash; 2 = 1,67,77,214 hosts</td>
+            </tr>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:8px 12px; font-weight:700; color:#3B82F6;">Class B</td>
+              <td style="padding:8px 12px;">2<sup>14</sup> = 16,384</td>
+              <td style="padding:8px 12px;">2<sup>16</sup> &ndash; 2 = 65,534 hosts</td>
+            </tr>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:8px 12px; font-weight:700; color:#3B82F6;">Class C</td>
+              <td style="padding:8px 12px;">2<sup>21</sup> = 20,97,152</td>
+              <td style="padding:8px 12px;">2<sup>8</sup> &ndash; 2 = 254 hosts</td>
+            </tr>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:8px 12px; font-weight:700; color:#3B82F6;">Class D</td>
+              <td style="padding:8px 12px;" colspan="2">No NID and HID, all 28 remaining bits define multicast address</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 12px; font-weight:700; color:#3B82F6;">Class E</td>
+              <td style="padding:8px 12px;" colspan="2">No NID and HID, reserved for research and future purpose</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="font-size:11px; color:#9CA3AF; margin-top:6px; font-style:italic;">
+          Note: The IP address <code style="color:#10B981;">127.x.y.z</code> is known as loopback address and is used to check local connectivity.
+        </div>
+      </div>
+
+      <!-- Section 1.4 - 1.7 Communication Types -->
+      <div style="margin-bottom: 20px; background: rgba(255,255,255,0.02); border: 1px solid #23262D; border-radius: 8px; padding: 14px 16px;">
+        <h3 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin-bottom: 8px;">1.4 – 1.7 Types of Communication</h3>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; margin-bottom:12px;">
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px; border-radius:6px;">
+            <strong style="color:#F5F5F5;">(i) Unicast Communication (1 : 1)</strong>
+            <p style="font-size:11px; color:#9CA3AF; margin-top:4px; margin-bottom:0;">Transmitting data from one computer to another computer. Source and destination can be in the same or different network.</p>
+          </div>
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px; border-radius:6px;">
+            <strong style="color:#F5F5F5;">(ii) Broadcast Communication (1 : All)</strong>
+            <p style="font-size:11px; color:#9CA3AF; margin-top:4px; margin-bottom:0;">
+              &bull; <strong>Limited Broadcast:</strong> Same network. Destination IP = <code style="color:#10B981;">255.255.255.255</code>.<br>
+              &bull; <strong>Direct Broadcast:</strong> Different network. Used strictly as destination IP.
+            </p>
+          </div>
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px; border-radius:6px;">
+            <strong style="color:#F5F5F5;">(iii) Multicast Communication (1 : Many)</strong>
+            <p style="font-size:11px; color:#9CA3AF; margin-top:4px; margin-bottom:0;">Transmitting a packet from one computer to many selected computers (0 or more).</p>
+          </div>
+        </div>
+
+        <!-- NID / HID Summary Table -->
+        <table style="width:100%; border-collapse:collapse; font-size:11px; border:1px solid #23262D; background:#0F1115;">
+          <thead>
+            <tr style="background:#161920; color:#F5F5F5; border-bottom:1px solid #23262D;">
+              <th style="padding:6px 10px;">NID</th>
+              <th style="padding:6px 10px;">HID</th>
+              <th style="padding:6px 10px;">Type / Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #23262D;"><td style="padding:5px 10px;">&ndash;</td><td style="padding:5px 10px;">All 0's</td><td style="padding:5px 10px; color:#3B82F6;">Network ID</td></tr>
+            <tr style="border-bottom:1px solid #23262D;"><td style="padding:5px 10px;">&ndash;</td><td style="padding:5px 10px;">All 1's</td><td style="padding:5px 10px; color:#10B981;">Direct Broadcast Address (DBA)</td></tr>
+            <tr style="border-bottom:1px solid #23262D;"><td style="padding:5px 10px;">All 1's</td><td style="padding:5px 10px;">All 1's</td><td style="padding:5px 10px; color:#F59E0B;">Limited Broadcast Address (LBA)</td></tr>
+            <tr style="border-bottom:1px solid #23262D;"><td style="padding:5px 10px;">0's</td><td style="padding:5px 10px;">&ndash;</td><td style="padding:5px 10px;">Host within the Network</td></tr>
+            <tr><td style="padding:5px 10px;">All 1's</td><td style="padding:5px 10px;">All 0's</td><td style="padding:5px 10px;">Network Mask / Subnet Mask</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Section 1.8 CIDR Rules -->
+      <div style="margin-bottom: 20px; background: rgba(255,255,255,0.02); border: 1px solid #23262D; border-radius: 8px; padding: 14px 16px;">
+        <h3 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin-bottom: 8px;">1.8 CIDR Rules</h3>
+        <ol style="margin: 0; padding-left: 18px; font-size: 12px; color: #F5F5F5;">
+          <li>All the IP Addresses in the Block must be contiguous.</li>
+          <li>Block size must be a power of 2 (2<sup>N</sup>).</li>
+          <li>First IP address of the block must be divisible by the size of the block.</li>
+        </ol>
+      </div>
+
+      <!-- Section 1.9 - 1.11 Supernetting -->
+      <div style="background: rgba(255,255,255,0.02); border: 1px solid #23262D; border-radius: 8px; padding: 14px 16px;">
+        <h3 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin-bottom: 8px;">1.9 – 1.11 Supernetting & Rules</h3>
+        <p style="font-size:12px; margin-bottom:10px;"><strong>Supernetting Definition:</strong> The process of combining two or more networks to get a single network.</p>
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px 12px; border-radius:6px;">
+            <strong style="color:#10B981; font-size:12px;">Advantages of Supernetting:</strong>
+            <ul style="margin:6px 0 0 0; padding-left:16px; font-size:11px; color:#9CA3AF;">
+              <li>Reduces routing table entries.</li>
+              <li>Router takes less time for packet processing.</li>
+              <li>Improves flexibility of IP address allotment (e.g. combine two Class C networks for 500 addresses).</li>
+            </ul>
+          </div>
+
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px 12px; border-radius:6px;">
+            <strong style="color:#F59E0B; font-size:12px;">Rules of Supernetting:</strong>
+            <ol style="margin:6px 0 0 0; padding-left:16px; font-size:11px; color:#9CA3AF;">
+              <li>Network IDs must be contiguous.</li>
+              <li>Size of networks must be identical and number of networks must be a power of 2.</li>
+              <li>First Network ID must be divisible by the size of the supernet.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  `
+};
+
 const LEARN_CN_TOPICS = [
   { id: 'cn_1', num: '01', title: 'IP Addressing, Subnetting & Supernetting', status: 'Ready' },
   { id: 'cn_2', num: '02', title: 'Error Control', status: 'Ready' },
@@ -49,6 +207,9 @@ function renderLearnTopicList(container) {
             </div>
             <div>
               <div style="font-size:13px; font-weight:700; color:#F5F5F5;">${t.title}</div>
+              <div style="font-size:11px; color:${CN_TOPIC_CONTENTS[t.id] ? '#10B981' : '#9CA3AF'}; margin-top:2px;">
+                ${CN_TOPIC_CONTENTS[t.id] ? 'Study Material Added' : 'Workspace Ready'}
+              </div>
             </div>
           </div>
           <button class="btn-primary" style="font-size:11px; padding:4px 10px; height:28px;" onclick="event.stopPropagation(); openLearnTopic('${t.id}')">Open ➔</button>
@@ -70,6 +231,7 @@ function closeLearnTopicViewer() {
 
 function renderLearnTopicViewer(container, topicId) {
   const topic = LEARN_CN_TOPICS.find(t => t.id === topicId) || LEARN_CN_TOPICS[0];
+  const customHTML = CN_TOPIC_CONTENTS[topicId];
 
   container.innerHTML = `
     <!-- Top Action Bar -->
@@ -85,16 +247,18 @@ function renderLearnTopicViewer(container, topicId) {
         <h1 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; color:#F5F5F5; margin-top:4px;">${topic.title}</h1>
       </div>
 
-      <!-- Placeholder content container ready for user notes/text -->
-      <div id="learn-topic-content-body" style="min-height:240px; background:#0A0B0E; border:1px solid #23262D; border-radius:8px; padding:24px; text-align:center;">
-        <div style="width:44px; height:44px; border-radius:50%; background:rgba(59,130,246,0.12); color:#3B82F6; display:flex; align-items:center; justify-content:center; margin:0 auto 12px auto;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+      <!-- Module Content Body -->
+      ${customHTML ? customHTML : `
+        <div id="learn-topic-content-body" style="min-height:240px; background:#0A0B0E; border:1px solid #23262D; border-radius:8px; padding:24px; text-align:center;">
+          <div style="width:44px; height:44px; border-radius:50%; background:rgba(59,130,246,0.12); color:#3B82F6; display:flex; align-items:center; justify-content:center; margin:0 auto 12px auto;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+          </div>
+          <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; color:#F5F5F5; margin-bottom:4px;">Module Workspace Ready</h3>
+          <p style="color:#9CA3AF; max-width:440px; margin:0 auto; font-size:12px; line-height:1.5;">
+            This study module is ready to receive your custom notes, formulas, diagrams, and explanations for <strong>${topic.title}</strong>.
+          </p>
         </div>
-        <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; color:#F5F5F5; margin-bottom:4px;">Module Workspace Ready</h3>
-        <p style="color:#9CA3AF; max-width:440px; margin:0 auto; font-size:12px; line-height:1.5;">
-          This study module is ready to receive your custom notes, formulas, diagrams, and explanations for <strong>${topic.title}</strong>.
-        </p>
-      </div>
+      `}
     </div>
   `;
 }
