@@ -317,6 +317,8 @@ const LEARN_CN_TOPICS = [
 ];
 
 let activeLearnTopicId = null;
+let activeLearnTab = 'queue'; // 'queue' or 'modules'
+let activeSubjectFilter = 'ALL';
 
 function initRevisionModule() {
   const container = document.getElementById('revision-content-area') || document.getElementById('revision-main-content');
@@ -325,43 +327,143 @@ function initRevisionModule() {
   if (activeLearnTopicId) {
     renderLearnTopicViewer(container, activeLearnTopicId);
   } else {
-    renderLearnTopicList(container);
+    renderLearnMainView(container);
   }
 }
 
-function renderLearnTopicList(container) {
+function switchLearnTab(tabName) {
+  activeLearnTab = tabName;
+  initRevisionModule();
+}
+
+function filterBySubject(subj) {
+  activeSubjectFilter = subj;
+  initRevisionModule();
+}
+
+function renderLearnMainView(container) {
+  const bookmarkIds = StorageManager.getBookmarks();
+  const notes = StorageManager.getAllTopicNotes() || {};
+  const allQs = window.allPracticeQuestions || [];
+
   container.innerHTML = `
-    <!-- Top Header Banner -->
-    <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px 18px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+    <!-- 1. Primary Action Hero (5-Second Clarity) -->
+    <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px 20px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
       <div>
-        <h2 style="font-family:'Outfit', sans-serif; font-size:20px; font-weight:700; color:#F5F5F5; margin-bottom:2px;">Learn Center</h2>
-        <p style="color:#9CA3AF; font-size:12px;">Computer Networks (CN) Core Concepts & Study Modules.</p>
+        <div style="font-size:11px; font-weight:700; color:#3B82F6; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px;">Today's Revision</div>
+        <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; color:#F5F5F5; margin:0;">18 Questions Due</h2>
+        <div style="font-size:12px; color:#9CA3AF; margin-top:3px;">Estimated Time: <strong style="color:#F5F5F5;">32 min</strong></div>
       </div>
-      <div style="display:flex; gap:8px;">
-        <span style="font-size:11px; background:rgba(59,130,246,0.15); color:#3B82F6; border:1px solid #3B82F6; padding:2px 10px; border-radius:12px; font-weight:700;">Computer Networks</span>
-        <span style="font-size:11px; background:rgba(16,185,129,0.15); color:#10B981; border:1px solid #10B981; padding:2px 10px; border-radius:12px; font-weight:700;">9 Modules</span>
+      <button class="btn-primary" style="font-size:13px; padding:8px 22px; height:38px; font-weight:700;" onclick="navigateToView('practice')">Start Revision ➔</button>
+    </div>
+
+    <!-- 2. Clean Navigation & Subject Filter Pills -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+      <!-- Tab Toggle -->
+      <div style="display:flex; gap:6px;">
+        <button style="background:${activeLearnTab === 'queue' ? '#3B82F6' : '#0F1115'}; border:1px solid ${activeLearnTab === 'queue' ? '#3B82F6' : '#23262D'}; color:${activeLearnTab === 'queue' ? '#FFF' : '#9CA3AF'}; font-size:12px; font-weight:700; padding:6px 14px; border-radius:6px; cursor:pointer;" onclick="switchLearnTab('queue')">Revision Queue (${bookmarkIds.length})</button>
+        <button style="background:${activeLearnTab === 'modules' ? '#3B82F6' : '#0F1115'}; border:1px solid ${activeLearnTab === 'modules' ? '#3B82F6' : '#23262D'}; color:${activeLearnTab === 'modules' ? '#FFF' : '#9CA3AF'}; font-size:12px; font-weight:700; padding:6px 14px; border-radius:6px; cursor:pointer;" onclick="switchLearnTab('modules')">CN Study Modules (${LEARN_CN_TOPICS.length})</button>
+      </div>
+
+      <!-- Subject Filter Chips (By Subject) -->
+      <div style="display:flex; gap:6px; align-items:center;">
+        <span style="font-size:11px; color:#9CA3AF;">By Subject:</span>
+        <button style="background:${activeSubjectFilter === 'ALL' ? 'rgba(59,130,246,0.15)' : '#0F1115'}; border:1px solid ${activeSubjectFilter === 'ALL' ? '#3B82F6' : '#23262D'}; color:${activeSubjectFilter === 'ALL' ? '#3B82F6' : '#9CA3AF'}; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px; cursor:pointer;" onclick="filterBySubject('ALL')">All</button>
+        <button style="background:${activeSubjectFilter === 'CN' ? 'rgba(59,130,246,0.15)' : '#0F1115'}; border:1px solid ${activeSubjectFilter === 'CN' ? '#3B82F6' : '#23262D'}; color:${activeSubjectFilter === 'CN' ? '#3B82F6' : '#9CA3AF'}; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px; cursor:pointer;" onclick="filterBySubject('CN')">CN (12)</button>
+        <button style="background:${activeSubjectFilter === 'OS' ? 'rgba(59,130,246,0.15)' : '#0F1115'}; border:1px solid ${activeSubjectFilter === 'OS' ? '#3B82F6' : '#23262D'}; color:${activeSubjectFilter === 'OS' ? '#3B82F6' : '#9CA3AF'}; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px; cursor:pointer;" onclick="filterBySubject('OS')">OS (9)</button>
+        <button style="background:${activeSubjectFilter === 'DBMS' ? 'rgba(59,130,246,0.15)' : '#0F1115'}; border:1px solid ${activeSubjectFilter === 'DBMS' ? '#3B82F6' : '#23262D'}; color:${activeSubjectFilter === 'DBMS' ? '#3B82F6' : '#9CA3AF'}; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px; cursor:pointer;" onclick="filterBySubject('DBMS')">DBMS (15)</button>
+        <button style="background:${activeSubjectFilter === 'COA' ? 'rgba(59,130,246,0.15)' : '#0F1115'}; border:1px solid ${activeSubjectFilter === 'COA' ? '#3B82F6' : '#23262D'}; color:${activeSubjectFilter === 'COA' ? '#3B82F6' : '#9CA3AF'}; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px; cursor:pointer;" onclick="filterBySubject('COA')">COA (8)</button>
       </div>
     </div>
 
-    <!-- Topics Grid -->
-    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:10px;">
-      ${LEARN_CN_TOPICS.map(t => `
-        <div class="card" style="padding:12px 14px; margin-bottom:0; cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="openLearnTopic('${t.id}')">
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div style="width:32px; height:32px; border-radius:6px; background:rgba(59,130,246,0.12); color:#3B82F6; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0;">
-              ${t.num}
+    <!-- 3. TAB 1: REVISION QUEUE -->
+    ${activeLearnTab === 'queue' ? `
+      <!-- Due Today Section (18) -->
+      <div style="margin-bottom:16px;">
+        <div style="font-size:13px; font-weight:700; color:#F5F5F5; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+          <span>Due Today (18)</span>
+          <span style="font-size:11px; color:#3B82F6;">18 Pending</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          ${bookmarkIds.length > 0 ? bookmarkIds.slice(0, 3).map((bId, idx) => {
+            const qMatch = allQs.find(q => q.id === bId);
+            const title = (qMatch && qMatch.question) ? qMatch.question.split('.')[0] : 'IP Addressing, Subnetting & Supernetting';
+            const subCode = (qMatch && qMatch.subjectCode) ? qMatch.subjectCode.toUpperCase() : 'CN';
+            const diff = (qMatch && qMatch.difficulty) ? qMatch.difficulty : (idx % 2 === 0 ? 'Hard' : 'Medium');
+            const noteText = notes[bId] || notes[subCode] || 'Remember subnet masks and block size calculation rules.';
+
+            return `
+              <div style="background:#0F1115; border:1px solid #23262D; border-radius:8px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="navigateToView('practice')">
+                <div style="flex:1; padding-right:12px;">
+                  <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                    <span style="font-size:13px; font-weight:700; color:#F5F5F5;">${title}</span>
+                    <span style="font-size:10px; font-weight:700; color:#3B82F6; background:rgba(59,130,246,0.12); padding:1px 6px; border-radius:4px;">${subCode}</span>
+                    <span style="font-size:10px; font-weight:700; color:${diff === 'Hard' ? '#EF4444' : '#F59E0B'}; background:rgba(239,68,68,0.1); padding:1px 6px; border-radius:4px;">${diff}</span>
+                  </div>
+                  <div style="font-size:11px; color:#9CA3AF; font-style:italic; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; max-width:480px;">"${noteText}"</div>
+                  <div style="font-size:10px; color:#9CA3AF; margin-top:4px;">Last Reviewed: 3 days ago</div>
+                </div>
+                <button class="btn-primary" style="font-size:11px; padding:4px 12px; height:28px; font-weight:700;" onclick="event.stopPropagation(); navigateToView('practice')">Open ➔</button>
+              </div>
+            `;
+          }).join('') : `
+            <div style="background:#0F1115; border:1px solid #23262D; border-radius:8px; padding:24px; text-align:center; color:#9CA3AF; font-size:12px;">
+              No questions due today. You are completely caught up!
             </div>
+          `}
+        </div>
+      </div>
+
+      <!-- Review Later Section (32) -->
+      <div>
+        <div style="font-size:13px; font-weight:700; color:#F5F5F5; margin-bottom:8px;">Review Later (32)</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="background:#0F1115; border:1px solid #23262D; border-radius:8px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="navigateToView('practice')">
             <div>
-              <div style="font-size:13px; font-weight:700; color:#F5F5F5;">${t.title}</div>
-              <div style="font-size:11px; color:${CN_TOPIC_CONTENTS[t.id] ? '#10B981' : '#9CA3AF'}; margin-top:2px;">
-                ${CN_TOPIC_CONTENTS[t.id] ? 'Study Material Added' : 'Workspace Ready'}
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:12px; font-weight:700; color:#F5F5F5;">Banker's Algorithm & Deadlock Avoidance</span>
+                <span style="font-size:10px; font-weight:700; color:#3B82F6; background:rgba(59,130,246,0.12); padding:1px 6px; border-radius:4px;">OS</span>
+                <span style="font-size:10px; font-weight:700; color:#F59E0B; background:rgba(245,158,11,0.1); padding:1px 6px; border-radius:4px;">Medium</span>
+              </div>
+              <div style="font-size:10px; color:#9CA3AF; margin-top:2px;">Scheduled for tomorrow</div>
+            </div>
+            <button class="btn-secondary" style="font-size:11px; padding:4px 10px; height:26px;" onclick="event.stopPropagation(); navigateToView('practice')">Review ➔</button>
+          </div>
+          <div style="background:#0F1115; border:1px solid #23262D; border-radius:8px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="navigateToView('practice')">
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:12px; font-weight:700; color:#F5F5F5;">B+ Tree Node Splitting & Index Height</span>
+                <span style="font-size:10px; font-weight:700; color:#3B82F6; background:rgba(59,130,246,0.12); padding:1px 6px; border-radius:4px;">DBMS</span>
+                <span style="font-size:10px; font-weight:700; color:#10B981; background:rgba(16,185,129,0.1); padding:1px 6px; border-radius:4px;">Easy</span>
+              </div>
+              <div style="font-size:10px; color:#9CA3AF; margin-top:2px;">Scheduled in 2 days</div>
+            </div>
+            <button class="btn-secondary" style="font-size:11px; padding:4px 10px; height:26px;" onclick="event.stopPropagation(); navigateToView('practice')">Review ➔</button>
+          </div>
+        </div>
+      </div>
+    ` : `
+      <!-- TAB 2: CN STUDY MODULES -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:10px;">
+        ${LEARN_CN_TOPICS.map(t => `
+          <div class="card" style="padding:12px 14px; margin-bottom:0; cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="openLearnTopic('${t.id}')">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div style="width:32px; height:32px; border-radius:6px; background:rgba(59,130,246,0.12); color:#3B82F6; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0;">
+                ${t.num}
+              </div>
+              <div>
+                <div style="font-size:13px; font-weight:700; color:#F5F5F5;">${t.title}</div>
+                <div style="font-size:11px; color:${CN_TOPIC_CONTENTS[t.id] ? '#10B981' : '#9CA3AF'}; margin-top:2px;">
+                  ${CN_TOPIC_CONTENTS[t.id] ? 'Study Material Added' : 'Workspace Ready'}
+                </div>
               </div>
             </div>
+            <button class="btn-primary" style="font-size:11px; padding:4px 10px; height:28px;" onclick="event.stopPropagation(); openLearnTopic('${t.id}')">Open ➔</button>
           </div>
-          <button class="btn-primary" style="font-size:11px; padding:4px 10px; height:28px;" onclick="event.stopPropagation(); openLearnTopic('${t.id}')">Open ➔</button>
-        </div>
-      `).join('')}
-    </div>
+        `).join('')}
+      </div>
+    `}
   `;
 }
 
@@ -412,6 +514,8 @@ function renderLearnTopicViewer(container, topicId) {
 window.initRevisionModule = initRevisionModule;
 window.openLearnTopic = openLearnTopic;
 window.closeLearnTopicViewer = closeLearnTopicViewer;
+window.switchLearnTab = switchLearnTab;
+window.filterBySubject = filterBySubject;
 
 document.addEventListener('DOMContentLoaded', () => {
   initRevisionModule();
