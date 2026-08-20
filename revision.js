@@ -438,11 +438,15 @@ function openConceptExplanationModal(conceptKey) {
   bodyElem.innerHTML = explanationData.html || '<p>Detailed explanation coming soon.</p>';
 
   modal.classList.add('active');
+  modal.style.display = 'flex';
 }
 
 function closeConceptModal() {
   const modal = document.getElementById('concept-modal-overlay');
-  if (modal) modal.classList.remove('active');
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+  }
 }
 
 function initRevisionModule() {
