@@ -181,8 +181,36 @@ function handleAvatarUpload(e) {
 
   const reader = new FileReader();
   reader.onload = (evt) => {
-    StorageManager.saveAvatar(evt.target.result);
-    renderProfileModule();
+    const img = new Image();
+    img.onload = () => {
+      // Compress to max 300x300 for optimal storage & instant rendering
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const maxDim = 300;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > maxDim) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        }
+      } else {
+        if (height > maxDim) {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+      StorageManager.saveAvatar(compressedDataUrl);
+      renderProfileModule();
+    };
+    img.src = evt.target.result;
   };
   reader.readAsDataURL(file);
 }

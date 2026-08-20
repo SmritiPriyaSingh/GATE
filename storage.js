@@ -109,6 +109,12 @@ const StorageManager = {
     localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(updated));
     return updated;
   },
+  saveAvatar(avatarUrl) {
+    return this.saveProfile({ avatar: avatarUrl });
+  },
+  removeAvatar() {
+    return this.saveProfile({ avatar: null });
+  },
 
   // User Settings
   getSettings() {
