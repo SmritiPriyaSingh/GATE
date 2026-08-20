@@ -356,10 +356,10 @@ function closeEditProfileModal() {
 }
 
 function saveProfileChanges() {
-  const name = document.getElementById('edit-prof-name')?.value || 'Smriti Priya Singh';
-  const email = document.getElementById('edit-prof-email')?.value || 'smriti.singh@gate2027.edu';
-  const targetYear = document.getElementById('edit-prof-year')?.value || 'GATE 2027';
-  const branch = document.getElementById('edit-prof-branch')?.value || 'Computer Science & Engineering';
+  const name = document.getElementById('edit-prof-name')?.value || 'Student Aspirant';
+  const email = document.getElementById('edit-prof-email')?.value || 'student@gate2027.edu';
+  const targetYear = document.getElementById('edit-prof-year')?.value || '2027';
+  const branch = document.getElementById('edit-prof-branch')?.value || 'Computer Science (CS)';
 
   StorageManager.saveProfile({ name, email, targetYear, branch });
   if (window.updateBrandTitle) window.updateBrandTitle();
