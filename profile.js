@@ -93,8 +93,8 @@ function renderProfileModule() {
         <div style="flex:1;">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
             <div>
-              <h1 style="font-family:'Outfit', sans-serif; font-size:24px; font-weight:700; margin-bottom:4px;" id="profile-display-name">${profile.name}</h1>
-              <div style="font-size:13px; color:var(--text-sub); margin-bottom:8px;">${profile.email}</div>
+              <h1 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; margin-bottom:2px;" id="profile-display-name">${profile.name}</h1>
+              <div style="font-size:13px; font-weight:600; color:var(--accent-primary); margin-bottom:6px;">${profile.username || '@aspirant'} &bull; <span style="color:var(--text-sub); font-weight:400;">${profile.email}</span></div>
               <div style="display:flex; gap:12px; flex-wrap:wrap; font-size:12px; color:var(--text-sub);">
                 <span>Branch: <strong>${profile.branch}</strong></span>
                 <span>Target: <strong>${profile.targetYear}</strong></span>
@@ -328,14 +328,24 @@ function removeBookmarkFromProfile(qId) {
   renderProfileModule();
 }
 
+function autoGenerateUsername(val) {
+  const userIn = document.getElementById('auth-input-username');
+  if (userIn && val) {
+    const clean = val.toLowerCase().replace(/[^a-z0-9]/g, '');
+    userIn.value = `@${clean}`;
+  }
+}
+
 function openAuthModal() {
   const modal = document.getElementById('auth-modal-overlay');
   if (modal) {
     const prof = StorageManager.getProfile();
     if (prof) {
       const nameIn = document.getElementById('auth-input-name');
+      const userIn = document.getElementById('auth-input-username');
       const emailIn = document.getElementById('auth-input-email');
       if (nameIn && prof.name) nameIn.value = prof.name;
+      if (userIn && prof.username) userIn.value = prof.username;
       if (emailIn && prof.email) emailIn.value = prof.email;
     }
     modal.classList.add('active');
@@ -350,11 +360,13 @@ function closeAuthModal() {
 function handleUserAuthSubmit(e) {
   if (e) e.preventDefault();
   const name = document.getElementById('auth-input-name')?.value || 'Student Aspirant';
+  let username = document.getElementById('auth-input-username')?.value || `@${name.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+  if (!username.startsWith('@')) username = `@${username}`;
   const email = document.getElementById('auth-input-email')?.value || 'student@gate2027.edu';
   const targetYear = document.getElementById('auth-input-target')?.value || '2027';
   const branch = document.getElementById('auth-input-branch')?.value || 'Computer Science (CS)';
 
-  StorageManager.saveProfile({ name, email, targetYear, branch });
+  StorageManager.saveProfile({ name, username, email, targetYear, branch });
   localStorage.setItem('gate2027_user_registered', 'true');
   closeAuthModal();
   renderProfileModule();
@@ -368,6 +380,7 @@ window.openEditProfileModal = openEditProfileModal;
 window.closeEditProfileModal = closeEditProfileModal;
 window.saveProfileChanges = saveProfileChanges;
 window.removeBookmarkFromProfile = removeBookmarkFromProfile;
+window.autoGenerateUsername = autoGenerateUsername;
 window.openAuthModal = openAuthModal;
 window.closeAuthModal = closeAuthModal;
 window.handleUserAuthSubmit = handleUserAuthSubmit;

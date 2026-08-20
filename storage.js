@@ -101,6 +101,7 @@ const StorageManager = {
   getProfile() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.USER_PROFILE)) || {
       name: 'Smriti Priya Singh',
+      username: '@smritisingh',
       email: 'smriti.singh@gate2027.edu',
       targetYear: 'GATE 2027',
       branch: 'Computer Science & Engineering',
