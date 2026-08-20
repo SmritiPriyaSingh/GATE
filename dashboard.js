@@ -6,6 +6,7 @@ function renderCommandCenter() {
   renderTodayTasks();
   renderSubjectProgress();
   renderActivityAndDiagnostics();
+  renderRecentBookmarks();
 }
 
 // 1. Top Metrics (Countdown & Overall Completion)
@@ -181,11 +182,80 @@ function renderActivityAndDiagnostics() {
   }
 }
 
+// 6. Recent Bookmarked Questions Card
+function renderRecentBookmarks() {
+  const container = document.getElementById('cmd-bookmarks-card');
+  if (!container) return;
+
+  const bookmarkIds = StorageManager.getBookmarks();
+  const notes = StorageManager.getAllTopicNotes() || {};
+
+  if (bookmarkIds.length === 0) {
+    container.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h3 style="font-family:'Outfit', sans-serif; font-size:15px; font-weight:700; color:var(--text-main);">Bookmarked Questions</h3>
+        <span style="font-size:11px; background:rgba(255,255,255,0.05); color:var(--text-muted); padding:1px 8px; border-radius:10px; font-weight:700;">0</span>
+      </div>
+
+      <div style="text-align:center; padding:14px 6px;">
+        <div style="font-size:12px; font-weight:600; color:var(--text-main); margin-bottom:4px;">No bookmarked questions yet</div>
+        <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px; line-height:1.4;">
+          Bookmark important questions while practicing.<br>They'll appear here for quick revision.
+        </p>
+        <button class="btn-primary" style="font-size:11px; padding:4px 10px;" onclick="navigateToView('practice')">Browse Practice</button>
+      </div>
+    `;
+    return;
+  }
+
+  const allQs = window.allPracticeQuestions || [];
+  const latestFiveIds = bookmarkIds.slice(-5).reverse();
+
+  container.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <h3 style="font-family:'Outfit', sans-serif; font-size:15px; font-weight:700; color:var(--text-main);">Bookmarked Questions</h3>
+      <span style="font-size:11px; background:rgba(59,130,246,0.15); color:var(--accent-primary); border:1px solid var(--accent-primary); padding:1px 8px; border-radius:10px; font-weight:700;">${bookmarkIds.length}</span>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      ${latestFiveIds.map(bId => {
+        const qMatch = allQs.find(q => q.id === bId);
+        const subCode = (qMatch && qMatch.subjectCode) ? qMatch.subjectCode : (bId.split('_')[0] || 'CS').toUpperCase();
+        const qNum = (qMatch && qMatch.qNum) ? `Q${qMatch.qNum}` : bId;
+        const diff = (qMatch && qMatch.difficulty) ? qMatch.difficulty : 'Medium';
+        const diffColor = diff === 'Hard' ? '#EF4444' : diff === 'Easy' ? '#10B981' : '#F59E0B';
+        const noteText = notes[bId] || notes[subCode] || null;
+        const firstLineNote = noteText ? noteText.split('\n')[0] : null;
+
+        return `
+          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:6px; padding:6px 10px; cursor:pointer; transition:all 0.15s;" onclick="openBookmarkedQuestion('${bId}')">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; font-weight:700; color:var(--text-main);">${subCode} &bull; ${qNum}</span>
+              <span style="font-size:10px; font-weight:700; color:${diffColor}; background:rgba(255,255,255,0.05); padding:1px 5px; border-radius:4px;">${diff}</span>
+            </div>
+            ${firstLineNote ? `<div style="font-size:11px; color:var(--text-sub); font-style:italic; margin-top:2px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">"${firstLineNote}"</div>` : ''}
+          </div>
+        `;
+      }).join('')}
+    </div>
+
+    <div style="border-top:1px solid var(--border-color); margin-top:8px; padding-top:6px; text-align:right;">
+      <button onclick="navigateToView('profile')" style="background:none; border:none; color:var(--accent-primary); font-size:11px; font-weight:600; cursor:pointer;">View All Bookmarks ➔</button>
+    </div>
+  `;
+}
+
+function openBookmarkedQuestion(qId) {
+  navigateToView('practice');
+}
+
 window.renderCommandCenter = renderCommandCenter;
 window.addMissionTask = addMissionTask;
 window.toggleMissionTask = toggleMissionTask;
 window.deleteMissionTask = deleteMissionTask;
 window.resumeLastStudySession = resumeLastStudySession;
+window.renderRecentBookmarks = renderRecentBookmarks;
+window.openBookmarkedQuestion = openBookmarkedQuestion;
 
 document.addEventListener('DOMContentLoaded', () => {
   renderCommandCenter();
