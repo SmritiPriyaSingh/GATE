@@ -1,6 +1,118 @@
 // Learn Center Module - Computer Networks (CN) Study Modules
 
 const CONCEPT_EXPLANATIONS = {
+  'error_basics': {
+    title: '2.1 Error Control Basics & Detection vs Correction',
+    html: `
+      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
+        <div style="background:rgba(59,130,246,0.1); border-left:4px solid #3B82F6; padding:12px; border-radius:4px; margin-bottom:14px;">
+          <strong style="color:#3B82F6;">Key Concept: Corrupted Bits Formula</strong>
+          <p style="margin:4px 0 0 0; color:#F5F5F5; font-family:monospace; font-size:13px;">
+            Corrupted Bits = Data Rate &times; Noise Duration
+          </p>
+        </div>
+
+        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#F5F5F5; margin-bottom:6px;">Important GATE Facts:</h4>
+        <ul style="margin:0 0 14px 0; padding-left:18px; color:#9CA3AF;">
+          <li><strong>Burst Errors</strong> (multiple adjacent corrupted bits) occur far more frequently in real transmission channels than single-bit errors.</li>
+          <li><strong>Error Detection</strong> is simple and cheap; <strong>Error Correction</strong> requires heavy redundant bits and complex hardware logic.</li>
+        </ul>
+      </div>
+    `
+  },
+
+  'hamming': {
+    title: '2.1.1 – 2.1.4 Hamming Distance & Solved GATE Problems',
+    html: `
+      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
+        <div style="background:rgba(16,185,129,0.1); border-left:4px solid #10B981; padding:12px; border-radius:4px; margin-bottom:14px;">
+          <strong style="color:#10B981;">Hamming Distance Rule:</strong>
+          <p style="margin:4px 0 0 0; color:#F5F5F5;">
+            To calculate Hamming Distance d(x, y), perform bitwise XOR (<code>x &oplus; y</code>) and count the total number of 1's in the result!
+          </p>
+        </div>
+
+        <div style="background:#0F1115; border:1px solid #23262D; border-radius:6px; padding:12px; font-family:monospace; font-size:12px; margin-bottom:14px;">
+          Example 1: 10101 &oplus; 11110 = 01011 &rarr; (Three 1's) &rarr; d = 3<br>
+          Example 2: 000 &oplus; 011 = 011 &rarr; (Two 1's) &rarr; d = 2
+        </div>
+
+        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#3B82F6; margin-bottom:6px;">Minimum Hamming Distance (d<sub>min</sub>) Formulas:</h4>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;">
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px; border-radius:6px;">
+            <strong style="color:#10B981;">To Detect 's' Errors:</strong><br>
+            <code>d<sub>min</sub> &ge; s + 1</code>
+          </div>
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px; border-radius:6px;">
+            <strong style="color:#F59E0B;">To Correct 't' Errors:</strong><br>
+            <code>d<sub>min</sub> &ge; 2t + 1</code>
+          </div>
+        </div>
+
+        <!-- Solved GATE Question -->
+        <div style="background:#0F1115; border:1px solid #3B82F6; padding:14px; border-radius:8px;">
+          <span style="font-size:10px; font-weight:700; color:#3B82F6; text-transform:uppercase;">Solved GATE Question</span>
+          <h4 style="font-family:'Outfit', sans-serif; font-size:13px; font-weight:700; color:#F5F5F5; margin:4px 0 8px 0;">
+            Question: If a system needs to CORRECT up to 3-bit errors, what is the minimum Hamming distance required?
+          </h4>
+          <div style="background:rgba(16,185,129,0.1); border-left:3px solid #10B981; padding:8px 10px; border-radius:4px; font-size:12px;">
+            <strong style="color:#10B981;">Solution:</strong><br>
+            t = 3 errors to correct.<br>
+            Formula: <code>d<sub>min</sub> = 2t + 1 = 2(3) + 1 = 7</code>.<br>
+            <strong>Answer: Minimum Hamming distance = 7.</strong>
+          </div>
+        </div>
+      </div>
+    `
+  },
+
+  'parity': {
+    title: '2.2 – 2.3 Simple & 2D Parity Check Mechanics',
+    html: `
+      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
+        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#3B82F6; margin-bottom:6px;">Simple Parity Check (1D):</h4>
+        <p style="color:#F5F5F5; margin-bottom:10px;">
+          Appends 1 extra bit so total count of 1's is Even (Even Parity).<br>
+          &bull; <strong>Odd number of errors:</strong> Always detected!<br>
+          &bull; <strong>Even number of errors:</strong> Fails completely (undetectable!).
+        </p>
+
+        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#10B981; margin-bottom:6px;">2D Parity Check:</h4>
+        <p style="color:#F5F5F5;">
+          Arranges data in a grid matrix and computes row parity + column parity. Can detect &amp; correct all single-bit errors and detect 2 or 3 bit errors anywhere in the matrix.
+        </p>
+      </div>
+    `
+  },
+
+  'crc': {
+    title: '2.4 Cyclic Redundancy Check (CRC) Solved Example',
+    html: `
+      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
+        <div style="background:rgba(59,130,246,0.1); border-left:4px solid #3B82F6; padding:12px; border-radius:4px; margin-bottom:14px;">
+          <strong style="color:#3B82F6;">CRC Step-by-Step Algorithm:</strong>
+          <ol style="margin:4px 0 0 0; padding-left:18px; color:#F5F5F5;">
+            <li>Given Generator Polynomial of length <strong>k</strong> bits (e.g. <code>10011</code>, k=5).</li>
+            <li>Append <strong>(k &ndash; 1) zeros</strong> (4 zeros) to original dataword.</li>
+            <li>Perform <strong>Modulo-2 Division (XOR)</strong> using the generator.</li>
+            <li>The <strong>Remainder</strong> is the CRC checksum.</li>
+          </ol>
+        </div>
+
+        <!-- Solved Example -->
+        <div style="background:#0F1115; border:1px solid #10B981; padding:14px; border-radius:8px;">
+          <span style="font-size:10px; font-weight:700; color:#10B981; text-transform:uppercase;">Solved Modulo-2 Division</span>
+          <div style="font-size:12px; color:#F5F5F5; font-family:monospace; margin-top:6px;">
+            Dataword = 1001 &bull; Generator = 1011 (k = 4 bits)<br>
+            Append 3 zeros &rarr; 1001000<br>
+            Modulo-2 (XOR) division remainder = <strong>110</strong> (CRC)<br>
+            Transmitted Codeword = <strong>1001110</strong>
+          </div>
+        </div>
+      </div>
+    `
+  },
+
   'cidr': {
     title: '1.8 CIDR Allocation Rules & Solved GATE Example',
     html: `
@@ -359,7 +471,7 @@ const CN_TOPIC_CONTENTS = {
           <span style="font-size:11px; background:#3B82F6; color:#FFF; font-weight:700; padding:2px 8px; border-radius:4px;">Click for Simplified GATE Example ➔</span>
         </div>
 
-        <div style="background:#0F1115; border-left: 3px solid #10B981; padding: 12px 14px; border-radius: 4px; transition:all 0.15s;" onmouseover="this.style.borderColor='#3B82F6'" onmouseout="this.style.borderColor='#10B981'">
+        <div style="background:#0F1115; border-left: 3px solid #10B981; padding: 12px 14px; border-radius: 4px; transition:all 0.15s;">
           <ol style="margin: 0; padding-left: 18px; font-size: 12.5px; color: #F5F5F5; line-height: 1.7;">
             <li><strong>Contiguous Block:</strong> All IP addresses in the block must be continuous without gaps.</li>
             <li><strong>Power of 2:</strong> Block size must equal 2<sup>N</sup>.</li>
@@ -398,6 +510,156 @@ const CN_TOPIC_CONTENTS = {
               <li>All candidate networks must have identical sizes, and the count of networks must be a power of 2.</li>
               <li>First Network ID must be divisible by the total supernet block size.</li>
             </ol>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  `,
+
+  'cn_2': `
+    <div style="font-family:'Inter', system-ui, sans-serif; color: #E5E7EB; font-size: 13px; line-height: 1.6; max-width: 860px; margin: 0 auto;">
+
+      <!-- 2.1 Error Control Basics -->
+      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('error_basics')">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 6px; margin-bottom: 12px;">
+          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
+            2.1 &bull; Error Control Fundamentals
+          </h2>
+          <span style="font-size:11px; color:#3B82F6; font-weight:600;">Click for Explanation ➔</span>
+        </div>
+
+        <div style="background:rgba(59,130,246,0.08); border-left:3px solid #3B82F6; padding:10px 14px; border-radius:4px; margin-bottom:12px; font-size:12px;">
+          <strong>Core Formula:</strong> <code style="color:#10B981;">Number of Corrupted Bits = Data Rate &times; Noise Duration</code><br>
+          <span style="color:#9CA3AF;">&bull; Burst errors are more likely to occur than single-bit errors.<br>&bull; Error Correction is significantly more difficult than Error Detection.</span>
+        </div>
+
+        <!-- Detection vs Correction Table -->
+        <table style="width:100%; border-collapse:collapse; font-size:12px; background:#0F1115; border-radius:6px; overflow:hidden; margin-bottom:12px;">
+          <thead>
+            <tr style="background:#161920; color:#F5F5F5; border-bottom:1px solid #23262D; text-align:left;">
+              <th style="padding:8px 12px;">Feature</th>
+              <th style="padding:8px 12px;">Error Detection</th>
+              <th style="padding:8px 12px;">Error Correction</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:8px 12px; font-weight:700;">Action on Error</td>
+              <td style="padding:8px 12px; color:#EF4444;">Once noticed, simply discard packet &amp; ask for retransmission.</td>
+              <td style="padding:8px 12px; color:#10B981;">Capability to correct corrupted bits directly at receiver.</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 12px; font-weight:700;">Retransmission</td>
+              <td style="padding:8px 12px;">Requires retransmission protocol (ARQ).</td>
+              <td style="padding:8px 12px;">Does NOT require retransmission.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Techniques Breakdown Grid -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:10px;">
+          <div style="background:#0F1115; padding:10px; border-radius:6px; border-top:2px solid #3B82F6;">
+            <strong style="color:#3B82F6;">Error Detection Schemes:</strong>
+            <ul style="margin:4px 0 0 0; padding-left:16px; font-size:11.5px; color:#D1D5DB;">
+              <li>1. Simple Parity Check</li>
+              <li>2. 2D Parity Check</li>
+              <li>3. Checksum</li>
+              <li>4. Cyclic Redundancy Check (CRC)</li>
+            </ul>
+          </div>
+
+          <div style="background:#0F1115; padding:10px; border-radius:6px; border-top:2px solid #10B981;">
+            <strong style="color:#10B981;">Error Correction Schemes:</strong>
+            <ul style="margin:4px 0 0 0; padding-left:16px; font-size:11.5px; color:#D1D5DB;">
+              <li>1. Hamming Code</li>
+              <li>2. Forward Error Correction (FEC)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.1.1 – 2.1.4 Hamming Distance -->
+      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('hamming')">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 6px; margin-bottom: 12px;">
+          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
+            2.1.1 – 2.1.4 &bull; Hamming Distance &amp; Formulas
+          </h2>
+          <span style="font-size:11px; color:#3B82F6; font-weight:600;">Click for Solved GATE Examples ➔</span>
+        </div>
+
+        <p style="font-size:12px; color:#D1D5DB; margin-bottom:10px;">
+          The <strong>Hamming Distance d(x, y)</strong> between two binary strings of equal length is the count of differing bits (computed via XOR &oplus; and counting number of 1's).
+        </p>
+
+        <div style="background:#0F1115; border:1px solid #23262D; border-radius:6px; padding:10px; font-family:monospace; font-size:12px; margin-bottom:12px; display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:8px;">
+          <div>d(000, 011) = <strong style="color:#10B981;">2</strong></div>
+          <div>d(100, 011) = <strong style="color:#10B981;">3</strong></div>
+          <div>d(10101, 11110) = <strong style="color:#10B981;">3</strong></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px;">
+          <div style="background:#0F1115; border-left:3px solid #10B981; padding:10px 12px; border-radius:4px;">
+            <strong style="color:#10B981;">To Detect 's' Errors:</strong>
+            <div style="font-size:13px; font-weight:700; color:#F5F5F5; margin-top:2px;">d<sub>min</sub> &ge; s + 1</div>
+            <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Smallest Hamming distance required to guarantee detection of up to s errors.</div>
+          </div>
+
+          <div style="background:#0F1115; border-left:3px solid #F59E0B; padding:10px 12px; border-radius:4px;">
+            <strong style="color:#F59E0B;">To Correct 't' Errors:</strong>
+            <div style="font-size:13px; font-weight:700; color:#F5F5F5; margin-top:2px;">d<sub>min</sub> &ge; 2t + 1</div>
+            <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Smallest Hamming distance required to guarantee correction of up to t errors.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.2 Simple Parity & 2.3 2D Parity -->
+      <div style="margin-bottom: 24px; display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px;">
+        <div style="cursor:pointer;" onclick="openConceptExplanationModal('parity')">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
+            <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
+              2.2 &bull; Simple Parity Check
+            </h2>
+            <span style="font-size:10px; color:#3B82F6;">Click ➔</span>
+          </div>
+          <div style="background:#0F1115; padding:12px; border-radius:6px; font-size:12px;">
+            &bull; Adds 1 parity bit to dataword.<br>
+            &bull; <strong style="color:#10B981;">Detects ALL single-bit errors &amp; odd-number errors.</strong><br>
+            &bull; <strong style="color:#EF4444;">CANNOT detect even-number errors.</strong>
+          </div>
+        </div>
+
+        <div style="cursor:pointer;" onclick="openConceptExplanationModal('parity')">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
+            <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
+              2.3 &bull; 2D Parity Check
+            </h2>
+            <span style="font-size:10px; color:#3B82F6;">Click ➔</span>
+          </div>
+          <div style="background:#0F1115; padding:12px; border-radius:6px; font-size:12px;">
+            &bull; Bits organized in matrix (rows &amp; columns).<br>
+            &bull; <strong style="color:#10B981;">Detects &amp; corrects ALL single-bit errors.</strong><br>
+            &bull; Detects 2-bit or 3-bit errors anywhere in matrix.
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.4 Cyclic Redundancy Check (CRC) -->
+      <div style="cursor:pointer;" onclick="openConceptExplanationModal('crc')">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
+          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
+            2.4 &bull; Cyclic Redundancy Check (CRC)
+          </h2>
+          <span style="font-size:11px; background:#3B82F6; color:#FFF; font-weight:700; padding:2px 8px; border-radius:4px;">Click for Solved Modulo-2 Division ➔</span>
+        </div>
+
+        <div style="background:#0F1115; border-left:3px solid #3B82F6; padding:12px 14px; border-radius:4px;">
+          <div style="font-size:12.5px; line-height:1.7;">
+            1. <strong>Dataword Length = n</strong>, <strong>Divisor Generator Length = k</strong>.<br>
+            2. Append <strong>(k &ndash; 1) zeros</strong> to original dataword.<br>
+            3. Perform <strong>Modulo-2 Binary Division (XOR)</strong>.<br>
+            4. <strong>Remainder = CRC</strong> (size = k &ndash; 1 bits).<br>
+            5. <strong>Codeword Sent = Dataword + CRC Remainder</strong>.
           </div>
         </div>
       </div>
