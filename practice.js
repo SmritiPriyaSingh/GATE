@@ -240,8 +240,7 @@ function startBookmarksSession() {
   const bks = StorageManager.getBookmarks();
   let pool = allPracticeQuestions.filter(q => bks.includes(q.id));
   if (pool.length === 0) {
-    alert('No bookmarked questions saved yet! Bookmark questions during practice to revise them here.');
-    return;
+    pool = allPracticeQuestions.slice(0, 10);
   }
 
   filteredPracticeQuestions = pool;
