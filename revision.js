@@ -1,14 +1,202 @@
 // Learn Center Module - Computer Networks (CN) Study Modules
 
+const CONCEPT_EXPLANATIONS = {
+  'cidr': {
+    title: '1.8 CIDR Allocation Rules & Solved GATE Example',
+    html: `
+      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
+        
+        <div style="background:rgba(59,130,246,0.1); border-left:4px solid #3B82F6; padding:12px 14px; border-radius:4px; margin-bottom:14px;">
+          <strong style="color:#3B82F6; font-size:14px;">In Plain English: What is CIDR?</strong>
+          <p style="margin:4px 0 0 0; color:#F5F5F5;">
+            Classless Inter-Domain Routing (CIDR) eliminates fixed Class A/B/C boundaries. Instead of buying a whole 16.7-million IP Class A network, an ISP sells you exact variable-size IP blocks written as <code>IP_Address / Prefix_Length</code> (e.g., <code>200.1.1.0 / 26</code>).
+          </p>
+        </div>
+
+        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#10B981; margin-bottom:8px;">The 3 Strict Rules Every CIDR Block Must Satisfy:</h4>
+        
+        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px 12px; border-radius:6px;">
+            <strong style="color:#F5F5F5;">Rule 1: Contiguous IP Addresses</strong>
+            <div style="color:#9CA3AF; font-size:12px; margin-top:2px;">All IP numbers in the block must form a continuous sequence without any missing numbers.</div>
+          </div>
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px 12px; border-radius:6px;">
+            <strong style="color:#F5F5F5;">Rule 2: Block Size Must Be a Power of 2 (2<sup>N</sup>)</strong>
+            <div style="color:#9CA3AF; font-size:12px; margin-top:2px;">Allowed block sizes are 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, etc. (You cannot have a block of 50 or 300 IPs!).</div>
+          </div>
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px 12px; border-radius:6px;">
+            <strong style="color:#F5F5F5;">Rule 3: Divisibility Rule (Critical GATE Trick!)</strong>
+            <div style="color:#9CA3AF; font-size:12px; margin-top:2px;">
+              The numerical integer value of the <strong>First IP Address</strong> must be evenly divisible by the <strong>Block Size</strong>.<br>
+              Formula: <code>(First_IP_Decimal_Value) % Block_Size == 0</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Solved GATE Problem -->
+        <div style="background:#0F1115; border:1px solid #3B82F6; padding:14px; border-radius:8px;">
+          <span style="font-size:10px; font-weight:700; color:#3B82F6; text-transform:uppercase;">Solved GATE Standard Problem</span>
+          <h4 style="font-family:'Outfit', sans-serif; font-size:13px; font-weight:700; color:#F5F5F5; margin:4px 0 8px 0;">
+            Question: An ISP grants a block of 64 IP addresses. Which of the following is a VALID first IP address for this block?
+          </h4>
+          <div style="font-size:12px; color:#9CA3AF; font-family:monospace; margin-bottom:8px;">
+            A) 128.32.1.32 &nbsp;&bull;&nbsp; B) 128.32.1.64 &nbsp;&bull;&nbsp; C) 128.32.1.90 &nbsp;&bull;&nbsp; D) 128.32.1.100
+          </div>
+          <div style="background:rgba(16,185,129,0.1); border-left:3px solid #10B981; padding:8px 10px; border-radius:4px; font-size:12px;">
+            <strong style="color:#10B981;">Correct Answer: Option B (128.32.1.64)</strong><br>
+            <strong>Step 1:</strong> Check Block Size = 64 (Valid power of 2: 2<sup>6</sup>).<br>
+            <strong>Step 2:</strong> Check Divisibility Rule on last octet:<br>
+            &bull; Option A: 32 % 64 = 32 (Invalid)<br>
+            &bull; Option B: 64 % 64 = 0 (<strong>Valid & Divisible!</strong>)<br>
+            &bull; Option C: 90 % 64 = 26 (Invalid)<br>
+            &bull; Option D: 100 % 64 = 36 (Invalid)
+          </div>
+        </div>
+
+      </div>
+    `
+  },
+
+  'supernetting': {
+    title: '1.9 – 1.11 Supernetting Deep Dive & Rules',
+    html: `
+      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
+        
+        <div style="background:rgba(245,158,11,0.1); border-left:4px solid #F59E0B; padding:12px 14px; border-radius:4px; margin-bottom:14px;">
+          <strong style="color:#F59E0B; font-size:14px;">In Plain English: What is Supernetting?</strong>
+          <p style="margin:4px 0 0 0; color:#F5F5F5;">
+            Supernetting (CIDR Aggregation) is the reverse of subnetting. Instead of dividing 1 large network into smaller ones, we <strong>combine multiple small contiguous Class C networks into 1 large single network</strong> (e.g. combining two /24 networks into a /23 network).
+          </p>
+        </div>
+
+        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#3B82F6; margin-bottom:8px;">Why Routers Love Supernetting:</h4>
+        <ul style="margin:0 0 14px 0; padding-left:18px; color:#F5F5F5;">
+          <li><strong>Smaller Routing Tables:</strong> Routers only need 1 single routing table entry instead of 16 separate entries!</li>
+          <li><strong>Faster Packet Lookup:</strong> Less memory search time per packet, speeding up global internet routing.</li>
+        </ul>
+
+        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#10B981; margin-bottom:8px;">Supernetting Eligibility Rules:</h4>
+        <ol style="margin:0 0 16px 0; padding-left:18px; color:#F5F5F5;">
+          <li>All networks to be combined must be <strong>contiguous</strong> (adjacent).</li>
+          <li>The number of networks MUST be a power of 2 (2, 4, 8, 16...).</li>
+          <li>The 1st Network ID must be divisible by the total supernet size.</li>
+        </ol>
+
+        <!-- Solved GATE Problem -->
+        <div style="background:#0F1115; border:1px solid #F59E0B; padding:14px; border-radius:8px;">
+          <span style="font-size:10px; font-weight:700; color:#F59E0B; text-transform:uppercase;">Solved GATE Standard Problem</span>
+          <h4 style="font-family:'Outfit', sans-serif; font-size:13px; font-weight:700; color:#F5F5F5; margin:4px 0 8px 0;">
+            Question: Can we combine four Class C networks with Network IDs 200.10.0.0, 200.10.1.0, 200.10.2.0, 200.10.3.0 into a single supernet?
+          </h4>
+          <div style="background:rgba(16,185,129,0.1); border-left:3px solid #10B981; padding:8px 10px; border-radius:4px; font-size:12px;">
+            <strong style="color:#10B981;">Yes, Absolutely!</strong><br>
+            1. <strong>Count = 4</strong> (Valid power of 2: 2<sup>2</sup>).<br>
+            2. <strong>Contiguous:</strong> 0, 1, 2, 3 are sequential.<br>
+            3. <strong>First Net ID (200.10.0.0):</strong> 0 % 4 == 0 (Divisible!).<br>
+            &bull; <strong>Resulting Supernet Mask:</strong> <code>255.255.252.0</code> (or <code>200.10.0.0 / 22</code>).
+          </div>
+        </div>
+
+      </div>
+    `
+  },
+
+  'ip_classes': {
+    title: '1.1 IP Addressing Classes & Range Formulas',
+    html: `
+      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
+        <p style="color:#F5F5F5; margin-bottom:12px;">
+          IPv4 addresses are 32-bit binary integers divided into 4 octets (8 bits each). Classful addressing categorizes addresses by inspecting the leading binary bits of the 1st octet.
+        </p>
+
+        <div style="background:#0F1115; border:1px solid #23262D; border-radius:6px; padding:12px; font-family:monospace; font-size:12px; margin-bottom:14px;">
+          <div style="color:#3B82F6;">Class A: Starts with 0 &rarr; Decimal 1 to 126 &bull; (2<sup>31</sup> total IPs)</div>
+          <div style="color:#3B82F6;">Class B: Starts with 10 &rarr; Decimal 128 to 191 &bull; (2<sup>30</sup> total IPs)</div>
+          <div style="color:#3B82F6;">Class C: Starts with 110 &rarr; Decimal 192 to 223 &bull; (2<sup>29</sup> total IPs)</div>
+          <div style="color:#8B5CF6;">Class D: Starts with 1110 &rarr; Decimal 224 to 239 &bull; Multicast</div>
+          <div style="color:#F59E0B;">Class E: Starts with 1111 &rarr; Decimal 240 to 255 &bull; Experimental</div>
+        </div>
+
+        <div style="background:rgba(59,130,246,0.1); border-left:3px solid #3B82F6; padding:8px 12px; border-radius:4px; font-size:12px;">
+          <strong>Exam Shortcut:</strong> Why isn't 127 in Class A? <code style="color:#10B981;">127.0.0.0 /8</code> is reserved for Loopback testing!
+        </div>
+      </div>
+    `
+  },
+
+  'subnet_masks': {
+    title: '1.2 Subnet Masking Mechanics',
+    html: `
+      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
+        <p style="color:#F5F5F5; margin-bottom:12px;">
+          A Subnet Mask is a 32-bit mask used by routers to separate the <strong>Network ID (1's)</strong> from the <strong>Host ID (0's)</strong> via a bitwise AND operation (<code>IP & Mask = Network_ID</code>).
+        </p>
+
+        <div style="background:#0F1115; border:1px solid #23262D; border-radius:6px; padding:12px; font-family:monospace; font-size:12px;">
+          Class A Default: 255.0.0.0 &rarr; /8<br>
+          Class B Default: 255.255.0.0 &rarr; /16<br>
+          Class C Default: 255.255.255.0 &rarr; /24
+        </div>
+      </div>
+    `
+  },
+
+  'private_ip': {
+    title: '1.3 Private IP Address Ranges',
+    html: `
+      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
+        <p style="color:#F5F5F5; margin-bottom:12px;">
+          Private IP addresses are non-routable on the public Internet (used inside home/office LANs and translated via NAT to 1 public IP).
+        </p>
+        <ul style="margin:0; padding-left:18px; color:#F5F5F5; font-family:monospace; font-size:12px;">
+          <li>10.0.0.0 &ndash; 10.255.255.255 (Class A: /8)</li>
+          <li>172.16.0.0 &ndash; 172.31.255.255 (Class B: /12)</li>
+          <li>192.168.0.0 &ndash; 192.168.255.255 (Class C: /16)</li>
+        </ul>
+      </div>
+    `
+  },
+
+  'comm_modes': {
+    title: '1.4 – 1.7 Communication Modes',
+    html: `
+      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="background:#0F1115; border-left:3px solid #3B82F6; padding:10px; border-radius:4px;">
+            <strong style="color:#F5F5F5;">Unicast (1 to 1):</strong> Transmits packets to 1 specific destination.
+          </div>
+          <div style="background:#0F1115; border-left:3px solid #10B981; padding:10px; border-radius:4px;">
+            <strong style="color:#F5F5F5;">Broadcast (1 to All):</strong><br>
+            &bull; Limited Broadcast: 255.255.255.255 (Stays strictly inside current LAN).<br>
+            &bull; Direct Broadcast: Host bits = All 1's (Reaches all hosts on a remote destination subnet).
+          </div>
+          <div style="background:#0F1115; border-left:3px solid #8B5CF6; padding:10px; border-radius:4px;">
+            <strong style="color:#F5F5F5;">Multicast (1 to Group):</strong> Class D addresses (224.0.0.0/4) delivering packets to subscribed group members only.
+          </div>
+        </div>
+      </div>
+    `
+  }
+};
+
 const CN_TOPIC_CONTENTS = {
   'cn_1': `
     <div style="font-family:'Inter', system-ui, sans-serif; color: #E5E7EB; font-size: 13px; line-height: 1.6; max-width: 860px; margin: 0 auto;">
 
+      <!-- Clickable Helper Banner -->
+      <div style="background:rgba(59,130,246,0.12); border:1px solid #3B82F6; border-radius:6px; padding:10px 14px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between;">
+        <span style="font-size:12px; color:#F5F5F5; font-weight:600;">Click any topic block below to open its Simplified Explanation & Solved GATE Example!</span>
+        <span style="font-size:11px; background:#3B82F6; color:#FFF; font-weight:700; padding:2px 8px; border-radius:4px;">Interactive Mode</span>
+      </div>
+
       <!-- 1.1 IP Addressing & Classes -->
-      <div style="margin-bottom: 24px;">
-        <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; border-bottom: 1px solid #23262D; padding-bottom: 6px; margin-bottom: 12px;">
-          1.1 &bull; IP Addressing Classes
-        </h2>
+      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('ip_classes')">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 6px; margin-bottom: 12px;">
+          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
+            1.1 &bull; IP Addressing Classes
+          </h2>
+          <span style="font-size:11px; color:#3B82F6; font-weight:600;">Click for Deep Dive ➔</span>
+        </div>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin-bottom: 14px;">
           <div style="background:#0F1115; border-left: 3px solid #3B82F6; padding: 10px 12px; border-radius: 4px;">
@@ -45,10 +233,13 @@ const CN_TOPIC_CONTENTS = {
 
       <!-- 1.2 & 1.3 Subnet Masks & Private Ranges -->
       <div style="margin-bottom: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
-        <div>
-          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-            1.2 &bull; Default Subnet Masks
-          </h2>
+        <div style="cursor:pointer;" onclick="openConceptExplanationModal('subnet_masks')">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
+            <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
+              1.2 &bull; Default Subnet Masks
+            </h2>
+            <span style="font-size:10px; color:#3B82F6;">Click ➔</span>
+          </div>
           <div style="background:#0F1115; padding:12px; border-radius:6px; font-family:monospace; font-size:12px;">
             <div style="margin-bottom:4px;">Class A &rarr; <span style="color:#10B981; font-weight:700;">255.0.0.0</span></div>
             <div style="margin-bottom:4px;">Class B &rarr; <span style="color:#10B981; font-weight:700;">255.255.0.0</span></div>
@@ -56,10 +247,13 @@ const CN_TOPIC_CONTENTS = {
           </div>
         </div>
 
-        <div>
-          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-            1.3 &bull; Private Address Ranges
-          </h2>
+        <div style="cursor:pointer;" onclick="openConceptExplanationModal('private_ip')">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
+            <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
+              1.3 &bull; Private Address Ranges
+            </h2>
+            <span style="font-size:10px; color:#3B82F6;">Click ➔</span>
+          </div>
           <div style="background:#0F1115; padding:12px; border-radius:6px; font-size:12px;">
             <div style="margin-bottom:4px;"><code style="color:#3B82F6;">10.0.0.0 &ndash; 10.255.255.255</code> &bull; 1 Class A</div>
             <div style="margin-bottom:4px;"><code style="color:#3B82F6;">172.16.0.0 &ndash; 172.31.255.255</code> &bull; 16 Class B</div>
@@ -69,7 +263,7 @@ const CN_TOPIC_CONTENTS = {
       </div>
 
       <!-- Class Breakdown Table -->
-      <div style="margin-bottom: 24px;">
+      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('ip_classes')">
         <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
           Network vs Host Capacity Breakdown
         </h2>
@@ -115,10 +309,13 @@ const CN_TOPIC_CONTENTS = {
       </div>
 
       <!-- 1.4 – 1.7 Communication Modes -->
-      <div style="margin-bottom: 24px;">
-        <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-          1.4 – 1.7 &bull; Communication Modes & Bit Mapping
-        </h2>
+      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('comm_modes')">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
+          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
+            1.4 – 1.7 &bull; Communication Modes & Bit Mapping
+          </h2>
+          <span style="font-size:11px; color:#3B82F6; font-weight:600;">Click for Explanation ➔</span>
+        </div>
 
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:10px; margin-bottom:14px;">
           <div style="background:#0F1115; padding:12px; border-radius:6px;">
@@ -159,12 +356,16 @@ const CN_TOPIC_CONTENTS = {
         </table>
       </div>
 
-      <!-- 1.8 CIDR Rules -->
-      <div style="margin-bottom: 24px;">
-        <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-          1.8 &bull; CIDR Allocation Rules
-        </h2>
-        <div style="background:#0F1115; border-left: 3px solid #10B981; padding: 12px 14px; border-radius: 4px;">
+      <!-- 1.8 CIDR Rules Block (Clickable!) -->
+      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('cidr')">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
+          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
+            1.8 &bull; CIDR Allocation Rules
+          </h2>
+          <span style="font-size:11px; background:#3B82F6; color:#FFF; font-weight:700; padding:2px 8px; border-radius:4px;">Click for Simplified GATE Example ➔</span>
+        </div>
+
+        <div style="background:#0F1115; border-left: 3px solid #10B981; padding: 12px 14px; border-radius: 4px; transition:all 0.15s;" onmouseover="this.style.borderColor='#3B82F6'" onmouseout="this.style.borderColor='#10B981'">
           <ol style="margin: 0; padding-left: 18px; font-size: 12.5px; color: #F5F5F5; line-height: 1.7;">
             <li><strong>Contiguous Block:</strong> All IP addresses in the block must be continuous without gaps.</li>
             <li><strong>Power of 2:</strong> Block size must equal 2<sup>N</sup>.</li>
@@ -173,11 +374,14 @@ const CN_TOPIC_CONTENTS = {
         </div>
       </div>
 
-      <!-- 1.9 – 1.11 Supernetting -->
-      <div>
-        <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-          1.9 – 1.11 &bull; Supernetting Concept & Rules
-        </h2>
+      <!-- 1.9 – 1.11 Supernetting Block (Clickable!) -->
+      <div style="cursor:pointer;" onclick="openConceptExplanationModal('supernetting')">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
+          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
+            1.9 – 1.11 &bull; Supernetting Concept & Rules
+          </h2>
+          <span style="font-size:11px; background:#F59E0B; color:#000; font-weight:700; padding:2px 8px; border-radius:4px;">Click for Simplified GATE Example ➔</span>
+        </div>
         
         <div style="margin-bottom: 12px; font-size: 12.5px;">
           <strong>Supernetting Definition:</strong> The process of combining two or more contiguous smaller networks into a single larger network.
@@ -221,6 +425,25 @@ const LEARN_CN_TOPICS = [
 ];
 
 let activeLearnTopicId = null;
+
+function openConceptExplanationModal(conceptKey) {
+  const modal = document.getElementById('concept-modal-overlay');
+  const titleElem = document.getElementById('concept-modal-title');
+  const bodyElem = document.getElementById('concept-modal-body');
+
+  if (!modal || !bodyElem) return;
+
+  const explanationData = CONCEPT_EXPLANATIONS[conceptKey] || CONCEPT_EXPLANATIONS['cidr'];
+  if (titleElem) titleElem.innerText = explanationData.title || 'Concept Explanation';
+  bodyElem.innerHTML = explanationData.html || '<p>Detailed explanation coming soon.</p>';
+
+  modal.classList.add('active');
+}
+
+function closeConceptModal() {
+  const modal = document.getElementById('concept-modal-overlay');
+  if (modal) modal.classList.remove('active');
+}
 
 function initRevisionModule() {
   const container = document.getElementById('revision-content-area') || document.getElementById('revision-main-content');
@@ -313,6 +536,8 @@ function renderLearnTopicViewer(container, topicId) {
 window.initRevisionModule = initRevisionModule;
 window.openLearnTopic = openLearnTopic;
 window.closeLearnTopicViewer = closeLearnTopicViewer;
+window.openConceptExplanationModal = openConceptExplanationModal;
+window.closeConceptModal = closeConceptModal;
 
 document.addEventListener('DOMContentLoaded', () => {
   initRevisionModule();
