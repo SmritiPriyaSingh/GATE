@@ -66,12 +66,11 @@ function renderAnalyticsModule() {
         </div>
         <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; color:#F5F5F5; margin-bottom:6px;">No Study Data Recorded Yet</h3>
         <p style="color:#9CA3AF; max-width:480px; margin:0 auto 16px auto; font-size:13px; line-height:1.5;">
-          Demo Mode is currently OFF. You can start practicing questions, take a mock test, or turn ON Demo Mode to preview sample student analytics immediately.
+          Start practicing questions or attempt a mock test to build your performance analytics and diagnostic trends.
         </p>
 
         <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-          <button class="btn-primary" style="font-size:12px; padding:8px 16px;" onclick="StorageManager.setDemoMode(true)">Enable Demo Mode Now</button>
-          <button class="btn-secondary" style="font-size:12px; padding:8px 16px;" onclick="navigateToView('practice')">Start Practice Center ➔</button>
+          <button class="btn-primary" style="font-size:12px; padding:8px 16px;" onclick="navigateToView('practice')">Start Practice Center ➔</button>
           <button class="btn-secondary" style="font-size:12px; padding:8px 16px;" onclick="navigateToView('cbt')">Take Full Mock Test ➔</button>
         </div>
       </div>
