@@ -1,4 +1,5 @@
 // GitBook / Notion Docs-Style Learning Center Module (GATE CSE Complete Syllabus)
+// Grounded in Official GATE Wallah CS/IT Handbook
 
 let currentSelectedSubject = 'cn'; // default active subject: Computer Networks
 let currentSelectedTopicId = 'cn_osi_intro';
@@ -7,62 +8,104 @@ let userBookmarkedTopics = {};
 
 // Complete Syllabus Hierarchy Database (11 Core GATE Subjects & Chapters)
 const LEARNING_SYLLABUS_DB = {
-  'aptitude': {
-    title: 'General Aptitude',
-    icon: 'Brain',
+  'cn': {
+    title: 'Computer Networks',
+    icon: 'Globe',
     chapters: [
       {
-        name: 'Quantitative Aptitude',
+        name: 'OSI & TCP/IP Architectures',
         topics: [
-          { id: 'apt_quant_num', title: 'Numbers & Percentages', diff: 'Easy', time: '12 min' },
-          { id: 'apt_quant_ratio', title: 'Ratio, Proportion & Mixture', diff: 'Easy', time: '15 min' },
-          { id: 'apt_quant_work', title: 'Time, Work & Efficiency', diff: 'Medium', time: '18 min' },
-          { id: 'apt_quant_speed', title: 'Speed, Distance & Time', diff: 'Medium', time: '15 min' }
+          { id: 'cn_osi_intro', title: 'OSI 7 Layer & TCP/IP Protocol Stack', diff: 'Easy', time: '15 min' },
+          { id: 'cn_ip_subnets', title: 'IP Addressing, Subnetting & Supernetting', diff: 'Hard', time: '30 min' }
         ]
       },
       {
-        name: 'Logical Reasoning',
+        name: 'Data Link & Network Layer',
         topics: [
-          { id: 'apt_lr_relations', title: 'Blood Relations & Family Trees', diff: 'Easy', time: '10 min' },
-          { id: 'apt_lr_syllogism', title: 'Syllogism & Venn Diagrams', diff: 'Medium', time: '15 min' },
-          { id: 'apt_lr_seating', title: 'Linear & Circular Seating', diff: 'Medium', time: '18 min' }
+          { id: 'cn_framing_crc', title: 'Error Control (CRC, Hamming) & Flow Control (GBN, SR)', diff: 'Hard', time: '30 min' },
+          { id: 'cn_mac_ethernet', title: 'Medium Access Control (ALOHA, CSMA/CD, Ethernet)', diff: 'Medium', time: '25 min' },
+          { id: 'cn_routing', title: 'Routing Algorithms (DVR, LSR) & IP Protocols (ARP, ICMP)', diff: 'Hard', time: '25 min' }
         ]
       },
       {
-        name: 'Verbal Ability',
+        name: 'Transport & Application Layers',
         topics: [
-          { id: 'apt_verb_grammar', title: 'English Grammar & Usage', diff: 'Easy', time: '10 min' },
-          { id: 'apt_verb_rc', title: 'Reading Comprehension & Inference', diff: 'Medium', time: '15 min' }
+          { id: 'cn_ipv4_header', title: 'IPv4 Header & Fragmentation', diff: 'Medium', time: '20 min' },
+          { id: 'cn_tcp_udp', title: 'TCP/UDP Headers, 3-Way Handshake & Congestion Control', diff: 'Hard', time: '30 min' },
+          { id: 'cn_app_protocols', title: 'Application Protocols (DNS, HTTP, FTP, SMTP, POP3, IMAP)', diff: 'Medium', time: '25 min' }
         ]
       }
     ]
   },
-  'math': {
-    title: 'Engineering Mathematics',
-    icon: 'Sigma',
+  'dbms': {
+    title: 'Database Management Systems',
+    icon: 'Database',
     chapters: [
       {
-        name: 'Discrete Mathematics',
+        name: 'Database Models & SQL',
         topics: [
-          { id: 'math_dm_logic', title: 'Propositional & First-Order Logic', diff: 'Medium', time: '20 min' },
-          { id: 'math_dm_sets', title: 'Sets, Relations & Functions', diff: 'Medium', time: '18 min' },
-          { id: 'math_dm_combinatorics', title: 'Permutations, Combinations & Counting', diff: 'Hard', time: '25 min' },
-          { id: 'math_dm_graphs', title: 'Graph Theory & Isomorphism', diff: 'Hard', time: '25 min' }
+          { id: 'dbms_er_model', title: 'ER Model & ER-to-Relational Mapping', diff: 'Easy', time: '15 min' },
+          { id: 'dbms_rel_algebra', title: 'Relational Algebra & Relational Calculus', diff: 'Hard', time: '25 min' },
+          { id: 'dbms_sql_queries', title: 'SQL Queries, Joins, Group By & Subqueries', diff: 'Medium', time: '22 min' }
         ]
       },
       {
-        name: 'Linear Algebra',
+        name: 'Normalization & Concurrency',
         topics: [
-          { id: 'math_la_matrix', title: 'Matrices, Determinants & Rank', diff: 'Easy', time: '15 min' },
-          { id: 'math_la_eigen', title: 'Eigenvalues, Eigenvectors & Cayley-Hamilton', diff: 'Hard', time: '25 min' }
+          { id: 'dbms_fd_closure', title: 'Functional Dependencies & Key Closures', diff: 'Medium', time: '20 min' },
+          { id: 'dbms_normalization', title: 'Normalization (1NF, 2NF, 3NF, BCNF)', diff: 'Hard', time: '30 min' },
+          { id: 'dbms_transactions', title: 'Transactions & ACID Properties', diff: 'Easy', time: '15 min' },
+          { id: 'dbms_concurrency', title: 'Concurrency Control & Two-Phase Locking (2PL)', diff: 'Hard', time: '25 min' },
+          { id: 'dbms_indexing', title: 'B-Trees & B+ Tree Indexing Formulas', diff: 'Hard', time: '28 min' }
+        ]
+      }
+    ]
+  },
+  'os': {
+    title: 'Operating Systems',
+    icon: 'Server',
+    chapters: [
+      {
+        name: 'Process & Thread Management',
+        topics: [
+          { id: 'os_process_states', title: 'Process States, PCB & Context Switching', diff: 'Easy', time: '15 min' },
+          { id: 'os_cpu_scheduling', title: 'CPU Scheduling (FCFS, SJF, RR, Priority)', diff: 'Medium', time: '25 min' },
+          { id: 'os_synch', title: 'Process Synchronization & Semaphores', diff: 'Hard', time: '30 min' },
+          { id: 'os_deadlock', title: 'Deadlock 4 Conditions & Banker Algorithm', diff: 'Hard', time: '25 min' }
         ]
       },
       {
-        name: 'Calculus & Probability',
+        name: 'Memory & File Systems',
         topics: [
-          { id: 'math_calc_limits', title: 'Limits, Continuity & Mean Value Theorems', diff: 'Medium', time: '20 min' },
-          { id: 'math_prob_bayes', title: 'Conditional Probability & Bayes Theorem', diff: 'Hard', time: '22 min' },
-          { id: 'math_prob_dist', title: 'Random Variables & Probability Distributions', diff: 'Medium', time: '20 min' }
+          { id: 'os_paging', title: 'Memory Management, Paging & TLB', diff: 'Hard', time: '25 min' },
+          { id: 'os_virtual_mem', title: 'Virtual Memory & Page Replacement (LRU, FIFO)', diff: 'Medium', time: '22 min' },
+          { id: 'os_files', title: 'File System Allocation & Inodes', diff: 'Medium', time: '18 min' },
+          { id: 'os_disk', title: 'Disk Scheduling Algorithms (SSTF, SCAN)', diff: 'Easy', time: '15 min' }
+        ]
+      }
+    ]
+  },
+  'algo': {
+    title: 'Algorithms',
+    icon: 'Cpu',
+    chapters: [
+      {
+        name: 'Analysis & Design Techniques',
+        topics: [
+          { id: 'algo_asymptotic', title: 'Asymptotic Notation (Big-O, Omega, Theta)', diff: 'Easy', time: '15 min' },
+          { id: 'algo_recurrence', title: 'Recurrence Relations & Master Theorem', diff: 'Medium', time: '20 min' },
+          { id: 'algo_divide', title: 'Divide & Conquer (Merge & Quick Sort)', diff: 'Medium', time: '22 min' },
+          { id: 'algo_greedy', title: 'Greedy Algorithms (Knapsack & Huffman)', diff: 'Medium', time: '20 min' },
+          { id: 'algo_dp', title: 'Dynamic Programming (LCS & 0/1 Knapsack)', diff: 'Hard', time: '30 min' }
+        ]
+      },
+      {
+        name: 'Graph & Advanced Algorithms',
+        topics: [
+          { id: 'algo_graph_traversal', title: 'BFS, DFS & Topological Sort', diff: 'Medium', time: '20 min' },
+          { id: 'algo_shortest_path', title: 'Dijkstra, Bellman-Ford & Floyd-Warshall', diff: 'Hard', time: '25 min' },
+          { id: 'algo_mst', title: 'Minimum Spanning Trees (Kruskal & Prim)', diff: 'Medium', time: '18 min' },
+          { id: 'algo_complexity', title: 'NP-Completeness, P vs NP & Reductions', diff: 'Hard', time: '25 min' }
         ]
       }
     ]
@@ -94,109 +137,6 @@ const LEARNING_SYLLABUS_DB = {
           { id: 'pds_ds_trees', title: 'Binary Trees, BST & AVL Trees', diff: 'Hard', time: '30 min' },
           { id: 'pds_ds_graphs', title: 'Graph Representations (Adjacency Matrix/List)', diff: 'Medium', time: '20 min' },
           { id: 'pds_ds_hashing', title: 'Hash Functions, Chaining & Open Addressing', diff: 'Medium', time: '20 min' }
-        ]
-      }
-    ]
-  },
-  'algo': {
-    title: 'Algorithms',
-    icon: 'Cpu',
-    chapters: [
-      {
-        name: 'Analysis & Design Techniques',
-        topics: [
-          { id: 'algo_asymptotic', title: 'Asymptotic Notation (Big-O, Omega, Theta)', diff: 'Easy', time: '15 min' },
-          { id: 'algo_recurrence', title: 'Recurrence Relations & Master Theorem', diff: 'Medium', time: '20 min' },
-          { id: 'algo_divide', title: 'Divide & Conquer (Merge & Quick Sort)', diff: 'Medium', time: '22 min' },
-          { id: 'algo_greedy', title: 'Greedy Algorithms (Knapsack & Huffman)', diff: 'Medium', time: '20 min' },
-          { id: 'algo_dp', title: 'Dynamic Programming (LCS & 0/1 Knapsack)', diff: 'Hard', time: '30 min' }
-        ]
-      },
-      {
-        name: 'Graph & Advanced Algorithms',
-        topics: [
-          { id: 'algo_graph_traversal', title: 'BFS, DFS & Topological Sort', diff: 'Medium', time: '20 min' },
-          { id: 'algo_shortest_path', title: 'Dijkstra, Bellman-Ford & Floyd-Warshall', diff: 'Hard', time: '25 min' },
-          { id: 'algo_mst', title: 'Minimum Spanning Trees (Kruskal & Prim)', diff: 'Medium', time: '18 min' },
-          { id: 'algo_complexity', title: 'NP-Completeness, P vs NP & Reductions', diff: 'Hard', time: '25 min' }
-        ]
-      }
-    ]
-  },
-  'os': {
-    title: 'Operating Systems',
-    icon: 'Server',
-    chapters: [
-      {
-        name: 'Process & Thread Management',
-        topics: [
-          { id: 'os_process_states', title: 'Process States, PCB & Context Switching', diff: 'Easy', time: '15 min' },
-          { id: 'os_cpu_scheduling', title: 'CPU Scheduling (FCFS, SJF, RR, Priority)', diff: 'Medium', time: '25 min' },
-          { id: 'os_synch', title: 'Process Synchronization & Semaphores', diff: 'Hard', time: '30 min' },
-          { id: 'os_deadlock', title: 'Deadlock 4 Conditions & Banker Algorithm', diff: 'Hard', time: '25 min' }
-        ]
-      },
-      {
-        name: 'Memory & File Systems',
-        topics: [
-          { id: 'os_paging', title: 'Memory Management, Paging & TLB', diff: 'Hard', time: '25 min' },
-          { id: 'os_virtual_mem', title: 'Virtual Memory & Page Replacement (LRU, FIFO)', diff: 'Medium', time: '22 min' },
-          { id: 'os_files', title: 'File System Allocation & Inodes', diff: 'Medium', time: '18 min' },
-          { id: 'os_disk', title: 'Disk Scheduling Algorithms (SSTF, SCAN)', diff: 'Easy', time: '15 min' }
-        ]
-      }
-    ]
-  },
-  'cn': {
-    title: 'Computer Networks',
-    icon: 'Globe',
-    chapters: [
-      {
-        name: 'OSI & TCP/IP Architectures',
-        topics: [
-          { id: 'cn_osi_intro', title: 'OSI 7 Layer Model & Encapsulation', diff: 'Easy', time: '15 min' },
-          { id: 'cn_tcp_ip', title: 'TCP/IP Protocol Suite & PDU Mapping', diff: 'Easy', time: '12 min' }
-        ]
-      },
-      {
-        name: 'Data Link & Network Layers',
-        topics: [
-          { id: 'cn_framing_crc', title: 'Framing, Error Control (CRC) & Flow Control', diff: 'Medium', time: '22 min' },
-          { id: 'cn_ip_subnets', title: 'IPv4 Addressing, Subnetting & CIDR', diff: 'Hard', time: '30 min' },
-          { id: 'cn_routing', title: 'Routing Protocols (Distance Vector & Link State)', diff: 'Hard', time: '25 min' }
-        ]
-      },
-      {
-        name: 'Transport & Application Layers',
-        topics: [
-          { id: 'cn_tcp_handshake', title: 'TCP 3-Way Handshake & Flow Control', diff: 'Medium', time: '20 min' },
-          { id: 'cn_congestion', title: 'TCP Congestion Control (Slow Start & Fast Retransmit)', diff: 'Hard', time: '25 min' },
-          { id: 'cn_app_protocols', title: 'DNS, HTTP/1.1 vs HTTP/2, FTP, SMTP', diff: 'Medium', time: '18 min' },
-          { id: 'cn_security', title: 'Network Security, RSA & Firewalls', diff: 'Medium', time: '20 min' }
-        ]
-      }
-    ]
-  },
-  'dbms': {
-    title: 'Database Management Systems',
-    icon: 'Database',
-    chapters: [
-      {
-        name: 'Database Models & SQL',
-        topics: [
-          { id: 'dbms_er_model', title: 'ER Model & ER-to-Relational Mapping', diff: 'Easy', time: '15 min' },
-          { id: 'dbms_rel_algebra', title: 'Relational Algebra & Relational Calculus', diff: 'Hard', time: '25 min' },
-          { id: 'dbms_sql_queries', title: 'SQL Queries, Joins, Group By & Subqueries', diff: 'Medium', time: '22 min' }
-        ]
-      },
-      {
-        name: 'Normalization & Concurrency',
-        topics: [
-          { id: 'dbms_fd_closure', title: 'Functional Dependencies & Key Closures', diff: 'Medium', time: '20 min' },
-          { id: 'dbms_normalization', title: 'Normalization (1NF, 2NF, 3NF, BCNF)', diff: 'Hard', time: '30 min' },
-          { id: 'dbms_transactions', title: 'Transactions & ACID Properties', diff: 'Easy', time: '15 min' },
-          { id: 'dbms_concurrency', title: 'Concurrency Control & Two-Phase Locking (2PL)', diff: 'Hard', time: '25 min' },
-          { id: 'dbms_indexing', title: 'B-Trees & B+ Tree Indexing Formulas', diff: 'Hard', time: '28 min' }
         ]
       }
     ]
@@ -269,74 +209,135 @@ const LEARNING_SYLLABUS_DB = {
         ]
       }
     ]
+  },
+  'math': {
+    title: 'Engineering Mathematics',
+    icon: 'Sigma',
+    chapters: [
+      {
+        name: 'Discrete Mathematics',
+        topics: [
+          { id: 'math_dm_logic', title: 'Propositional & First-Order Logic', diff: 'Medium', time: '20 min' },
+          { id: 'math_dm_sets', title: 'Sets, Relations & Functions', diff: 'Medium', time: '18 min' },
+          { id: 'math_dm_combinatorics', title: 'Permutations, Combinations & Counting', diff: 'Hard', time: '25 min' }
+        ]
+      },
+      {
+        name: 'Calculus & Probability',
+        topics: [
+          { id: 'math_calc_limits', title: 'Limits, Continuity & Differentiability', diff: 'Medium', time: '20 min' },
+          { id: 'math_prob_bayes', title: 'Probability Distributions & Bayes Theorem', diff: 'Hard', time: '22 min' }
+        ]
+      }
+    ]
+  },
+  'aptitude': {
+    title: 'General Aptitude',
+    icon: 'Brain',
+    chapters: [
+      {
+        name: 'Quantitative & Reasoning',
+        topics: [
+          { id: 'apt_quant_num', title: 'Percentages, Ratio & Proportions', diff: 'Easy', time: '15 min' },
+          { id: 'apt_quant_speed', title: 'Time, Speed, Distance & Work', diff: 'Medium', time: '18 min' },
+          { id: 'apt_lr_relations', title: 'Clocks, Calendars & Blood Relations', diff: 'Medium', time: '15 min' }
+        ]
+      }
+    ]
   }
 };
 
-// Rich Learning Material Repository for Core Topics
+// Rich Learning Content Repository (Grounded in GATE Wallah CS/IT Handbook PDF)
 const RICH_TOPIC_CONTENTS = {
   'cn_osi_intro': {
-    title: 'OSI 7 Layer Model & Encapsulation',
+    title: 'OSI 7 Layer Model & TCP/IP Protocol Stack',
     subject: 'Computer Networks',
     diff: 'Easy',
     time: '15 min',
-    prereq: 'Basic Understanding of Data Transmission & Networks',
-    intro: 'The Open Systems Interconnection (OSI) model is a conceptual framework created by ISO in 1984. It characterizes and standardizes the communication functions of a telecommunication or computing system into 7 distinct layers.',
+    prereq: 'Basic Networking Principles (ISO standard proposed framework)',
+    intro: 'The Open Systems Interconnection (OSI) model proposed by ISO standardizes networking into 7 separate but related layers, enabling heterogeneous systems to communicate seamlessly regardless of underlying hardware/software.',
     sections: [
       {
-        heading: '1. The 7 OSI Layers & PDU Data Units',
+        heading: '1. Functions of Computer Network & Mandatory vs Optional Tasks',
         text: `
-          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:14px; margin-bottom:14px;">
+          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:12px 14px; margin-bottom:14px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:12px;">
+              <div>
+                <strong style="color:var(--accent-primary);">Mandatory Functions:</strong>
+                <ul style="margin:4px 0 0 16px; padding:0; color:var(--text-sub);">
+                  <li>Error Control</li>
+                  <li>Flow Control</li>
+                  <li>Access Control (MAC)</li>
+                  <li>Multiplexing & Demultiplexing</li>
+                </ul>
+              </div>
+              <div>
+                <strong style="color:var(--color-success);">Optional Functions:</strong>
+                <ul style="margin:4px 0 0 16px; padding:0; color:var(--text-sub);">
+                  <li>Encryption & Decryption</li>
+                  <li>Check Pointing (Session)</li>
+                  <li>Routing & Path Selection</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        heading: '2. The 7 OSI Layers & PDU Architecture (Handbook Reference)',
+        text: `
+          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:14px; margin-bottom:14px; overflow-x:auto;">
             <table style="width:100%; border-collapse:collapse; font-size:12px; text-align:left;">
               <thead>
                 <tr style="border-bottom:1px solid var(--border-color); color:var(--accent-primary);">
                   <th style="padding:6px;">Layer #</th>
                   <th style="padding:6px;">Layer Name</th>
-                  <th style="padding:6px;">PDU (Data Unit)</th>
-                  <th style="padding:6px;">Primary Addressing / Hardware</th>
+                  <th style="padding:6px;">PDU Unit</th>
+                  <th style="padding:6px;">Key Responsibilities & Hardware</th>
                 </tr>
               </thead>
               <tbody>
                 <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                   <td style="padding:6px; font-weight:700; color:#EF4444;">Layer 7</td>
                   <td style="padding:6px;">Application</td>
-                  <td style="padding:6px;">Data / Message</td>
-                  <td style="padding:6px;">HTTP, DNS, FTP, SMTP (User Services)</td>
+                  <td style="padding:6px;">Message</td>
+                  <td style="padding:6px;">Mail services, File transfer (DNS, HTTP, FTP, SMTP, TELNET)</td>
                 </tr>
                 <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                   <td style="padding:6px; font-weight:700; color:#F59E0B;">Layer 6</td>
                   <td style="padding:6px;">Presentation</td>
                   <td style="padding:6px;">Data</td>
-                  <td style="padding:6px;">SSL/TLS, Encryption, Data Compression</td>
+                  <td style="padding:6px;">Syntax/semantics, Character translation, Encryption/Decryption, Compression</td>
                 </tr>
                 <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                   <td style="padding:6px; font-weight:700; color:#F59E0B;">Layer 5</td>
                   <td style="padding:6px;">Session</td>
                   <td style="padding:6px;">Data</td>
-                  <td style="padding:6px;">RPC, Session Checkpoints, Sockets</td>
+                  <td style="padding:6px;">Network dialog controller, Authentication, Authorization, Synchronization checkpoints</td>
                 </tr>
                 <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                   <td style="padding:6px; font-weight:700; color:#3B82F6;">Layer 4</td>
                   <td style="padding:6px;">Transport</td>
-                  <td style="padding:6px;">Segment (TCP) / Datagram (UDP)</td>
-                  <td style="padding:6px;">Port Numbers (0 - 65535), End-to-End Reliability</td>
+                  <td style="padding:6px;">Segment / Datagram</td>
+                  <td style="padding:6px;">Process-to-process delivery, Service-point addressing (Ports), Connection control</td>
                 </tr>
                 <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                   <td style="padding:6px; font-weight:700; color:#3B82F6;">Layer 3</td>
                   <td style="padding:6px;">Network</td>
                   <td style="padding:6px;">Packet</td>
-                  <td style="padding:6px;">IP Address (IPv4/v6), Routers</td>
+                  <td style="padding:6px;">Host-to-host connectivity, Logical (IP) addressing, Routing, Switching, Fragmentation</td>
                 </tr>
                 <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
                   <td style="padding:6px; font-weight:700; color:#10B981;">Layer 2</td>
                   <td style="padding:6px;">Data Link</td>
                   <td style="padding:6px;">Frame</td>
-                  <td style="padding:6px;">MAC Address (48-bit), Switches, CRC Header</td>
+                  <td style="padding:6px;">Hop-to-hop frame delivery, LLC (flow/error control) + MAC (framing, physical addressing)</td>
                 </tr>
                 <tr>
                   <td style="padding:6px; font-weight:700; color:#10B981;">Layer 1</td>
                   <td style="padding:6px;">Physical</td>
-                  <td style="padding:6px;">Bits (0/1)</td>
-                  <td style="padding:6px;">Hubs, Cables, Fiber Optics, Modulation</td>
+                  <td style="padding:6px;">Bits</td>
+                  <td style="padding:6px;">Hop-to-hop bit transmission. Copper (electrical), Fiber (light), Wireless (EM signal), Topologies</td>
                 </tr>
               </tbody>
             </table>
@@ -344,62 +345,477 @@ const RICH_TOPIC_CONTENTS = {
         `
       },
       {
-        heading: '2. Visual Diagram: Data Encapsulation Header Stack',
+        heading: '3. TCP/IP 5-Layer Model Mapping',
         text: `
-          <div style="background:#000000; border:1px solid var(--border-color); border-radius:8px; padding:16px; margin-bottom:14px; text-align:center;">
-            <svg width="100%" height="160" viewBox="0 0 540 160" style="max-width:540px;">
-              <!-- Application Data -->
-              <rect x="20" y="20" width="100" height="36" rx="4" fill="#16181D" stroke="#EF4444" stroke-width="1.5" />
-              <text x="70" y="42" fill="#F5F5F5" font-size="11" font-weight="700" text-anchor="middle">Data</text>
-
-              <!-- Transport Header -->
-              <rect x="140" y="20" width="40" height="36" rx="4" fill="rgba(59,130,246,0.2)" stroke="#3B82F6" stroke-width="1.5" />
-              <text x="160" y="42" fill="#3B82F6" font-size="10" font-weight="700" text-anchor="middle">TH</text>
-              <rect x="180" y="20" width="80" height="36" rx="4" fill="#16181D" stroke="#3B82F6" stroke-width="1.5" />
-              <text x="220" y="42" fill="#F5F5F5" font-size="11" font-weight="700" text-anchor="middle">Data</text>
-
-              <!-- Network Header -->
-              <rect x="280" y="20" width="30" height="36" rx="4" fill="rgba(16,185,129,0.2)" stroke="#10B981" stroke-width="1.5" />
-              <text x="295" y="42" fill="#10B981" font-size="9" font-weight="700" text-anchor="middle">NH</text>
-              <rect x="310" y="20" width="30" height="36" rx="4" fill="rgba(59,130,246,0.2)" stroke="#3B82F6" stroke-width="1.5" />
-              <text x="325" y="42" fill="#3B82F6" font-size="9" font-weight="700" text-anchor="middle">TH</text>
-              <rect x="340" y="20" width="60" height="36" rx="4" fill="#16181D" stroke="#10B981" stroke-width="1.5" />
-              <text x="370" y="42" fill="#F5F5F5" font-size="11" font-weight="700" text-anchor="middle">Data</text>
-
-              <!-- Flow Arrows -->
-              <path d="M 125 38 L 135 38" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrow)" />
-              <path d="M 265 38 L 275 38" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrow)" />
-
-              <!-- Labels -->
-              <text x="70" y="75" fill="#9CA3AF" font-size="10" text-anchor="middle">Layer 7-5 Data</text>
-              <text x="200" y="75" fill="#9CA3AF" font-size="10" text-anchor="middle">Layer 4 Segment</text>
-              <text x="345" y="75" fill="#9CA3AF" font-size="10" text-anchor="middle">Layer 3 Packet</text>
-            </svg>
-          </div>
-        `
-      },
-      {
-        heading: '3. Key Formulas & Memory Trick Mnemonic',
-        text: `
-          <div style="background:var(--bg-surface-hover); border-left:4px solid var(--accent-primary); border-radius:6px; padding:12px 16px; margin-bottom:14px;">
-            <div style="font-size:12px; font-weight:700; color:var(--accent-primary); margin-bottom:4px;">Mnemonic Trick to Remember OSI 7 Layers (Top to Bottom):</div>
-            <div style="font-size:13px; font-weight:600; color:var(--text-main);">"<strong>A</strong>ll <strong>P</strong>eople <strong>S</strong>eem <strong>T</strong>o <strong>N</strong>eed <strong>D</strong>ata <strong>P</strong>rocessing"</div>
-            <div style="font-size:11px; color:var(--text-sub); margin-top:4px;">Application &bull; Presentation &bull; Session &bull; Transport &bull; Network &bull; Data Link &bull; Physical</div>
-          </div>
-        `
-      },
-      {
-        heading: '4. Common GATE Pitfalls & Exam Traps',
-        text: `
-          <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.3); border-radius:6px; padding:12px 14px; margin-bottom:14px; font-size:12px; color:var(--text-main);">
-            <strong style="color:#EF4444;">GATE Exam Trap:</strong> A router operates at <strong>Layer 3 (Network Layer)</strong> and checks IP addresses, but it MUST also implement Layer 1 and Layer 2 to physically receive and parse the frame MAC headers!
+          <div style="background:var(--bg-surface-hover); border-left:4px solid var(--accent-primary); border-radius:6px; padding:12px 14px; margin-bottom:14px; font-size:12px;">
+            <strong>TCP/IP Protocol Stack Mapping:</strong><br>
+            • <strong>Application Layer:</strong> DNS, SMTP, HTTP, FTP, POP, IMAP, SNMP, Telnet<br>
+            • <strong>Transport Layer:</strong> TCP, UDP, SCTP<br>
+            • <strong>Network Layer:</strong> IP, ARP, RARP, ICMP, IGMP<br>
+            • <strong>Data Link Layer:</strong> Hardware specific framing & MAC addressing<br>
+            • <strong>Physical Layer:</strong> Hardware signal transmission
           </div>
         `
       }
     ],
-    summary: 'The OSI model standardizes networking into 7 layers. Data encapsulation travels top-down (Layer 7 ➔ Layer 1) adding headers at each layer, and decapsulation travels bottom-up (Layer 1 ➔ Layer 7) removing headers.',
+    summary: 'The OSI model standardizes networking into 7 layers. Physical Layer moves bits, Data Link moves frames, Network Layer moves packets host-to-host, Transport Layer delivers segments process-to-process, and Application Layer handles user services.',
     pyqs: [
-      { year: '2024', q: 'In the OSI model, encryption and decryption are functions of which layer?', opt: ['Transport Layer', 'Presentation Layer', 'Session Layer', 'Application Layer'], ans: 1, explanation: 'Presentation Layer (Layer 6) handles syntax representation, encryption/decryption (SSL/TLS), and data compression.' }
+      { year: '2024', q: 'In the OSI model, encryption and decryption are primary functions of which layer?', opt: ['Transport Layer', 'Presentation Layer', 'Session Layer', 'Application Layer'], ans: 1, explanation: 'Presentation Layer (Layer 6) handles syntax representation, encryption/decryption (SSL/TLS), and data compression.' }
+    ]
+  },
+
+  'cn_ip_subnets': {
+    title: 'IP Addressing, Subnetting & Supernetting',
+    subject: 'Computer Networks',
+    diff: 'Hard',
+    time: '30 min',
+    prereq: 'Binary numbers & bitwise arithmetic',
+    intro: 'IP addressing provides 32-bit unique logical identification for hosts across a network. This module covers Classful addressing (Class A to E), default subnet masks, private IP ranges, special address types, CIDR block rules, and Supernetting.',
+    sections: [
+      {
+        heading: '1. Classful IP Addressing Table & Ranges',
+        text: `
+          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:14px; margin-bottom:14px; overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; font-size:12px; text-align:left;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border-color); color:var(--accent-primary);">
+                  <th style="padding:6px;">Class</th>
+                  <th style="padding:6px;">Prefix Bits</th>
+                  <th style="padding:6px;">1st Octet Range</th>
+                  <th style="padding:6px;">Total IP Addresses</th>
+                  <th style="padding:6px;"># Networks</th>
+                  <th style="padding:6px;"># Hosts per Network</th>
+                  <th style="padding:6px;">Default Subnet Mask</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#3B82F6;">Class A</td>
+                  <td style="padding:6px;">0</td>
+                  <td style="padding:6px;">1 - 126</td>
+                  <td style="padding:6px;">2^31</td>
+                  <td style="padding:6px;">2^7 - 2 = 126</td>
+                  <td style="padding:6px;">2^24 - 2 = 16,777,214</td>
+                  <td style="padding:6px;">255.0.0.0</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#10B981;">Class B</td>
+                  <td style="padding:6px;">10</td>
+                  <td style="padding:6px;">128 - 191</td>
+                  <td style="padding:6px;">2^30</td>
+                  <td style="padding:6px;">2^14 = 16,384</td>
+                  <td style="padding:6px;">2^16 - 2 = 65,534</td>
+                  <td style="padding:6px;">255.255.0.0</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#F59E0B;">Class C</td>
+                  <td style="padding:6px;">110</td>
+                  <td style="padding:6px;">192 - 223</td>
+                  <td style="padding:6px;">2^29</td>
+                  <td style="padding:6px;">2^21 = 2,097,125</td>
+                  <td style="padding:6px;">2^8 - 2 = 254</td>
+                  <td style="padding:6px;">255.255.255.0</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#8B5CF6;">Class D</td>
+                  <td style="padding:6px;">1110</td>
+                  <td style="padding:6px;">224 - 239</td>
+                  <td style="padding:6px;">2^28</td>
+                  <td style="padding:6px;">Multicast Address (No NID/HID)</td>
+                  <td style="padding:6px;">28 remaining bits used for multicast</td>
+                  <td style="padding:6px;">N/A</td>
+                </tr>
+                <tr>
+                  <td style="padding:6px; font-weight:700; color:#EF4444;">Class E</td>
+                  <td style="padding:6px;">1111</td>
+                  <td style="padding:6px;">240 - 255</td>
+                  <td style="padding:6px;">2^28</td>
+                  <td style="padding:6px;">Research & Future Purpose</td>
+                  <td style="padding:6px;">No NID and HID</td>
+                  <td style="padding:6px;">N/A</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:6px; padding:8px 12px; margin-bottom:14px; font-size:11px;">
+            <strong>Note:</strong> IP address <code>127.x.y.z</code> is reserved as the <strong>Loopback Address</strong> used to check internal host network stack connectivity.
+          </div>
+        `
+      },
+      {
+        heading: '2. Private IP Ranges & Special Network Address Table',
+        text: `
+          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:14px; margin-bottom:14px;">
+            <div style="font-size:12px; font-weight:700; color:var(--text-main); margin-bottom:6px;">Private IP Ranges:</div>
+            <ul style="font-size:12px; color:var(--text-sub); margin:0 0 12px 16px; padding:0;">
+              <li><strong>Class A:</strong> 10.0.0.0 to 10.255.255.255 (1 Class A network)</li>
+              <li><strong>Class B:</strong> 172.16.0.0 to 172.31.255.255 (16 Class B networks)</li>
+              <li><strong>Class C:</strong> 192.168.0.0 to 192.168.255.255 (256 Class C networks)</li>
+            </ul>
+
+            <div style="font-size:12px; font-weight:700; color:var(--text-main); margin-bottom:6px;">Special Address Interpretations:</div>
+            <table style="width:100%; border-collapse:collapse; font-size:11px; text-align:left;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border-color); color:var(--accent-primary);">
+                  <th style="padding:4px;">NID Bits</th>
+                  <th style="padding:4px;">HID Bits</th>
+                  <th style="padding:4px;">Meaning / Function</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:4px;">-</td>
+                  <td style="padding:4px;">All 0's</td>
+                  <td style="padding:4px; font-weight:700; color:#3B82F6;">Network ID</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:4px;">-</td>
+                  <td style="padding:4px;">All 1's</td>
+                  <td style="padding:4px; font-weight:700; color:#EF4444;">Direct Broadcast Address (DBA)</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:4px;">All 1's</td>
+                  <td style="padding:4px;">All 1's</td>
+                  <td style="padding:4px; font-weight:700; color:#F59E0B;">Limited Broadcast Address (LBA = 255.255.255.255)</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:4px;">All 0's</td>
+                  <td style="padding:4px;">-</td>
+                  <td style="padding:4px;">Host within the local network</td>
+                </tr>
+                <tr>
+                  <td style="padding:4px;">All 1's</td>
+                  <td style="padding:4px;">All 0's</td>
+                  <td style="padding:4px;">Subnet Mask / Network Mask</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `
+      },
+      {
+        heading: '3. CIDR & Supernetting Rules (Handbook Summary)',
+        text: `
+          <div style="background:var(--bg-surface-hover); border-left:4px solid var(--color-success); border-radius:6px; padding:12px 14px; margin-bottom:14px; font-size:12px;">
+            <strong style="color:var(--color-success);">3 Rules of CIDR Blocks:</strong><br>
+            1. All IP addresses in the block must be <strong>contiguous</strong>.<br>
+            2. Block size must be a <strong>power of 2</strong>.<br>
+            3. The first IP address of the block must be <strong>divisible by the size of the block</strong>.<br><br>
+
+            <strong style="color:var(--accent-primary);">Supernetting Advantages & Rules:</strong><br>
+            • Supernetting combines two or more Class C networks to create a larger single network.<br>
+            • <strong>Advantage:</strong> Reduces routing table entries in routers and allows flexible allotment (e.g. combining two Class C networks instead of purchasing a full Class B).<br>
+            • <strong>Rules:</strong> Network IDs must be contiguous, sizes equal & power of 2, and 1st Network ID divisible by total supernet size.
+          </div>
+        `
+      }
+    ],
+    summary: 'Class A/B/C use default masks 255.0.0.0, 255.255.0.0, 255.255.255.0. Private IP ranges are 10.x, 172.16-31.x, and 192.168.x. CIDR requires contiguous blocks divisible by power-of-2 size. Supernetting merges Class C networks to reduce router table size.',
+    pyqs: [
+      { year: '2023', q: 'What is the maximum number of usable hosts in a Class B network with subnet mask 255.255.240.0 (/20)?', opt: ['4094', '4096', '2046', '8190'], ans: 0, explanation: 'Host bits = 32 - 20 = 12 bits. Usable hosts = 2^12 - 2 = 4096 - 2 = 4094 hosts.' }
+    ]
+  },
+
+  'cn_framing_crc': {
+    title: 'Error Control (CRC, Hamming) & Flow Control (GBN, SR)',
+    subject: 'Computer Networks',
+    diff: 'Hard',
+    time: '30 min',
+    prereq: 'Data Link Layer fundamentals',
+    intro: 'Error Control detects and corrects bit corruptions introduced by noise during transmission. Flow Control regulates transmission speeds so a fast sender does not overwhelm a slow receiver.',
+    sections: [
+      {
+        heading: '1. Error Detection & Correction Formulas (Handbook Reference)',
+        text: `
+          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:14px; margin-bottom:14px; font-size:12px;">
+            <div style="margin-bottom:8px;">
+              <strong>Corrupted Bits Formula:</strong> <code># Corrupted Bits = Data Rate × Noise Duration</code>
+            </div>
+            <table style="width:100%; border-collapse:collapse; margin-bottom:10px; text-align:left;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border-color); color:var(--accent-primary);">
+                  <th style="padding:4px;">Mechanism</th>
+                  <th style="padding:4px;">Minimum Hamming Distance Required</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:4px;">Detect 'd' bit errors</td>
+                  <td style="padding:4px; font-weight:700; color:#3B82F6;">d + 1</td>
+                </tr>
+                <tr>
+                  <td style="padding:4px;">Correct 'd' bit errors</td>
+                  <td style="padding:4px; font-weight:700; color:#10B981;">2d + 1</td>
+                </tr>
+              </tbody>
+            </table>
+            <div>
+              <strong>Hamming Code Inequality:</strong> <code>m + r + 1 ≤ 2^r</code> (where m = message bits, r = redundant check bits).
+            </div>
+          </div>
+        `
+      },
+      {
+        heading: '2. Cyclic Redundancy Check (CRC) Generator Characteristics',
+        text: `
+          <div style="background:var(--bg-surface-hover); border-left:4px solid #F59E0B; border-radius:6px; padding:12px 14px; margin-bottom:14px; font-size:12px;">
+            <strong>CRC Polynomial Generator Properties:</strong><br>
+            1. Length of divisor generator = <code>k</code> bits ➔ CRC remainder = <code>k - 1</code> bits.<br>
+            2. If generator has coefficient of x^0 = 1, all <strong>single bit errors</strong> are detected.<br>
+            3. If generator contains a factor of <code>(x + 1)</code>, it detects all <strong>odd-numbered errors</strong>.<br>
+            4. <strong>Codeword</strong> = original message dataword + appended <code>(k - 1)</code> zeros + modulo-2 remainder CRC.
+          </div>
+        `
+      },
+      {
+        heading: '3. Master Flow Control Protocol Comparison (Stop & Wait vs GBN vs SR)',
+        text: `
+          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:14px; margin-bottom:14px; overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; font-size:11px; text-align:left;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border-color); color:var(--accent-primary);">
+                  <th style="padding:6px;">Parameter</th>
+                  <th style="padding:6px;">Stop & Wait</th>
+                  <th style="padding:6px;">Go-Back-N (GBN)</th>
+                  <th style="padding:6px;">Selective Repeat (SR)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700;">Sender Window (Ws)</td>
+                  <td style="padding:6px;">1</td>
+                  <td style="padding:6px; font-weight:700; color:#3B82F6;">N</td>
+                  <td style="padding:6px; font-weight:700; color:#10B981;">2^(K-1)</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700;">Receiver Window (Wr)</td>
+                  <td style="padding:6px;">1</td>
+                  <td style="padding:6px;">1 (Always 1)</td>
+                  <td style="padding:6px; font-weight:700; color:#10B981;">2^(K-1) (Ws = Wr)</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700;">Efficiency (η)</td>
+                  <td style="padding:6px;">Td / (Td + 2Pd)</td>
+                  <td style="padding:6px;">N × Td / (Td + 2Pd)</td>
+                  <td style="padding:6px;">Ws × Td / (Td + 2Pd)</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700;">ACK Type</td>
+                  <td style="padding:6px;">Individual ACK</td>
+                  <td style="padding:6px;">Cumulative ACK</td>
+                  <td style="padding:6px;">Independent ACK + NACK</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700;">Out-of-Order Packets</td>
+                  <td style="padding:6px;">Discarded</td>
+                  <td style="padding:6px;">Discarded</td>
+                  <td style="padding:6px;">Accepted & Sorted in Buffer</td>
+                </tr>
+                <tr>
+                  <td style="padding:6px; font-weight:700;">Total Buffer Needed</td>
+                  <td style="padding:6px;">1 + 1 = 2</td>
+                  <td style="padding:6px;">N + 1</td>
+                  <td style="padding:6px;">N + N = 2N</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `
+      }
+    ],
+    summary: 'Hamming distance requires d+1 for detection and 2d+1 for correction. CRC uses polynomial modulo-2 division. GBN uses cumulative ACK with receiver window 1. Selective Repeat uses independent ACKs with equal sender and receiver windows 2^(K-1).',
+    pyqs: [
+      { year: '2024', q: 'In Selective Repeat ARQ protocol with 4-bit sequence numbers, what is the maximum sender window size Ws?', opt: ['7', '8', '15', '16'], ans: 1, explanation: 'For K bits sequence number in SR ARQ, Ws = Wr = 2^(K-1) = 2^(4-1) = 2^3 = 8.' }
+    ]
+  },
+
+  'cn_tcp_udp': {
+    title: 'TCP/UDP Headers, 3-Way Handshake & Congestion Control',
+    subject: 'Computer Networks',
+    diff: 'Hard',
+    time: '30 min',
+    prereq: 'Transport Layer Concepts',
+    intro: 'TCP provides connection-oriented, reliable, in-order byte stream delivery using a 3-way handshake and congestion control algorithms. UDP is a lightweight, connectionless datagram protocol with minimal header overhead.',
+    sections: [
+      {
+        heading: '1. Master TCP vs UDP Comparison Table (Handbook Reference)',
+        text: `
+          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:14px; margin-bottom:14px; overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; font-size:11px; text-align:left;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border-color); color:var(--accent-primary);">
+                  <th style="padding:6px;">Feature</th>
+                  <th style="padding:6px;">TCP (Transmission Control Protocol)</th>
+                  <th style="padding:6px;">UDP (User Datagram Protocol)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700;">Connection Mode</td>
+                  <td style="padding:6px; font-weight:700; color:#3B82F6;">Connection-oriented (3-way handshake)</td>
+                  <td style="padding:6px; font-weight:700; color:#F59E0B;">Connectionless datagram</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700;">Reliability</td>
+                  <td style="padding:6px; color:#10B981;">Reliable (in-order delivery guaranteed)</td>
+                  <td style="padding:6px; color:#EF4444;">Unreliable (best effort)</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700;">Header Size</td>
+                  <td style="padding:6px;">20 - 60 Bytes</td>
+                  <td style="padding:6px; font-weight:700; color:#10B981;">Fixed 8 Bytes</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700;">Flow & Congestion Control</td>
+                  <td style="padding:6px;">Supported (Sliding window + Slow Start)</td>
+                  <td style="padding:6px;">Not supported</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700;">Checksum</td>
+                  <td style="padding:6px;">Mandatory</td>
+                  <td style="padding:6px;">Optional (filled with 0s if unused)</td>
+                </tr>
+                <tr>
+                  <td style="padding:6px; font-weight:700;">Protocols Used By</td>
+                  <td style="padding:6px;">HTTP, HTTPS, FTP, SMTP, POP3, IMAP</td>
+                  <td style="padding:6px;">DNS, SNMP, TFTP, DHCP, Real-time Streaming</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `
+      },
+      {
+        heading: '2. TCP 3-Way Handshake & Sequence Number Consumption',
+        text: `
+          <div style="background:var(--bg-surface-hover); border-left:4px solid var(--accent-primary); border-radius:6px; padding:12px 14px; margin-bottom:14px; font-size:12px;">
+            <strong>Sequence Number Consumption Rules:</strong><br>
+            • <code>SYN = 1</code> ➔ Consumes <strong>1 sequence number</strong> (Connection Request)<br>
+            • <code>ACK = 1</code> ➔ Consumes <strong>0 sequence numbers</strong> (Acknowledgment)<br>
+            • <code>FIN = 1</code> ➔ Consumes <strong>1 sequence number</strong> (Connection Termination)<br>
+            • <code>1 Data Byte</code> ➔ Consumes <strong>1 sequence number</strong><br><br>
+            <strong>Wrap Around Time (WAT) Formula:</strong><br>
+            <code>WAT = Total Sequence Numbers / Bandwidth [Bytes/sec]</code>
+          </div>
+        `
+      },
+      {
+        heading: '3. TCP Congestion Control & Token Bucket Leaky Bucket',
+        text: `
+          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:14px; margin-bottom:14px; font-size:12px;">
+            <strong style="color:var(--accent-primary);">TCP Congestion Control Phases:</strong><br>
+            • <strong>Slow Start:</strong> Exponential growth of congestion window. On receiving ACK ➔ <code>Wc = Wc + 1</code>. After 1 RTT ➔ <code>Wc = 2 * Wc</code>.<br>
+            • <strong>Congestion Avoidance:</strong> Linear growth after threshold. On receiving ACK ➔ <code>Wc = Wc + 1/Wc</code>. After 1 RTT ➔ <code>Wc = Wc + 1</code>.<br>
+            • <strong>Congestion Detection:</strong> Triggered by Timeout or 3 duplicate ACKs.<br><br>
+
+            <strong style="color:var(--color-success);">Token Bucket Burst Time Formula:</strong><br>
+            Let C = Token bucket capacity, r = token arrival rate (tokens/sec), M = maximum output burst rate.<br>
+            Maximum burst duration: <code>t = C / (M - r)</code>.
+          </div>
+        `
+      }
+    ],
+    summary: 'TCP is connection-oriented with 20-60 byte headers, 3-way handshake, and congestion control (Slow Start & Congestion Avoidance). UDP has an 8-byte fixed header, is connectionless, and ideal for real-time video, DNS, and DHCP.',
+    pyqs: [
+      { year: '2023', q: 'A token bucket system has capacity C = 100 KB, arrival rate r = 10 MB/s, and maximum transmission rate M = 50 MB/s. What is the maximum burst time t?', opt: ['2.5 ms', '2.0 ms', '5.0 ms', '1.0 ms'], ans: 0, explanation: 't = C / (M - r) = 100 KB / (50 MB/s - 10 MB/s) = 100 KB / 40 MB/s = 2.5 ms.' }
+    ]
+  },
+
+  'cn_app_protocols': {
+    title: 'Application Protocols (DNS, HTTP, FTP, SMTP, POP3, IMAP)',
+    subject: 'Computer Networks',
+    diff: 'Medium',
+    time: '25 min',
+    prereq: 'Transport Layer Port Numbers & Socket Programming',
+    intro: 'Application layer protocols provide standardized network services to end-user applications. This handbook reference summarizes port numbers, transport layer protocols, stateful/stateless behavior, and push/pull dynamics.',
+    sections: [
+      {
+        heading: '1. Master Application Protocols Handbook Table',
+        text: `
+          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:14px; margin-bottom:14px; overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; font-size:11px; text-align:left;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border-color); color:var(--accent-primary);">
+                  <th style="padding:6px;">Protocol</th>
+                  <th style="padding:6px;">Port #</th>
+                  <th style="padding:6px;">Transport Protocol</th>
+                  <th style="padding:6px;">Stateful / Stateless</th>
+                  <th style="padding:6px;">Push / Pull</th>
+                  <th style="padding:6px;">In-Band / Out-of-Band</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#3B82F6;">DNS</td>
+                  <td style="padding:6px;">53</td>
+                  <td style="padding:6px;">UDP</td>
+                  <td style="padding:6px;">Stateless</td>
+                  <td style="padding:6px;">-</td>
+                  <td style="padding:6px;">In-band</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#10B981;">HTTP</td>
+                  <td style="padding:6px;">80</td>
+                  <td style="padding:6px;">TCP</td>
+                  <td style="padding:6px;">Stateless</td>
+                  <td style="padding:6px;">-</td>
+                  <td style="padding:6px;">In-band</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#F59E0B;">SMTP</td>
+                  <td style="padding:6px;">25</td>
+                  <td style="padding:6px;">TCP</td>
+                  <td style="padding:6px;">Stateless</td>
+                  <td style="padding:6px; font-weight:700; color:#10B981;">Push Protocol</td>
+                  <td style="padding:6px;">In-band</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700;">POP3</td>
+                  <td style="padding:6px;">110</td>
+                  <td style="padding:6px;">TCP</td>
+                  <td style="padding:6px;">Stateful</td>
+                  <td style="padding:6px; font-weight:700; color:#3B82F6;">Pull Protocol</td>
+                  <td style="padding:6px;">In-band</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700;">IMAP4</td>
+                  <td style="padding:6px;">143</td>
+                  <td style="padding:6px;">TCP</td>
+                  <td style="padding:6px;">Stateful</td>
+                  <td style="padding:6px; font-weight:700; color:#3B82F6;">Pull Protocol</td>
+                  <td style="padding:6px;">In-band</td>
+                </tr>
+                <tr>
+                  <td style="padding:6px; font-weight:700; color:#8B5CF6;">FTP</td>
+                  <td style="padding:6px;">20 (Data), 21 (Control)</td>
+                  <td style="padding:6px;">TCP</td>
+                  <td style="padding:6px;">Stateful</td>
+                  <td style="padding:6px;">Control (Persistent), Data (Non-persistent)</td>
+                  <td style="padding:6px; font-weight:700; color:#EF4444;">Out-of-Band</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `
+      },
+      {
+        heading: '2. HTTP 1.0 vs HTTP 1.1 & FTP Dual Channels',
+        text: `
+          <div style="background:var(--bg-surface-hover); border-left:4px solid var(--accent-primary); border-radius:6px; padding:12px 14px; margin-bottom:14px; font-size:12px;">
+            <strong>HTTP 1.0 vs HTTP 1.1:</strong><br>
+            • <strong>HTTP 1.0:</strong> Non-persistent connection. One TCP connection per request/response. For an HTML file with N inline images, connection opens/closes <code>N + 1</code> times.<br>
+            • <strong>HTTP 1.1:</strong> Persistent connection. Server leaves TCP connection open for multiple request/response cycles.<br><br>
+
+            <strong>FTP Dual Channels (Out-of-Band):</strong><br>
+            • <strong>Control Connection (Port 21):</strong> Opens first and stays connected during entire FTP session (Persistent, In-Band control commands like USER, PASS, CWD).<br>
+            • <strong>Data Connection (Port 20):</strong> Opened and closed dynamically for each file transfer activity (Non-persistent).
+          </div>
+        `
+      }
+    ],
+    summary: 'SMTP (port 25) is a push protocol using 7-bit ASCII text. POP3 (port 110) and IMAP4 (port 143) are pull protocols. FTP uses dual channels out-of-band (port 21 control, port 20 data). HTTP 1.0 is non-persistent while HTTP 1.1 is persistent.',
+    pyqs: [
+      { year: '2024', q: 'Which application layer protocol is an OUT-OF-BAND protocol using separate TCP connections for control and data?', opt: ['HTTP', 'SMTP', 'FTP', 'POP3'], ans: 2, explanation: 'FTP is an out-of-band protocol that uses Port 21 for control commands and Port 20 for actual file data transfers.' }
     ]
   },
 
@@ -483,7 +899,7 @@ function renderLearningCenterWorkspace(container) {
     <div style="background:var(--bg-surface); border:1px solid var(--border-color); border-radius:10px; padding:12px 16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
       <div>
         <h2 style="font-family:'Outfit', sans-serif; font-size:20px; font-weight:700; color:var(--text-main); margin-bottom:2px;">Learning Center</h2>
-        <p style="color:var(--text-sub); font-size:12px;">Comprehensive GATE Computer Science interactive documentation textbook.</p>
+        <p style="color:var(--text-sub); font-size:12px;">Grounded in GATE Wallah CS/IT Official Handbook Textbook.</p>
       </div>
 
       <!-- Subject Switcher Dropdown & Search -->
