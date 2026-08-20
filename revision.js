@@ -1,1038 +1,776 @@
-// Learn Center Module - Computer Networks (CN) Study Modules
+// GitBook / Notion Docs-Style Learning Center Module (GATE CSE Complete Syllabus)
 
-const CONCEPT_EXPLANATIONS = {
-  'flow_delays': {
-    title: '3.1 – 3.3 Network Delays & Efficiency Formulas',
-    html: `
-      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
-        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#3B82F6; margin-bottom:8px;">4 Key Network Delays:</h4>
-        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
-          <div style="background:#0F1115; border-left:3px solid #3B82F6; padding:8px 12px; border-radius:4px;">
-            <strong style="color:#F5F5F5;">Transmission Delay (T<sub>d</sub>):</strong> <code>T<sub>d</sub> = L / B</code><br>
-            <span style="color:#9CA3AF; font-size:11.5px;">Time to push all bits of frame size <strong>L</strong> onto link bandwidth <strong>B</strong>.</span>
-          </div>
-          <div style="background:#0F1115; border-left:3px solid #10B981; padding:8px 12px; border-radius:4px;">
-            <strong style="color:#F5F5F5;">Propagation Delay (P<sub>d</sub>):</strong> <code>P<sub>d</sub> = distance / velocity</code><br>
-            <span style="color:#9CA3AF; font-size:11.5px;">Time for 1 bit to travel distance <strong>d</strong> over medium speed <strong>v</strong>.</span>
-          </div>
-        </div>
+let currentSelectedSubject = 'cn'; // default active subject: Computer Networks
+let currentSelectedTopicId = 'cn_osi_intro';
+let userCompletedTopics = {};
+let userBookmarkedTopics = {};
 
-        <!-- Solved GATE Problem -->
-        <div style="background:#0F1115; border:1px solid #3B82F6; padding:12px; border-radius:6px;">
-          <span style="font-size:10px; font-weight:700; color:#3B82F6; text-transform:uppercase;">Solved GATE Standard Problem</span>
-          <div style="font-size:12px; color:#F5F5F5; margin-top:4px;">
-            <strong>Question:</strong> Packet Size L = 1000 bytes, Bandwidth B = 1 Mbps, Distance d = 2000 km, Speed v = 2 &times; 10<sup>8</sup> m/s. Find T<sub>d</sub> and P<sub>d</sub>.<br>
-            <div style="background:rgba(16,185,129,0.1); border-left:3px solid #10B981; padding:6px 10px; border-radius:4px; margin-top:6px; font-family:monospace; font-size:11.5px;">
-              T<sub>d</sub> = (1000 &times; 8 bits) / 10<sup>6</sup> bps = 8 ms<br>
-              P<sub>d</sub> = (2000 &times; 10<sup>3</sup> m) / (2 &times; 10<sup>8</sup> m/s) = 10 ms<br>
-              a = P<sub>d</sub> / T<sub>d</sub> = 10 / 8 = 1.25<br>
-              Stop-and-Wait Efficiency &eta; = 1 / (1 + 2a) = 1 / (1 + 2.5) = 1 / 3.5 = 28.57%
-            </div>
-          </div>
-        </div>
-      </div>
-    `
+// Complete Syllabus Hierarchy Database (11 Core GATE Subjects & Chapters)
+const LEARNING_SYLLABUS_DB = {
+  'aptitude': {
+    title: 'General Aptitude',
+    icon: 'Brain',
+    chapters: [
+      {
+        name: 'Quantitative Aptitude',
+        topics: [
+          { id: 'apt_quant_num', title: 'Numbers & Percentages', diff: 'Easy', time: '12 min' },
+          { id: 'apt_quant_ratio', title: 'Ratio, Proportion & Mixture', diff: 'Easy', time: '15 min' },
+          { id: 'apt_quant_work', title: 'Time, Work & Efficiency', diff: 'Medium', time: '18 min' },
+          { id: 'apt_quant_speed', title: 'Speed, Distance & Time', diff: 'Medium', time: '15 min' }
+        ]
+      },
+      {
+        name: 'Logical Reasoning',
+        topics: [
+          { id: 'apt_lr_relations', title: 'Blood Relations & Family Trees', diff: 'Easy', time: '10 min' },
+          { id: 'apt_lr_syllogism', title: 'Syllogism & Venn Diagrams', diff: 'Medium', time: '15 min' },
+          { id: 'apt_lr_seating', title: 'Linear & Circular Seating', diff: 'Medium', time: '18 min' }
+        ]
+      },
+      {
+        name: 'Verbal Ability',
+        topics: [
+          { id: 'apt_verb_grammar', title: 'English Grammar & Usage', diff: 'Easy', time: '10 min' },
+          { id: 'apt_verb_rc', title: 'Reading Comprehension & Inference', diff: 'Medium', time: '15 min' }
+        ]
+      }
+    ]
   },
-
-  'gbn_sr_compare': {
-    title: '3.7 – 3.9 GBN vs Selective Repeat (SR) Deep Dive',
-    html: `
-      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
-        <table style="width:100%; border-collapse:collapse; font-size:12px; background:#0F1115; border-radius:6px; overflow:hidden;">
-          <thead>
-            <tr style="background:#161920; color:#F5F5F5; border-bottom:1px solid #23262D;">
-              <th style="padding:8px 12px; text-align:left;">Parameter</th>
-              <th style="padding:8px 12px;">Go-Back-N (GBN)</th>
-              <th style="padding:8px 12px;">Selective Repeat (SR)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:8px 12px; font-weight:700;">Sender Window (W<sub>s</sub>)</td>
-              <td style="padding:8px 12px;">N</td>
-              <td style="padding:8px 12px;">N (where W<sub>s</sub> = W<sub>r</sub> = 2<sup>k-1</sup>)</td>
-            </tr>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:8px 12px; font-weight:700;">Receiver Window (W<sub>r</sub>)</td>
-              <td style="padding:8px 12px; color:#EF4444;">1 (Always 1)</td>
-              <td style="padding:8px 12px; color:#10B981;">N (Equal to W<sub>s</sub>)</td>
-            </tr>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:8px 12px; font-weight:700;">Out-of-Order Frames</td>
-              <td style="padding:8px 12px; color:#EF4444;">Discarded &amp; Rejected</td>
-              <td style="padding:8px 12px; color:#10B981;">Accepted &amp; Buffered</td>
-            </tr>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:8px 12px; font-weight:700;">ACK Type</td>
-              <td style="padding:8px 12px;">Cumulative ACK</td>
-              <td style="padding:8px 12px;">Independent ACK + NACK</td>
-            </tr>
-            <tr>
-              <td style="padding:8px 12px; font-weight:700;">Min Sequence Numbers</td>
-              <td style="padding:8px 12px;">N + 1</td>
-              <td style="padding:8px 12px;">2N (or W<sub>s</sub> + W<sub>r</sub>)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    `
+  'math': {
+    title: 'Engineering Mathematics',
+    icon: 'Sigma',
+    chapters: [
+      {
+        name: 'Discrete Mathematics',
+        topics: [
+          { id: 'math_dm_logic', title: 'Propositional & First-Order Logic', diff: 'Medium', time: '20 min' },
+          { id: 'math_dm_sets', title: 'Sets, Relations & Functions', diff: 'Medium', time: '18 min' },
+          { id: 'math_dm_combinatorics', title: 'Permutations, Combinations & Counting', diff: 'Hard', time: '25 min' },
+          { id: 'math_dm_graphs', title: 'Graph Theory & Isomorphism', diff: 'Hard', time: '25 min' }
+        ]
+      },
+      {
+        name: 'Linear Algebra',
+        topics: [
+          { id: 'math_la_matrix', title: 'Matrices, Determinants & Rank', diff: 'Easy', time: '15 min' },
+          { id: 'math_la_eigen', title: 'Eigenvalues, Eigenvectors & Cayley-Hamilton', diff: 'Hard', time: '25 min' }
+        ]
+      },
+      {
+        name: 'Calculus & Probability',
+        topics: [
+          { id: 'math_calc_limits', title: 'Limits, Continuity & Mean Value Theorems', diff: 'Medium', time: '20 min' },
+          { id: 'math_prob_bayes', title: 'Conditional Probability & Bayes Theorem', diff: 'Hard', time: '22 min' },
+          { id: 'math_prob_dist', title: 'Random Variables & Probability Distributions', diff: 'Medium', time: '20 min' }
+        ]
+      }
+    ]
   },
-
-  'error_basics': {
-    title: '2.1 Error Control Basics & Detection vs Correction',
-    html: `
-      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
-        <div style="background:rgba(59,130,246,0.1); border-left:4px solid #3B82F6; padding:12px; border-radius:4px; margin-bottom:14px;">
-          <strong style="color:#3B82F6;">Key Concept: Corrupted Bits Formula</strong>
-          <p style="margin:4px 0 0 0; color:#F5F5F5; font-family:monospace; font-size:13px;">
-            Corrupted Bits = Data Rate &times; Noise Duration
-          </p>
-        </div>
-
-        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#F5F5F5; margin-bottom:6px;">Important GATE Facts:</h4>
-        <ul style="margin:0 0 14px 0; padding-left:18px; color:#9CA3AF;">
-          <li><strong>Burst Errors</strong> (multiple adjacent corrupted bits) occur far more frequently in real transmission channels than single-bit errors.</li>
-          <li><strong>Error Detection</strong> is simple and cheap; <strong>Error Correction</strong> requires heavy redundant bits and complex hardware logic.</li>
-        </ul>
-      </div>
-    `
+  'pds': {
+    title: 'Programming & Data Structures',
+    icon: 'Code',
+    chapters: [
+      {
+        name: 'C Programming',
+        topics: [
+          { id: 'pds_c_basics', title: 'C Basics, Operators & Precedence', diff: 'Easy', time: '15 min' },
+          { id: 'pds_c_pointers', title: 'Pointers, Arrays & Memory Addresses', diff: 'Hard', time: '25 min' },
+          { id: 'pds_c_functions', title: 'Recursion, Call Stack & Variable Scope', diff: 'Medium', time: '20 min' }
+        ]
+      },
+      {
+        name: 'Linear Data Structures',
+        topics: [
+          { id: 'pds_ds_arrays', title: '1D/2D Array Memory Formulas', diff: 'Easy', time: '12 min' },
+          { id: 'pds_ds_lists', title: 'Singly & Doubly Linked Lists', diff: 'Medium', time: '18 min' },
+          { id: 'pds_ds_stack', title: 'Stacks, Infix to Postfix & Evaluation', diff: 'Medium', time: '20 min' },
+          { id: 'pds_ds_queue', title: 'Queues, Circular Queue & Priority Queue', diff: 'Medium', time: '15 min' }
+        ]
+      },
+      {
+        name: 'Non-Linear Data Structures',
+        topics: [
+          { id: 'pds_ds_trees', title: 'Binary Trees, BST & AVL Trees', diff: 'Hard', time: '30 min' },
+          { id: 'pds_ds_graphs', title: 'Graph Representations (Adjacency Matrix/List)', diff: 'Medium', time: '20 min' },
+          { id: 'pds_ds_hashing', title: 'Hash Functions, Chaining & Open Addressing', diff: 'Medium', time: '20 min' }
+        ]
+      }
+    ]
   },
-
-  'hamming': {
-    title: '2.1.1 – 2.1.4 Hamming Distance & Solved GATE Problems',
-    html: `
-      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
-        <div style="background:rgba(16,185,129,0.1); border-left:4px solid #10B981; padding:12px; border-radius:4px; margin-bottom:14px;">
-          <strong style="color:#10B981;">Hamming Distance Rule:</strong>
-          <p style="margin:4px 0 0 0; color:#F5F5F5;">
-            To calculate Hamming Distance d(x, y), perform bitwise XOR (<code>x &oplus; y</code>) and count the total number of 1's in the result!
-          </p>
-        </div>
-
-        <div style="background:#0F1115; border:1px solid #23262D; border-radius:6px; padding:12px; font-family:monospace; font-size:12px; margin-bottom:14px;">
-          Example 1: 10101 &oplus; 11110 = 01011 &rarr; (Three 1's) &rarr; d = 3<br>
-          Example 2: 000 &oplus; 011 = 011 &rarr; (Two 1's) &rarr; d = 2
-        </div>
-
-        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#3B82F6; margin-bottom:6px;">Minimum Hamming Distance (d<sub>min</sub>) Formulas:</h4>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;">
-          <div style="background:#0F1115; border:1px solid #23262D; padding:10px; border-radius:6px;">
-            <strong style="color:#10B981;">To Detect 's' Errors:</strong><br>
-            <code>d<sub>min</sub> &ge; s + 1</code>
-          </div>
-          <div style="background:#0F1115; border:1px solid #23262D; padding:10px; border-radius:6px;">
-            <strong style="color:#F59E0B;">To Correct 't' Errors:</strong><br>
-            <code>d<sub>min</sub> &ge; 2t + 1</code>
-          </div>
-        </div>
-
-        <!-- Solved GATE Question -->
-        <div style="background:#0F1115; border:1px solid #3B82F6; padding:14px; border-radius:8px;">
-          <span style="font-size:10px; font-weight:700; color:#3B82F6; text-transform:uppercase;">Solved GATE Question</span>
-          <h4 style="font-family:'Outfit', sans-serif; font-size:13px; font-weight:700; color:#F5F5F5; margin:4px 0 8px 0;">
-            Question: If a system needs to CORRECT up to 3-bit errors, what is the minimum Hamming distance required?
-          </h4>
-          <div style="background:rgba(16,185,129,0.1); border-left:3px solid #10B981; padding:8px 10px; border-radius:4px; font-size:12px;">
-            <strong style="color:#10B981;">Solution:</strong><br>
-            t = 3 errors to correct.<br>
-            Formula: <code>d<sub>min</sub> = 2t + 1 = 2(3) + 1 = 7</code>.<br>
-            <strong>Answer: Minimum Hamming distance = 7.</strong>
-          </div>
-        </div>
-      </div>
-    `
+  'algo': {
+    title: 'Algorithms',
+    icon: 'Cpu',
+    chapters: [
+      {
+        name: 'Analysis & Design Techniques',
+        topics: [
+          { id: 'algo_asymptotic', title: 'Asymptotic Notation (Big-O, Omega, Theta)', diff: 'Easy', time: '15 min' },
+          { id: 'algo_recurrence', title: 'Recurrence Relations & Master Theorem', diff: 'Medium', time: '20 min' },
+          { id: 'algo_divide', title: 'Divide & Conquer (Merge & Quick Sort)', diff: 'Medium', time: '22 min' },
+          { id: 'algo_greedy', title: 'Greedy Algorithms (Knapsack & Huffman)', diff: 'Medium', time: '20 min' },
+          { id: 'algo_dp', title: 'Dynamic Programming (LCS & 0/1 Knapsack)', diff: 'Hard', time: '30 min' }
+        ]
+      },
+      {
+        name: 'Graph & Advanced Algorithms',
+        topics: [
+          { id: 'algo_graph_traversal', title: 'BFS, DFS & Topological Sort', diff: 'Medium', time: '20 min' },
+          { id: 'algo_shortest_path', title: 'Dijkstra, Bellman-Ford & Floyd-Warshall', diff: 'Hard', time: '25 min' },
+          { id: 'algo_mst', title: 'Minimum Spanning Trees (Kruskal & Prim)', diff: 'Medium', time: '18 min' },
+          { id: 'algo_complexity', title: 'NP-Completeness, P vs NP & Reductions', diff: 'Hard', time: '25 min' }
+        ]
+      }
+    ]
   },
-
-  'parity': {
-    title: '2.2 – 2.3 Simple & 2D Parity Check Mechanics',
-    html: `
-      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
-        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#3B82F6; margin-bottom:6px;">Simple Parity Check (1D):</h4>
-        <p style="color:#F5F5F5; margin-bottom:10px;">
-          Appends 1 extra bit so total count of 1's is Even (Even Parity).<br>
-          &bull; <strong>Odd number of errors:</strong> Always detected!<br>
-          &bull; <strong>Even number of errors:</strong> Fails completely (undetectable!).
-        </p>
-
-        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#10B981; margin-bottom:6px;">2D Parity Check:</h4>
-        <p style="color:#F5F5F5;">
-          Arranges data in a grid matrix and computes row parity + column parity. Can detect &amp; correct all single-bit errors and detect 2 or 3 bit errors anywhere in the matrix.
-        </p>
-      </div>
-    `
+  'os': {
+    title: 'Operating Systems',
+    icon: 'Server',
+    chapters: [
+      {
+        name: 'Process & Thread Management',
+        topics: [
+          { id: 'os_process_states', title: 'Process States, PCB & Context Switching', diff: 'Easy', time: '15 min' },
+          { id: 'os_cpu_scheduling', title: 'CPU Scheduling (FCFS, SJF, RR, Priority)', diff: 'Medium', time: '25 min' },
+          { id: 'os_synch', title: 'Process Synchronization & Semaphores', diff: 'Hard', time: '30 min' },
+          { id: 'os_deadlock', title: 'Deadlock 4 Conditions & Banker Algorithm', diff: 'Hard', time: '25 min' }
+        ]
+      },
+      {
+        name: 'Memory & File Systems',
+        topics: [
+          { id: 'os_paging', title: 'Memory Management, Paging & TLB', diff: 'Hard', time: '25 min' },
+          { id: 'os_virtual_mem', title: 'Virtual Memory & Page Replacement (LRU, FIFO)', diff: 'Medium', time: '22 min' },
+          { id: 'os_files', title: 'File System Allocation & Inodes', diff: 'Medium', time: '18 min' },
+          { id: 'os_disk', title: 'Disk Scheduling Algorithms (SSTF, SCAN)', diff: 'Easy', time: '15 min' }
+        ]
+      }
+    ]
   },
-
-  'crc': {
-    title: '2.4 Cyclic Redundancy Check (CRC) Solved Example',
-    html: `
-      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
-        <div style="background:rgba(59,130,246,0.1); border-left:4px solid #3B82F6; padding:12px; border-radius:4px; margin-bottom:14px;">
-          <strong style="color:#3B82F6;">CRC Step-by-Step Algorithm:</strong>
-          <ol style="margin:4px 0 0 0; padding-left:18px; color:#F5F5F5;">
-            <li>Given Generator Polynomial of length <strong>k</strong> bits (e.g. <code>10011</code>, k=5).</li>
-            <li>Append <strong>(k &ndash; 1) zeros</strong> (4 zeros) to original dataword.</li>
-            <li>Perform <strong>Modulo-2 Division (XOR)</strong> using the generator.</li>
-            <li>The <strong>Remainder</strong> is the CRC checksum.</li>
-          </ol>
-        </div>
-
-        <!-- Solved Example -->
-        <div style="background:#0F1115; border:1px solid #10B981; padding:14px; border-radius:8px;">
-          <span style="font-size:10px; font-weight:700; color:#10B981; text-transform:uppercase;">Solved Modulo-2 Division</span>
-          <div style="font-size:12px; color:#F5F5F5; font-family:monospace; margin-top:6px;">
-            Dataword = 1001 &bull; Generator = 1011 (k = 4 bits)<br>
-            Append 3 zeros &rarr; 1001000<br>
-            Modulo-2 (XOR) division remainder = <strong>110</strong> (CRC)<br>
-            Transmitted Codeword = <strong>1001110</strong>
-          </div>
-        </div>
-      </div>
-    `
+  'cn': {
+    title: 'Computer Networks',
+    icon: 'Globe',
+    chapters: [
+      {
+        name: 'OSI & TCP/IP Architectures',
+        topics: [
+          { id: 'cn_osi_intro', title: 'OSI 7 Layer Model & Encapsulation', diff: 'Easy', time: '15 min' },
+          { id: 'cn_tcp_ip', title: 'TCP/IP Protocol Suite & PDU Mapping', diff: 'Easy', time: '12 min' }
+        ]
+      },
+      {
+        name: 'Data Link & Network Layers',
+        topics: [
+          { id: 'cn_framing_crc', title: 'Framing, Error Control (CRC) & Flow Control', diff: 'Medium', time: '22 min' },
+          { id: 'cn_ip_subnets', title: 'IPv4 Addressing, Subnetting & CIDR', diff: 'Hard', time: '30 min' },
+          { id: 'cn_routing', title: 'Routing Protocols (Distance Vector & Link State)', diff: 'Hard', time: '25 min' }
+        ]
+      },
+      {
+        name: 'Transport & Application Layers',
+        topics: [
+          { id: 'cn_tcp_handshake', title: 'TCP 3-Way Handshake & Flow Control', diff: 'Medium', time: '20 min' },
+          { id: 'cn_congestion', title: 'TCP Congestion Control (Slow Start & Fast Retransmit)', diff: 'Hard', time: '25 min' },
+          { id: 'cn_app_protocols', title: 'DNS, HTTP/1.1 vs HTTP/2, FTP, SMTP', diff: 'Medium', time: '18 min' },
+          { id: 'cn_security', title: 'Network Security, RSA & Firewalls', diff: 'Medium', time: '20 min' }
+        ]
+      }
+    ]
   },
-
-  'cidr': {
-    title: '1.8 CIDR Allocation Rules & Solved GATE Example',
-    html: `
-      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
-        <div style="background:rgba(59,130,246,0.1); border-left:4px solid #3B82F6; padding:12px 14px; border-radius:4px; margin-bottom:14px;">
-          <strong style="color:#3B82F6; font-size:14px;">In Plain English: What is CIDR?</strong>
-          <p style="margin:4px 0 0 0; color:#F5F5F5;">
-            Classless Inter-Domain Routing (CIDR) eliminates fixed Class A/B/C boundaries. Instead of buying a whole 16.7-million IP Class A network, an ISP sells you exact variable-size IP blocks written as <code>IP_Address / Prefix_Length</code> (e.g., <code>200.1.1.0 / 26</code>).
-          </p>
-        </div>
-
-        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#10B981; margin-bottom:8px;">The 3 Strict Rules Every CIDR Block Must Satisfy:</h4>
-        
-        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
-          <div style="background:#0F1115; border:1px solid #23262D; padding:10px 12px; border-radius:6px;">
-            <strong style="color:#F5F5F5;">Rule 1: Contiguous IP Addresses</strong>
-            <div style="color:#9CA3AF; font-size:12px; margin-top:2px;">All IP numbers in the block must form a continuous sequence without any missing numbers.</div>
-          </div>
-          <div style="background:#0F1115; border:1px solid #23262D; padding:10px 12px; border-radius:6px;">
-            <strong style="color:#F5F5F5;">Rule 2: Block Size Must Be a Power of 2 (2<sup>N</sup>)</strong>
-            <div style="color:#9CA3AF; font-size:12px; margin-top:2px;">Allowed block sizes are 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, etc. (You cannot have a block of 50 or 300 IPs!).</div>
-          </div>
-          <div style="background:#0F1115; border:1px solid #23262D; padding:10px 12px; border-radius:6px;">
-            <strong style="color:#F5F5F5;">Rule 3: Divisibility Rule (Critical GATE Trick!)</strong>
-            <div style="color:#9CA3AF; font-size:12px; margin-top:2px;">
-              The numerical integer value of the <strong>First IP Address</strong> must be evenly divisible by the <strong>Block Size</strong>.<br>
-              Formula: <code>(First_IP_Decimal_Value) % Block_Size == 0</code>
-            </div>
-          </div>
-        </div>
-
-        <!-- Solved GATE Problem -->
-        <div style="background:#0F1115; border:1px solid #3B82F6; padding:14px; border-radius:8px;">
-          <span style="font-size:10px; font-weight:700; color:#3B82F6; text-transform:uppercase;">Solved GATE Standard Problem</span>
-          <h4 style="font-family:'Outfit', sans-serif; font-size:13px; font-weight:700; color:#F5F5F5; margin:4px 0 8px 0;">
-            Question: An ISP grants a block of 64 IP addresses. Which of the following is a VALID first IP address for this block?
-          </h4>
-          <div style="font-size:12px; color:#9CA3AF; font-family:monospace; margin-bottom:8px;">
-            A) 128.32.1.32 &nbsp;&bull;&nbsp; B) 128.32.1.64 &nbsp;&bull;&nbsp; C) 128.32.1.90 &nbsp;&bull;&nbsp; D) 128.32.1.100
-          </div>
-          <div style="background:rgba(16,185,129,0.1); border-left:3px solid #10B981; padding:8px 10px; border-radius:4px; font-size:12px;">
-            <strong style="color:#10B981;">Correct Answer: Option B (128.32.1.64)</strong><br>
-            <strong>Step 1:</strong> Check Block Size = 64 (Valid power of 2: 2<sup>6</sup>).<br>
-            <strong>Step 2:</strong> Check Divisibility Rule on last octet:<br>
-            &bull; Option A: 32 % 64 = 32 (Invalid)<br>
-            &bull; Option B: 64 % 64 = 0 (<strong>Valid & Divisible!</strong>)<br>
-            &bull; Option C: 90 % 64 = 26 (Invalid)<br>
-            &bull; Option D: 100 % 64 = 36 (Invalid)
-          </div>
-        </div>
-
-      </div>
-    `
+  'dbms': {
+    title: 'Database Management Systems',
+    icon: 'Database',
+    chapters: [
+      {
+        name: 'Database Models & SQL',
+        topics: [
+          { id: 'dbms_er_model', title: 'ER Model & ER-to-Relational Mapping', diff: 'Easy', time: '15 min' },
+          { id: 'dbms_rel_algebra', title: 'Relational Algebra & Relational Calculus', diff: 'Hard', time: '25 min' },
+          { id: 'dbms_sql_queries', title: 'SQL Queries, Joins, Group By & Subqueries', diff: 'Medium', time: '22 min' }
+        ]
+      },
+      {
+        name: 'Normalization & Concurrency',
+        topics: [
+          { id: 'dbms_fd_closure', title: 'Functional Dependencies & Key Closures', diff: 'Medium', time: '20 min' },
+          { id: 'dbms_normalization', title: 'Normalization (1NF, 2NF, 3NF, BCNF)', diff: 'Hard', time: '30 min' },
+          { id: 'dbms_transactions', title: 'Transactions & ACID Properties', diff: 'Easy', time: '15 min' },
+          { id: 'dbms_concurrency', title: 'Concurrency Control & Two-Phase Locking (2PL)', diff: 'Hard', time: '25 min' },
+          { id: 'dbms_indexing', title: 'B-Trees & B+ Tree Indexing Formulas', diff: 'Hard', time: '28 min' }
+        ]
+      }
+    ]
   },
-
-  'supernetting': {
-    title: '1.9 – 1.11 Supernetting Deep Dive & Rules',
-    html: `
-      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
-        
-        <div style="background:rgba(245,158,11,0.1); border-left:4px solid #F59E0B; padding:12px 14px; border-radius:4px; margin-bottom:14px;">
-          <strong style="color:#F59E0B; font-size:14px;">In Plain English: What is Supernetting?</strong>
-          <p style="margin:4px 0 0 0; color:#F5F5F5;">
-            Supernetting (CIDR Aggregation) is the reverse of subnetting. Instead of dividing 1 large network into smaller ones, we <strong>combine multiple small contiguous Class C networks into 1 large single network</strong> (e.g. combining two /24 networks into a /23 network).
-          </p>
-        </div>
-
-        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#3B82F6; margin-bottom:8px;">Why Routers Love Supernetting:</h4>
-        <ul style="margin:0 0 14px 0; padding-left:18px; color:#F5F5F5;">
-          <li><strong>Smaller Routing Tables:</strong> Routers only need 1 single routing table entry instead of 16 separate entries!</li>
-          <li><strong>Faster Packet Lookup:</strong> Less memory search time per packet, speeding up global internet routing.</li>
-        </ul>
-
-        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#10B981; margin-bottom:8px;">Supernetting Eligibility Rules:</h4>
-        <ol style="margin:0 0 16px 0; padding-left:18px; color:#F5F5F5;">
-          <li>All networks to be combined must be <strong>contiguous</strong> (adjacent).</li>
-          <li>The number of networks MUST be a power of 2 (2, 4, 8, 16...).</li>
-          <li>The 1st Network ID must be divisible by the total supernet size.</li>
-        </ol>
-
-        <!-- Solved GATE Problem -->
-        <div style="background:#0F1115; border:1px solid #F59E0B; padding:14px; border-radius:8px;">
-          <span style="font-size:10px; font-weight:700; color:#F59E0B; text-transform:uppercase;">Solved GATE Standard Problem</span>
-          <h4 style="font-family:'Outfit', sans-serif; font-size:13px; font-weight:700; color:#F5F5F5; margin:4px 0 8px 0;">
-            Question: Can we combine four Class C networks with Network IDs 200.10.0.0, 200.10.1.0, 200.10.2.0, 200.10.3.0 into a single supernet?
-          </h4>
-          <div style="background:rgba(16,185,129,0.1); border-left:3px solid #10B981; padding:8px 10px; border-radius:4px; font-size:12px;">
-            <strong style="color:#10B981;">Yes, Absolutely!</strong><br>
-            1. <strong>Count = 4</strong> (Valid power of 2: 2<sup>2</sup>).<br>
-            2. <strong>Contiguous:</strong> 0, 1, 2, 3 are sequential.<br>
-            3. <strong>First Net ID (200.10.0.0):</strong> 0 % 4 == 0 (Divisible!).<br>
-            &bull; <strong>Resulting Supernet Mask:</strong> <code>255.255.252.0</code> (or <code>200.10.0.0 / 22</code>).
-          </div>
-        </div>
-
-      </div>
-    `
+  'coa': {
+    title: 'Computer Organization & Architecture',
+    icon: 'HardDrive',
+    chapters: [
+      {
+        name: 'Processor & Datapath',
+        topics: [
+          { id: 'coa_number_sys', title: 'IEEE 754 Floating Point Representation', diff: 'Medium', time: '20 min' },
+          { id: 'coa_pipelining', title: 'Instruction Pipelining & Speedup Hazards', diff: 'Hard', time: '30 min' }
+        ]
+      },
+      {
+        name: 'Memory Hierarchy & I/O',
+        topics: [
+          { id: 'coa_cache', title: 'Cache Memory Mapping (Direct, Set-Associative)', diff: 'Hard', time: '28 min' },
+          { id: 'coa_dma', title: 'I/O Interface, Interrupts & DMA Controller', diff: 'Medium', time: '18 min' }
+        ]
+      }
+    ]
   },
-
-  'ip_classes': {
-    title: '1.1 IP Addressing Classes & Range Formulas',
-    html: `
-      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
-        <p style="color:#F5F5F5; margin-bottom:12px;">
-          IPv4 addresses are 32-bit binary integers divided into 4 octets (8 bits each). Classful addressing categorizes addresses by inspecting the leading binary bits of the 1st octet.
-        </p>
-
-        <div style="background:#0F1115; border:1px solid #23262D; border-radius:6px; padding:12px; font-family:monospace; font-size:12px; margin-bottom:14px;">
-          <div style="color:#3B82F6;">Class A: Starts with 0 &rarr; Decimal 1 to 126 &bull; (2<sup>31</sup> total IPs)</div>
-          <div style="color:#3B82F6;">Class B: Starts with 10 &rarr; Decimal 128 to 191 &bull; (2<sup>30</sup> total IPs)</div>
-          <div style="color:#3B82F6;">Class C: Starts with 110 &rarr; Decimal 192 to 223 &bull; (2<sup>29</sup> total IPs)</div>
-          <div style="color:#8B5CF6;">Class D: Starts with 1110 &rarr; Decimal 224 to 239 &bull; Multicast</div>
-          <div style="color:#F59E0B;">Class E: Starts with 1111 &rarr; Decimal 240 to 255 &bull; Experimental</div>
-        </div>
-
-        <div style="background:rgba(59,130,246,0.1); border-left:3px solid #3B82F6; padding:8px 12px; border-radius:4px; font-size:12px;">
-          <strong>Exam Shortcut:</strong> Why isn't 127 in Class A? <code style="color:#10B981;">127.0.0.0 /8</code> is reserved for Loopback testing!
-        </div>
-      </div>
-    `
+  'toc': {
+    title: 'Theory of Computation',
+    icon: 'Layers',
+    chapters: [
+      {
+        name: 'Automata & Regular Languages',
+        topics: [
+          { id: 'toc_dfa_nfa', title: 'DFA, NFA Construction & Minimization', diff: 'Medium', time: '22 min' },
+          { id: 'toc_regex', title: 'Regular Expressions & Pumping Lemma', diff: 'Hard', time: '25 min' }
+        ]
+      },
+      {
+        name: 'Grammars & Decidability',
+        topics: [
+          { id: 'toc_cfg_pda', title: 'Context-Free Grammars & Pushdown Automata', diff: 'Hard', time: '25 min' },
+          { id: 'toc_turing', title: 'Turing Machines & Undecidability (Halting Problem)', diff: 'Hard', time: '30 min' }
+        ]
+      }
+    ]
   },
-
-  'subnet_masks': {
-    title: '1.2 Subnet Masking Mechanics',
-    html: `
-      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
-        <p style="color:#F5F5F5; margin-bottom:12px;">
-          A Subnet Mask is a 32-bit mask used by routers to separate the <strong>Network ID (1's)</strong> from the <strong>Host ID (0's)</strong> via a bitwise AND operation (<code>IP & Mask = Network_ID</code>).
-        </p>
-
-        <div style="background:#0F1115; border:1px solid #23262D; border-radius:6px; padding:12px; font-family:monospace; font-size:12px;">
-          Class A Default: 255.0.0.0 &rarr; /8<br>
-          Class B Default: 255.255.0.0 &rarr; /16<br>
-          Class C Default: 255.255.255.0 &rarr; /24
-        </div>
-      </div>
-    `
+  'cd': {
+    title: 'Compiler Design',
+    icon: 'Terminal',
+    chapters: [
+      {
+        name: 'Phases of Compiler',
+        topics: [
+          { id: 'cd_lexical', title: 'Lexical Analysis & Tokenization', diff: 'Easy', time: '15 min' },
+          { id: 'cd_parsing', title: 'Syntax Analysis (LL(1) & LR Parsing)', diff: 'Hard', time: '30 min' },
+          { id: 'cd_sdt', title: 'Syntax-Directed Translation (SDT)', diff: 'Medium', time: '20 min' },
+          { id: 'cd_opt', title: 'Code Optimization & Register Allocation', diff: 'Medium', time: '20 min' }
+        ]
+      }
+    ]
   },
-
-  'private_ip': {
-    title: '1.3 Private IP Address Ranges',
-    html: `
-      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
-        <p style="color:#F5F5F5; margin-bottom:12px;">
-          Private IP addresses are non-routable on the public Internet (used inside home/office LANs and translated via NAT to 1 public IP).
-        </p>
-        <ul style="margin:0; padding-left:18px; color:#F5F5F5; font-family:monospace; font-size:12px;">
-          <li>10.0.0.0 &ndash; 10.255.255.255 (Class A: /8)</li>
-          <li>172.16.0.0 &ndash; 172.31.255.255 (Class B: /12)</li>
-          <li>192.168.0.0 &ndash; 192.168.255.255 (Class C: /16)</li>
-        </ul>
-      </div>
-    `
-  },
-
-  'comm_modes': {
-    title: '1.4 – 1.7 Communication Modes',
-    html: `
-      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
-        <div style="display:flex; flex-direction:column; gap:10px;">
-          <div style="background:#0F1115; border-left:3px solid #3B82F6; padding:10px; border-radius:4px;">
-            <strong style="color:#F5F5F5;">Unicast (1 to 1):</strong> Transmits packets to 1 specific destination.
-          </div>
-          <div style="background:#0F1115; border-left:3px solid #10B981; padding:10px; border-radius:4px;">
-            <strong style="color:#F5F5F5;">Broadcast (1 to All):</strong><br>
-            &bull; Limited Broadcast: 255.255.255.255 (Stays strictly inside current LAN).<br>
-            &bull; Direct Broadcast: Host bits = All 1's (Reaches all hosts on a remote destination subnet).
-          </div>
-          <div style="background:#0F1115; border-left:3px solid #8B5CF6; padding:10px; border-radius:4px;">
-            <strong style="color:#F5F5F5;">Multicast (1 to Group):</strong> Class D addresses (224.0.0.0/4) delivering packets to subscribed group members only.
-          </div>
-        </div>
-      </div>
-    `
+  'dl': {
+    title: 'Digital Logic',
+    icon: 'Zap',
+    chapters: [
+      {
+        name: 'Combinational & Sequential Circuits',
+        topics: [
+          { id: 'dl_boolean', title: 'Boolean Algebra & K-Map Minimization', diff: 'Easy', time: '15 min' },
+          { id: 'dl_combinational', title: 'Multiplexers, Decoders & Adders', diff: 'Medium', time: '20 min' },
+          { id: 'dl_flipflops', title: 'Flip-Flops, Counters & Registers', diff: 'Medium', time: '22 min' }
+        ]
+      }
+    ]
   }
 };
 
-const CN_TOPIC_CONTENTS = {
-  'cn_1': `
-    <div style="font-family:'Inter', system-ui, sans-serif; color: #E5E7EB; font-size: 13px; line-height: 1.6; max-width: 860px; margin: 0 auto;">
-
-      <!-- 1.1 IP Addressing & Classes -->
-      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('ip_classes')">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 6px; margin-bottom: 12px;">
-          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
-            1.1 &bull; IP Addressing Classes
-          </h2>
-          <span style="font-size:11px; color:#3B82F6; font-weight:600;">Click for Deep Dive ➔</span>
-        </div>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin-bottom: 14px;">
-          <div style="background:#0F1115; border-left: 3px solid #3B82F6; padding: 10px 12px; border-radius: 4px;">
-            <div style="font-weight:700; color:#F5F5F5;">Class A</div>
-            <div style="font-size:12px; color:#9CA3AF;">Prefix: <code style="color:#3B82F6;">0</code> &bull; Range: <code>1 &ndash; 126</code></div>
-            <div style="font-size:11px; color:#10B981; margin-top:2px;">Total IPs = 2<sup>31</sup></div>
+// Rich Learning Material Repository for Core Topics
+const RICH_TOPIC_CONTENTS = {
+  'cn_osi_intro': {
+    title: 'OSI 7 Layer Model & Encapsulation',
+    subject: 'Computer Networks',
+    diff: 'Easy',
+    time: '15 min',
+    prereq: 'Basic Understanding of Data Transmission & Networks',
+    intro: 'The Open Systems Interconnection (OSI) model is a conceptual framework created by ISO in 1984. It characterizes and standardizes the communication functions of a telecommunication or computing system into 7 distinct layers.',
+    sections: [
+      {
+        heading: '1. The 7 OSI Layers & PDU Data Units',
+        text: `
+          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:14px; margin-bottom:14px;">
+            <table style="width:100%; border-collapse:collapse; font-size:12px; text-align:left;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border-color); color:var(--accent-primary);">
+                  <th style="padding:6px;">Layer #</th>
+                  <th style="padding:6px;">Layer Name</th>
+                  <th style="padding:6px;">PDU (Data Unit)</th>
+                  <th style="padding:6px;">Primary Addressing / Hardware</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#EF4444;">Layer 7</td>
+                  <td style="padding:6px;">Application</td>
+                  <td style="padding:6px;">Data / Message</td>
+                  <td style="padding:6px;">HTTP, DNS, FTP, SMTP (User Services)</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#F59E0B;">Layer 6</td>
+                  <td style="padding:6px;">Presentation</td>
+                  <td style="padding:6px;">Data</td>
+                  <td style="padding:6px;">SSL/TLS, Encryption, Data Compression</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#F59E0B;">Layer 5</td>
+                  <td style="padding:6px;">Session</td>
+                  <td style="padding:6px;">Data</td>
+                  <td style="padding:6px;">RPC, Session Checkpoints, Sockets</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#3B82F6;">Layer 4</td>
+                  <td style="padding:6px;">Transport</td>
+                  <td style="padding:6px;">Segment (TCP) / Datagram (UDP)</td>
+                  <td style="padding:6px;">Port Numbers (0 - 65535), End-to-End Reliability</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#3B82F6;">Layer 3</td>
+                  <td style="padding:6px;">Network</td>
+                  <td style="padding:6px;">Packet</td>
+                  <td style="padding:6px;">IP Address (IPv4/v6), Routers</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#10B981;">Layer 2</td>
+                  <td style="padding:6px;">Data Link</td>
+                  <td style="padding:6px;">Frame</td>
+                  <td style="padding:6px;">MAC Address (48-bit), Switches, CRC Header</td>
+                </tr>
+                <tr>
+                  <td style="padding:6px; font-weight:700; color:#10B981;">Layer 1</td>
+                  <td style="padding:6px;">Physical</td>
+                  <td style="padding:6px;">Bits (0/1)</td>
+                  <td style="padding:6px;">Hubs, Cables, Fiber Optics, Modulation</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+        `
+      },
+      {
+        heading: '2. Visual Diagram: Data Encapsulation Header Stack',
+        text: `
+          <div style="background:#000000; border:1px solid var(--border-color); border-radius:8px; padding:16px; margin-bottom:14px; text-align:center;">
+            <svg width="100%" height="160" viewBox="0 0 540 160" style="max-width:540px;">
+              <!-- Application Data -->
+              <rect x="20" y="20" width="100" height="36" rx="4" fill="#16181D" stroke="#EF4444" stroke-width="1.5" />
+              <text x="70" y="42" fill="#F5F5F5" font-size="11" font-weight="700" text-anchor="middle">Data</text>
 
-          <div style="background:#0F1115; border-left: 3px solid #3B82F6; padding: 10px 12px; border-radius: 4px;">
-            <div style="font-weight:700; color:#F5F5F5;">Class B</div>
-            <div style="font-size:12px; color:#9CA3AF;">Prefix: <code style="color:#3B82F6;">10</code> &bull; Range: <code>128 &ndash; 191</code></div>
-            <div style="font-size:11px; color:#10B981; margin-top:2px;">Total IPs = 2<sup>30</sup></div>
+              <!-- Transport Header -->
+              <rect x="140" y="20" width="40" height="36" rx="4" fill="rgba(59,130,246,0.2)" stroke="#3B82F6" stroke-width="1.5" />
+              <text x="160" y="42" fill="#3B82F6" font-size="10" font-weight="700" text-anchor="middle">TH</text>
+              <rect x="180" y="20" width="80" height="36" rx="4" fill="#16181D" stroke="#3B82F6" stroke-width="1.5" />
+              <text x="220" y="42" fill="#F5F5F5" font-size="11" font-weight="700" text-anchor="middle">Data</text>
+
+              <!-- Network Header -->
+              <rect x="280" y="20" width="30" height="36" rx="4" fill="rgba(16,185,129,0.2)" stroke="#10B981" stroke-width="1.5" />
+              <text x="295" y="42" fill="#10B981" font-size="9" font-weight="700" text-anchor="middle">NH</text>
+              <rect x="310" y="20" width="30" height="36" rx="4" fill="rgba(59,130,246,0.2)" stroke="#3B82F6" stroke-width="1.5" />
+              <text x="325" y="42" fill="#3B82F6" font-size="9" font-weight="700" text-anchor="middle">TH</text>
+              <rect x="340" y="20" width="60" height="36" rx="4" fill="#16181D" stroke="#10B981" stroke-width="1.5" />
+              <text x="370" y="42" fill="#F5F5F5" font-size="11" font-weight="700" text-anchor="middle">Data</text>
+
+              <!-- Flow Arrows -->
+              <path d="M 125 38 L 135 38" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrow)" />
+              <path d="M 265 38 L 275 38" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrow)" />
+
+              <!-- Labels -->
+              <text x="70" y="75" fill="#9CA3AF" font-size="10" text-anchor="middle">Layer 7-5 Data</text>
+              <text x="200" y="75" fill="#9CA3AF" font-size="10" text-anchor="middle">Layer 4 Segment</text>
+              <text x="345" y="75" fill="#9CA3AF" font-size="10" text-anchor="middle">Layer 3 Packet</text>
+            </svg>
           </div>
-
-          <div style="background:#0F1115; border-left: 3px solid #3B82F6; padding: 10px 12px; border-radius: 4px;">
-            <div style="font-weight:700; color:#F5F5F5;">Class C</div>
-            <div style="font-size:12px; color:#9CA3AF;">Prefix: <code style="color:#3B82F6;">110</code> &bull; Range: <code>192 &ndash; 223</code></div>
-            <div style="font-size:11px; color:#10B981; margin-top:2px;">Total IPs = 2<sup>29</sup></div>
+        `
+      },
+      {
+        heading: '3. Key Formulas & Memory Trick Mnemonic',
+        text: `
+          <div style="background:var(--bg-surface-hover); border-left:4px solid var(--accent-primary); border-radius:6px; padding:12px 16px; margin-bottom:14px;">
+            <div style="font-size:12px; font-weight:700; color:var(--accent-primary); margin-bottom:4px;">Mnemonic Trick to Remember OSI 7 Layers (Top to Bottom):</div>
+            <div style="font-size:13px; font-weight:600; color:var(--text-main);">"<strong>A</strong>ll <strong>P</strong>eople <strong>S</strong>eem <strong>T</strong>o <strong>N</strong>eed <strong>D</strong>ata <strong>P</strong>rocessing"</div>
+            <div style="font-size:11px; color:var(--text-sub); margin-top:4px;">Application &bull; Presentation &bull; Session &bull; Transport &bull; Network &bull; Data Link &bull; Physical</div>
           </div>
-
-          <div style="background:#0F1115; border-left: 3px solid #8B5CF6; padding: 10px 12px; border-radius: 4px;">
-            <div style="font-weight:700; color:#F5F5F5;">Class D (Multicast)</div>
-            <div style="font-size:12px; color:#9CA3AF;">Prefix: <code style="color:#8B5CF6;">1110</code> &bull; Range: <code>224 &ndash; 239</code></div>
-            <div style="font-size:11px; color:#10B981; margin-top:2px;">Total IPs = 2<sup>28</sup></div>
+        `
+      },
+      {
+        heading: '4. Common GATE Pitfalls & Exam Traps',
+        text: `
+          <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.3); border-radius:6px; padding:12px 14px; margin-bottom:14px; font-size:12px; color:var(--text-main);">
+            <strong style="color:#EF4444;">GATE Exam Trap:</strong> A router operates at <strong>Layer 3 (Network Layer)</strong> and checks IP addresses, but it MUST also implement Layer 1 and Layer 2 to physically receive and parse the frame MAC headers!
           </div>
+        `
+      }
+    ],
+    summary: 'The OSI model standardizes networking into 7 layers. Data encapsulation travels top-down (Layer 7 ➔ Layer 1) adding headers at each layer, and decapsulation travels bottom-up (Layer 1 ➔ Layer 7) removing headers.',
+    pyqs: [
+      { year: '2024', q: 'In the OSI model, encryption and decryption are functions of which layer?', opt: ['Transport Layer', 'Presentation Layer', 'Session Layer', 'Application Layer'], ans: 1, explanation: 'Presentation Layer (Layer 6) handles syntax representation, encryption/decryption (SSL/TLS), and data compression.' }
+    ]
+  },
 
-          <div style="background:#0F1115; border-left: 3px solid #F59E0B; padding: 10px 12px; border-radius: 4px;">
-            <div style="font-weight:700; color:#F5F5F5;">Class E (Experimental)</div>
-            <div style="font-size:12px; color:#9CA3AF;">Prefix: <code style="color:#F59E0B;">1111</code> &bull; Range: <code>240 &ndash; 255</code></div>
-            <div style="font-size:11px; color:#10B981; margin-top:2px;">Total IPs = 2<sup>28</sup></div>
+  'dbms_normalization': {
+    title: 'Normalization (1NF, 2NF, 3NF, BCNF)',
+    subject: 'Database Management Systems',
+    diff: 'Hard',
+    time: '30 min',
+    prereq: 'Functional Dependencies & Candidate Key Closures',
+    intro: 'Normalization is the systematic approach of decomposing tables to eliminate data redundancy (Insertion, Deletion, and Update Anomalies) while ensuring Lossless Join and Dependency Preservation.',
+    sections: [
+      {
+        heading: '1. Normal Form Hierarchy Rules',
+        text: `
+          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:14px; margin-bottom:14px;">
+            <table style="width:100%; border-collapse:collapse; font-size:12px; text-align:left;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border-color); color:var(--accent-primary);">
+                  <th style="padding:6px;">Normal Form</th>
+                  <th style="padding:6px;">Condition for Functional Dependency X ➔ Y</th>
+                  <th style="padding:6px;">Eliminates</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#F5F5F5;">1NF</td>
+                  <td style="padding:6px;">All attributes contain atomic values (no composite/multi-valued attributes)</td>
+                  <td style="padding:6px;">Repeating groups</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#F5F5F5;">2NF</td>
+                  <td style="padding:6px;">Must be in 1NF + No Partial Dependency (Non-prime attribute dependent on part of candidate key)</td>
+                  <td style="padding:6px;">Partial dependencies</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <td style="padding:6px; font-weight:700; color:#10B981;">3NF</td>
+                  <td style="padding:6px;">Must be in 2NF + For every X ➔ Y, either <strong>X is a Super Key</strong> OR <strong>Y is a Prime Attribute</strong></td>
+                  <td style="padding:6px;">Transitive dependencies</td>
+                </tr>
+                <tr>
+                  <td style="padding:6px; font-weight:700; color:#3B82F6;">BCNF</td>
+                  <td style="padding:6px;">For every non-trivial FD X ➔ Y, <strong>X MUST be a Super Key</strong></td>
+                  <td style="padding:6px;">All functional dependency anomalies</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </div>
-      </div>
-
-      <!-- 1.2 & 1.3 Subnet Masks & Private Ranges -->
-      <div style="margin-bottom: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
-        <div style="cursor:pointer;" onclick="openConceptExplanationModal('subnet_masks')">
-          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-            <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
-              1.2 &bull; Default Subnet Masks
-            </h2>
-            <span style="font-size:10px; color:#3B82F6;">Click ➔</span>
+        `
+      },
+      {
+        heading: '2. BCNF vs 3NF Tradeoff Rule',
+        text: `
+          <div style="background:var(--bg-surface-hover); border-left:4px solid #F59E0B; border-radius:6px; padding:12px 14px; margin-bottom:14px; font-size:12px;">
+            <strong style="color:#F59E0B;">Golden Rule for GATE:</strong><br>
+            - Any relation can always be decomposed into <strong>3NF</strong> preserving both Lossless Join AND Dependency Preservation.<br>
+            - Decomposing into <strong>BCNF</strong> guarantees Lossless Join, but might NOT preserve Dependency Preservation!
           </div>
-          <div style="background:#0F1115; padding:12px; border-radius:6px; font-family:monospace; font-size:12px;">
-            <div style="margin-bottom:4px;">Class A &rarr; <span style="color:#10B981; font-weight:700;">255.0.0.0</span></div>
-            <div style="margin-bottom:4px;">Class B &rarr; <span style="color:#10B981; font-weight:700;">255.255.0.0</span></div>
-            <div>Class C &rarr; <span style="color:#10B981; font-weight:700;">255.255.255.0</span></div>
-          </div>
-        </div>
-
-        <div style="cursor:pointer;" onclick="openConceptExplanationModal('private_ip')">
-          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-            <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
-              1.3 &bull; Private Address Ranges
-            </h2>
-            <span style="font-size:10px; color:#3B82F6;">Click ➔</span>
-          </div>
-          <div style="background:#0F1115; padding:12px; border-radius:6px; font-size:12px;">
-            <div style="margin-bottom:4px;"><code style="color:#3B82F6;">10.0.0.0 &ndash; 10.255.255.255</code> &bull; 1 Class A</div>
-            <div style="margin-bottom:4px;"><code style="color:#3B82F6;">172.16.0.0 &ndash; 172.31.255.255</code> &bull; 16 Class B</div>
-            <div><code style="color:#3B82F6;">192.168.0.0 &ndash; 192.168.255.255</code> &bull; 256 Class C</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Class Breakdown Table -->
-      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('ip_classes')">
-        <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-          Network vs Host Capacity Breakdown
-        </h2>
-        
-        <table style="width:100%; border-collapse:collapse; font-size:12px; background:#0F1115; border-radius:6px; overflow:hidden;">
-          <thead>
-            <tr style="background:#161920; color:#F5F5F5; border-bottom:1px solid #23262D; text-align:left;">
-              <th style="padding:10px 14px;">Class</th>
-              <th style="padding:10px 14px;">Number of Networks</th>
-              <th style="padding:10px 14px;">Number of Hosts per Network</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Class A</td>
-              <td style="padding:10px 14px;">2<sup>7</sup> &ndash; 2 = <strong>126</strong></td>
-              <td style="padding:10px 14px;">2<sup>24</sup> &ndash; 2 = <strong>1,67,77,214 hosts</strong></td>
-            </tr>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Class B</td>
-              <td style="padding:10px 14px;">2<sup>14</sup> = <strong>16,384</strong></td>
-              <td style="padding:10px 14px;">2<sup>16</sup> &ndash; 2 = <strong>65,534 hosts</strong></td>
-            </tr>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Class C</td>
-              <td style="padding:10px 14px;">2<sup>21</sup> = <strong>20,97,152</strong></td>
-              <td style="padding:10px 14px;">2<sup>8</sup> &ndash; 2 = <strong>254 hosts</strong></td>
-            </tr>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Class D</td>
-              <td style="padding:10px 14px;" colspan="2" style="color:#9CA3AF;">No NID and HID. All 28 remaining bits define multicast address.</td>
-            </tr>
-            <tr>
-              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Class E</td>
-              <td style="padding:10px 14px;" colspan="2" style="color:#9CA3AF;">No NID and HID. Reserved for research and future purposes.</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div style="background:rgba(59,130,246,0.08); border-left:3px solid #3B82F6; padding:8px 12px; margin-top:10px; border-radius:4px; font-size:12px; color:#D1D5DB;">
-          <strong>Important Note:</strong> <code style="color:#10B981;">127.x.y.z</code> is reserved as the <strong>Loopback Address</strong> to check internal TCP/IP software stack connectivity.
-        </div>
-      </div>
-
-      <!-- 1.4 – 1.7 Communication Modes -->
-      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('comm_modes')">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
-            1.4 – 1.7 &bull; Communication Modes & Bit Mapping
-          </h2>
-          <span style="font-size:11px; color:#3B82F6; font-weight:600;">Click for Explanation ➔</span>
-        </div>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:10px; margin-bottom:14px;">
-          <div style="background:#0F1115; padding:12px; border-radius:6px;">
-            <div style="font-weight:700; color:#F5F5F5; margin-bottom:4px;">Unicast (1 : 1)</div>
-            <p style="font-size:11.5px; color:#9CA3AF; margin:0;">Transmitting data from one computer directly to another. Source and destination can be in the same or different network.</p>
-          </div>
-
-          <div style="background:#0F1115; padding:12px; border-radius:6px;">
-            <div style="font-weight:700; color:#F5F5F5; margin-bottom:4px;">Broadcast (1 : All)</div>
-            <p style="font-size:11.5px; color:#9CA3AF; margin:0;">
-              &bull; <strong>Limited Broadcast:</strong> Same network (<code style="color:#10B981;">255.255.255.255</code>).<br>
-              &bull; <strong>Direct Broadcast:</strong> Target network (Host ID set to all 1's).
-            </p>
-          </div>
-
-          <div style="background:#0F1115; padding:12px; border-radius:6px;">
-            <div style="font-weight:700; color:#F5F5F5; margin-bottom:4px;">Multicast (1 : Many)</div>
-            <p style="font-size:11.5px; color:#9CA3AF; margin:0;">Transmitting a packet to a specific group of zero or more subscribers simultaneously.</p>
-          </div>
-        </div>
-
-        <!-- Bit rules summary -->
-        <table style="width:100%; border-collapse:collapse; font-size:12px; background:#0F1115; border-radius:6px; overflow:hidden;">
-          <thead>
-            <tr style="background:#161920; color:#F5F5F5; border-bottom:1px solid #23262D; text-align:left;">
-              <th style="padding:8px 12px;">Network ID (NID)</th>
-              <th style="padding:8px 12px;">Host ID (HID)</th>
-              <th style="padding:8px 12px;">Address Meaning</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid #23262D;"><td style="padding:8px 12px;">Given Bits</td><td style="padding:8px 12px;">All 0's</td><td style="padding:8px 12px; color:#3B82F6; font-weight:700;">Network ID (NID)</td></tr>
-            <tr style="border-bottom:1px solid #23262D;"><td style="padding:8px 12px;">Given Bits</td><td style="padding:8px 12px;">All 1's</td><td style="padding:8px 12px; color:#10B981; font-weight:700;">Direct Broadcast Address (DBA)</td></tr>
-            <tr style="border-bottom:1px solid #23262D;"><td style="padding:8px 12px;">All 1's</td><td style="padding:8px 12px;">All 1's</td><td style="padding:8px 12px; color:#F59E0B; font-weight:700;">Limited Broadcast Address (LBA)</td></tr>
-            <tr style="border-bottom:1px solid #23262D;"><td style="padding:8px 12px;">All 0's</td><td style="padding:8px 12px;">Given Bits</td><td style="padding:8px 12px;">Specific Host within Network</td></tr>
-            <tr><td style="padding:8px 12px;">All 1's</td><td style="padding:8px 12px;">All 0's</td><td style="padding:8px 12px;">Network Mask / Subnet Mask</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- 1.8 CIDR Rules Block (Clickable!) -->
-      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('cidr')">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
-            1.8 &bull; CIDR Allocation Rules
-          </h2>
-          <span style="font-size:11px; background:#3B82F6; color:#FFF; font-weight:700; padding:2px 8px; border-radius:4px;">Click for Simplified GATE Example ➔</span>
-        </div>
-
-        <div style="background:#0F1115; border-left: 3px solid #10B981; padding: 12px 14px; border-radius: 4px; transition:all 0.15s;">
-          <ol style="margin: 0; padding-left: 18px; font-size: 12.5px; color: #F5F5F5; line-height: 1.7;">
-            <li><strong>Contiguous Block:</strong> All IP addresses in the block must be continuous without gaps.</li>
-            <li><strong>Power of 2:</strong> Block size must equal 2<sup>N</sup>.</li>
-            <li><strong>Divisibility Rule:</strong> The first IP address of the block must be exactly divisible by the block size.</li>
-          </ol>
-        </div>
-      </div>
-
-      <!-- 1.9 – 1.11 Supernetting Block (Clickable!) -->
-      <div style="cursor:pointer;" onclick="openConceptExplanationModal('supernetting')">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
-            1.9 – 1.11 &bull; Supernetting Concept & Rules
-          </h2>
-          <span style="font-size:11px; background:#F59E0B; color:#000; font-weight:700; padding:2px 8px; border-radius:4px;">Click for Simplified GATE Example ➔</span>
-        </div>
-        
-        <div style="margin-bottom: 12px; font-size: 12.5px;">
-          <strong>Supernetting Definition:</strong> The process of combining two or more contiguous smaller networks into a single larger network.
-        </div>
-
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:14px;">
-          <div style="background:#0F1115; padding:12px; border-radius:6px; border-top:2px solid #10B981;">
-            <div style="font-weight:700; color:#10B981; margin-bottom:6px;">Advantages of Supernetting</div>
-            <ul style="margin:0; padding-left:16px; font-size:11.5px; color:#D1D5DB; line-height:1.6;">
-              <li>Reduces routing table size and memory entries.</li>
-              <li>Routers process and forward packets significantly faster.</li>
-              <li>Flexibility in IP allocation (e.g. combine 2 Class C networks for 500 addresses without buying Class B).</li>
-            </ul>
-          </div>
-
-          <div style="background:#0F1115; padding:12px; border-radius:6px; border-top:2px solid #F59E0B;">
-            <div style="font-weight:700; color:#F59E0B; margin-bottom:6px;">Rules of Supernetting</div>
-            <ol style="margin:0; padding-left:16px; font-size:11.5px; color:#D1D5DB; line-height:1.6;">
-              <li>Network IDs must be contiguous.</li>
-              <li>All candidate networks must have identical sizes, and the count of networks must be a power of 2.</li>
-              <li>First Network ID must be divisible by the total supernet block size.</li>
-            </ol>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  `,
-
-  'cn_2': `
-    <div style="font-family:'Inter', system-ui, sans-serif; color: #E5E7EB; font-size: 13px; line-height: 1.6; max-width: 860px; margin: 0 auto;">
-
-      <!-- 2.1 Error Control Basics -->
-      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('error_basics')">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 6px; margin-bottom: 12px;">
-          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
-            2.1 &bull; Error Control Fundamentals
-          </h2>
-          <span style="font-size:11px; color:#3B82F6; font-weight:600;">Click for Explanation ➔</span>
-        </div>
-
-        <div style="background:rgba(59,130,246,0.08); border-left:3px solid #3B82F6; padding:10px 14px; border-radius:4px; margin-bottom:12px; font-size:12px;">
-          <strong>Core Formula:</strong> <code style="color:#10B981;">Number of Corrupted Bits = Data Rate &times; Noise Duration</code><br>
-          <span style="color:#9CA3AF;">&bull; Burst errors are more likely to occur than single-bit errors.<br>&bull; Error Correction is significantly more difficult than Error Detection.</span>
-        </div>
-
-        <!-- Detection vs Correction Table -->
-        <table style="width:100%; border-collapse:collapse; font-size:12px; background:#0F1115; border-radius:6px; overflow:hidden; margin-bottom:12px;">
-          <thead>
-            <tr style="background:#161920; color:#F5F5F5; border-bottom:1px solid #23262D; text-align:left;">
-              <th style="padding:8px 12px;">Feature</th>
-              <th style="padding:8px 12px;">Error Detection</th>
-              <th style="padding:8px 12px;">Error Correction</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:8px 12px; font-weight:700;">Action on Error</td>
-              <td style="padding:8px 12px; color:#EF4444;">Once noticed, simply discard packet &amp; ask for retransmission.</td>
-              <td style="padding:8px 12px; color:#10B981;">Capability to correct corrupted bits directly at receiver.</td>
-            </tr>
-            <tr>
-              <td style="padding:8px 12px; font-weight:700;">Retransmission</td>
-              <td style="padding:8px 12px;">Requires retransmission protocol (ARQ).</td>
-              <td style="padding:8px 12px;">Does NOT require retransmission.</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Techniques Breakdown Grid -->
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:10px;">
-          <div style="background:#0F1115; padding:10px; border-radius:6px; border-top:2px solid #3B82F6;">
-            <strong style="color:#3B82F6;">Error Detection Schemes:</strong>
-            <ul style="margin:4px 0 0 0; padding-left:16px; font-size:11.5px; color:#D1D5DB;">
-              <li>1. Simple Parity Check</li>
-              <li>2. 2D Parity Check</li>
-              <li>3. Checksum</li>
-              <li>4. Cyclic Redundancy Check (CRC)</li>
-            </ul>
-          </div>
-
-          <div style="background:#0F1115; padding:10px; border-radius:6px; border-top:2px solid #10B981;">
-            <strong style="color:#10B981;">Error Correction Schemes:</strong>
-            <ul style="margin:4px 0 0 0; padding-left:16px; font-size:11.5px; color:#D1D5DB;">
-              <li>1. Hamming Code</li>
-              <li>2. Forward Error Correction (FEC)</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2.1.1 – 2.1.4 Hamming Distance -->
-      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('hamming')">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 6px; margin-bottom: 12px;">
-          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
-            2.1.1 – 2.1.4 &bull; Hamming Distance &amp; Formulas
-          </h2>
-          <span style="font-size:11px; color:#3B82F6; font-weight:600;">Click for Solved GATE Examples ➔</span>
-        </div>
-
-        <p style="font-size:12px; color:#D1D5DB; margin-bottom:10px;">
-          The <strong>Hamming Distance d(x, y)</strong> between two binary strings of equal length is the count of differing bits (computed via XOR &oplus; and counting number of 1's).
-        </p>
-
-        <div style="background:#0F1115; border:1px solid #23262D; border-radius:6px; padding:10px; font-family:monospace; font-size:12px; margin-bottom:12px; display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:8px;">
-          <div>d(000, 011) = <strong style="color:#10B981;">2</strong></div>
-          <div>d(100, 011) = <strong style="color:#10B981;">3</strong></div>
-          <div>d(10101, 11110) = <strong style="color:#10B981;">3</strong></div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px;">
-          <div style="background:#0F1115; border-left:3px solid #10B981; padding:10px 12px; border-radius:4px;">
-            <strong style="color:#10B981;">To Detect 's' Errors:</strong>
-            <div style="font-size:13px; font-weight:700; color:#F5F5F5; margin-top:2px;">d<sub>min</sub> &ge; s + 1</div>
-            <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Smallest Hamming distance required to guarantee detection of up to s errors.</div>
-          </div>
-
-          <div style="background:#0F1115; border-left:3px solid #F59E0B; padding:10px 12px; border-radius:4px;">
-            <strong style="color:#F59E0B;">To Correct 't' Errors:</strong>
-            <div style="font-size:13px; font-weight:700; color:#F5F5F5; margin-top:2px;">d<sub>min</sub> &ge; 2t + 1</div>
-            <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Smallest Hamming distance required to guarantee correction of up to t errors.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2.2 Simple Parity & 2.3 2D Parity -->
-      <div style="margin-bottom: 24px; display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px;">
-        <div style="cursor:pointer;" onclick="openConceptExplanationModal('parity')">
-          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-            <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
-              2.2 &bull; Simple Parity Check
-            </h2>
-            <span style="font-size:10px; color:#3B82F6;">Click ➔</span>
-          </div>
-          <div style="background:#0F1115; padding:12px; border-radius:6px; font-size:12px;">
-            &bull; Adds 1 parity bit to dataword.<br>
-            &bull; <strong style="color:#10B981;">Detects ALL single-bit errors &amp; odd-number errors.</strong><br>
-            &bull; <strong style="color:#EF4444;">CANNOT detect even-number errors.</strong>
-          </div>
-        </div>
-
-        <div style="cursor:pointer;" onclick="openConceptExplanationModal('parity')">
-          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-            <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
-              2.3 &bull; 2D Parity Check
-            </h2>
-            <span style="font-size:10px; color:#3B82F6;">Click ➔</span>
-          </div>
-          <div style="background:#0F1115; padding:12px; border-radius:6px; font-size:12px;">
-            &bull; Bits organized in matrix (rows &amp; columns).<br>
-            &bull; <strong style="color:#10B981;">Detects &amp; corrects ALL single-bit errors.</strong><br>
-            &bull; Detects 2-bit or 3-bit errors anywhere in matrix.
-          </div>
-        </div>
-      </div>
-
-      <!-- 2.4 Cyclic Redundancy Check (CRC) -->
-      <div style="cursor:pointer;" onclick="openConceptExplanationModal('crc')">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
-            2.4 &bull; Cyclic Redundancy Check (CRC)
-          </h2>
-          <span style="font-size:11px; background:#3B82F6; color:#FFF; font-weight:700; padding:2px 8px; border-radius:4px;">Click for Solved Modulo-2 Division ➔</span>
-        </div>
-
-        <div style="background:#0F1115; border-left:3px solid #3B82F6; padding:12px 14px; border-radius:4px;">
-          <div style="font-size:12.5px; line-height:1.7;">
-            1. <strong>Dataword Length = n</strong>, <strong>Divisor Generator Length = k</strong>.<br>
-            2. Append <strong>(k &ndash; 1) zeros</strong> to original dataword.<br>
-            3. Perform <strong>Modulo-2 Binary Division (XOR)</strong>.<br>
-            4. <strong>Remainder = CRC</strong> (size = k &ndash; 1 bits).<br>
-            5. <strong>Codeword Sent = Dataword + CRC Remainder</strong>.
-          </div>
-        </div>
-      </div>
-
-    </div>
-  `,
-
-  'cn_3': `
-    <div style="font-family:'Inter', system-ui, sans-serif; color: #E5E7EB; font-size: 13px; line-height: 1.6; max-width: 860px; margin: 0 auto;">
-
-      <!-- 3.1 – 3.3 Delays in Computer Networks -->
-      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('flow_delays')">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 6px; margin-bottom: 12px;">
-          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
-            3.1 – 3.3 &bull; Delays in Computer Networks
-          </h2>
-          <span style="font-size:11px; color:#3B82F6; font-weight:600;">Click for Solved GATE Examples ➔</span>
-        </div>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:10px; margin-bottom:12px;">
-          <div style="background:#0F1115; border-left:3px solid #3B82F6; padding:10px 12px; border-radius:4px;">
-            <strong style="color:#F5F5F5;">Transmission Delay (T<sub>d</sub>)</strong>
-            <div style="font-family:monospace; font-size:12px; color:#10B981; margin-top:2px;">T<sub>d</sub> = L / B</div>
-            <div style="font-size:11px; color:#9CA3AF;">Time to put bits onto link (Length / Bandwidth)</div>
-          </div>
-
-          <div style="background:#0F1115; border-left:3px solid #10B981; padding:10px 12px; border-radius:4px;">
-            <strong style="color:#F5F5F5;">Propagation Delay (P<sub>d</sub>)</strong>
-            <div style="font-family:monospace; font-size:12px; color:#10B981; margin-top:2px;">P<sub>d</sub> = d / v</div>
-            <div style="font-size:11px; color:#9CA3AF;">Time to travel medium (Distance / Velocity)</div>
-          </div>
-
-          <div style="background:#0F1115; border-left:3px solid #F59E0B; padding:10px 12px; border-radius:4px;">
-            <strong style="color:#F5F5F5;">Queuing Delay (Q<sub>d</sub>)</strong>
-            <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Time spent waiting in router buffer queues</div>
-          </div>
-
-          <div style="background:#0F1115; border-left:3px solid #8B5CF6; padding:10px 12px; border-radius:4px;">
-            <strong style="color:#F5F5F5;">Processing Delay (P<sub>rd</sub>)</strong>
-            <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Time router takes to inspect frame headers</div>
-          </div>
-        </div>
-
-        <div style="background:rgba(59,130,246,0.08); border-left:3px solid #3B82F6; padding:8px 12px; border-radius:4px; font-size:12px;">
-          <strong>Total Round-Trip Delay Formula:</strong> <code>Total Time = T<sub>d</sub> + 2&bull;P<sub>d</sub> + Q<sub>d</sub> + P<sub>rd</sub> + T<sub>ACK</sub></code>
-        </div>
-      </div>
-
-      <!-- 3.4 – 3.6 Stop-and-Wait Protocol -->
-      <div style="margin-bottom: 24px;">
-        <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-          3.4 – 3.6 &bull; Stop-and-Wait ARQ & Efficiency
-        </h2>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
-          <div style="background:#0F1115; padding:12px; border-radius:6px; border-top:2px solid #3B82F6;">
-            <strong style="color:#3B82F6;">Sender &amp; Receiver Rules:</strong>
-            <ul style="margin:4px 0 0 0; padding-left:16px; font-size:11.5px; color:#D1D5DB;">
-              <li>Sender transmits 1 frame and waits for ACK.</li>
-              <li>Receiver consumes frame and sends ACK.</li>
-              <li>Sender window size <strong>W<sub>s</sub> = 1</strong>, Receiver window size <strong>W<sub>r</sub> = 1</strong>.</li>
-            </ul>
-          </div>
-
-          <div style="background:#0F1115; padding:12px; border-radius:6px; border-top:2px solid #10B981;">
-            <strong style="color:#10B981;">Efficiency &amp; Throughput Formulas:</strong>
-            <div style="font-family:monospace; font-size:12px; margin-top:4px; color:#F5F5F5;">
-              Efficiency &eta; = T<sub>d</sub> / (T<sub>d</sub> + 2P<sub>d</sub>) = 1 / (1 + 2a)<br>
-              where a = P<sub>d</sub> / T<sub>d</sub><br><br>
-              Throughput = &eta; &times; Bandwidth = L / Total_Time
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3.7 Go-Back-N & 3.8 Selective Repeat -->
-      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('gbn_sr_compare')">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
-            3.7 &bull; Go-Back-N (GBN) vs 3.8 &bull; Selective Repeat (SR)
-          </h2>
-          <span style="font-size:11px; background:#3B82F6; color:#FFF; font-weight:700; padding:2px 8px; border-radius:4px;">Click for Deep Comparison ➔</span>
-        </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
-          <div style="background:#0F1115; border-left:3px solid #EF4444; padding:12px; border-radius:6px;">
-            <strong style="color:#EF4444;">Go-Back-N (GBN):</strong>
-            <ul style="margin:4px 0 0 0; padding-left:16px; font-size:11.5px; color:#D1D5DB;">
-              <li>Sender Window <strong>W<sub>s</sub> = N</strong>, Receiver Window <strong>W<sub>r</sub> = 1</strong>.</li>
-              <li>Out-of-order frames <strong>discarded completely</strong>.</li>
-              <li>Uses <strong>Cumulative ACKs</strong>. Single timer for 1st frame.</li>
-              <li>Efficiency &eta; = N / (1 + 2a).</li>
-            </ul>
-          </div>
-
-          <div style="background:#0F1115; border-left:3px solid #10B981; padding:12px; border-radius:6px;">
-            <strong style="color:#10B981;">Selective Repeat (SR):</strong>
-            <ul style="margin:4px 0 0 0; padding-left:16px; font-size:11.5px; color:#D1D5DB;">
-              <li>Sender Window <strong>W<sub>s</sub> = N</strong>, Receiver Window <strong>W<sub>r</sub> = N</strong>.</li>
-              <li>Out-of-order frames <strong>accepted &amp; buffered</strong>.</li>
-              <li>Uses <strong>Independent ACKs &amp; NACKs</strong>. Timer per frame.</li>
-              <li>Efficiency &eta; = W<sub>s</sub> / (1 + 2a).</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3.9 Master Protocol Comparison Table -->
-      <div style="cursor:pointer;" onclick="openConceptExplanationModal('gbn_sr_compare')">
-        <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
-          3.9 &bull; Master Protocol Comparison Table (GATE CS)
-        </h2>
-
-        <table style="width:100%; border-collapse:collapse; font-size:12px; background:#0F1115; border-radius:6px; overflow:hidden;">
-          <thead>
-            <tr style="background:#161920; color:#F5F5F5; border-bottom:1px solid #23262D; text-align:left;">
-              <th style="padding:10px 12px;">Parameter</th>
-              <th style="padding:10px 12px;">Stop &amp; Wait</th>
-              <th style="padding:10px 12px;">Go-Back-N (GBN)</th>
-              <th style="padding:10px 12px;">Selective Repeat (SR)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Sender Window (W<sub>s</sub>)</td>
-              <td style="padding:10px 14px;">1</td>
-              <td style="padding:10px 14px;">N</td>
-              <td style="padding:10px 14px;">2<sup>k-1</sup></td>
-            </tr>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Receiver Window (W<sub>r</sub>)</td>
-              <td style="padding:10px 14px;">1</td>
-              <td style="padding:10px 14px; color:#EF4444;">1</td>
-              <td style="padding:10px 14px; color:#10B981;">2<sup>k-1</sup></td>
-            </tr>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Efficiency (&eta;)</td>
-              <td style="padding:10px 14px;">1 / (1 + 2a)</td>
-              <td style="padding:10px 14px;">min(1, N / (1 + 2a))</td>
-              <td style="padding:10px 14px;">min(1, W<sub>s</sub> / (1 + 2a))</td>
-            </tr>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Total Buffers (W<sub>s</sub> + W<sub>r</sub>)</td>
-              <td style="padding:10px 14px;">1 + 1 = 2</td>
-              <td style="padding:10px 14px;">N + 1</td>
-              <td style="padding:10px 14px;">N + N = 2N</td>
-            </tr>
-            <tr style="border-bottom:1px solid #23262D;">
-              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Min Sequence Numbers</td>
-              <td style="padding:10px 14px;">2</td>
-              <td style="padding:10px 14px;">N + 1</td>
-              <td style="padding:10px 14px;">2N</td>
-            </tr>
-            <tr>
-              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Min Bits for Seq No. (k)</td>
-              <td style="padding:10px 14px;">1 bit</td>
-              <td style="padding:10px 14px;">&lceil;log<sub>2</sub>(N + 1)&rceil;</td>
-              <td style="padding:10px 14px;">&lceil;log<sub>2</sub>(2N)&rceil;</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-  `
-};
-
-const LEARN_CN_TOPICS = [
-  { id: 'cn_1', num: '01', title: 'IP Addressing, Subnetting & Supernetting', status: 'Ready' },
-  { id: 'cn_2', num: '02', title: 'Error Control', status: 'Ready' },
-  { id: 'cn_3', num: '03', title: 'Flow Control', status: 'Ready' },
-  { id: 'cn_4', num: '04', title: 'IPv4 Header', status: 'Ready' },
-  { id: 'cn_5', num: '05', title: 'TCP & UDP', status: 'Ready' },
-  { id: 'cn_6', num: '06', title: 'Medium Access Control [MAC]', status: 'Ready' },
-  { id: 'cn_7', num: '07', title: 'Routing Algorithms, Switching & IP Support Protocol', status: 'Ready' },
-  { id: 'cn_8', num: '08', title: 'Application Layer Protocol', status: 'Ready' },
-  { id: 'cn_9', num: '09', title: 'OSI and TCP/IP Protocol Stack', status: 'Ready' }
-];
-
-let activeLearnTopicId = null;
-
-function openConceptExplanationModal(conceptKey) {
-  const modal = document.getElementById('concept-modal-overlay');
-  const titleElem = document.getElementById('concept-modal-title');
-  const bodyElem = document.getElementById('concept-modal-body');
-
-  if (!modal || !bodyElem) return;
-
-  const explanationData = CONCEPT_EXPLANATIONS[conceptKey] || CONCEPT_EXPLANATIONS['cidr'];
-  if (titleElem) titleElem.innerText = explanationData.title || 'Concept Explanation';
-  bodyElem.innerHTML = explanationData.html || '<p>Detailed explanation coming soon.</p>';
-
-  modal.classList.add('active');
-  modal.style.display = 'flex';
-}
-
-function closeConceptModal() {
-  const modal = document.getElementById('concept-modal-overlay');
-  if (modal) {
-    modal.classList.remove('active');
-    modal.style.display = 'none';
+        `
+      }
+    ],
+    summary: '1NF = Atomic values. 2NF = No partial dependencies. 3NF = X is super key OR Y is prime attribute. BCNF = X is super key for all non-trivial FDs.',
+    pyqs: [
+      { year: '2025', q: 'Relation R(A,B,C,D) with FDs: {A➔B, B➔C, C➔D}. What is the highest normal form of R?', opt: ['1NF', '2NF', '3NF', 'BCNF'], ans: 0, explanation: 'Candidate Key is A. FD B➔C has B not super key and C non-prime attribute (transitive dependency). Thus R is in 1NF.' }
+    ]
   }
-}
+};
 
 function initRevisionModule() {
   const container = document.getElementById('revision-content-area') || document.getElementById('revision-main-content');
   if (!container) return;
 
-  if (activeLearnTopicId) {
-    renderLearnTopicViewer(container, activeLearnTopicId);
-  } else {
-    renderLearnTopicList(container);
-  }
+  renderLearningCenterWorkspace(container);
 }
 
-function renderLearnTopicList(container) {
+function renderLearningCenterWorkspace(container) {
+  const subData = LEARNING_SYLLABUS_DB[currentSelectedSubject] || LEARNING_SYLLABUS_DB['cn'];
+  const topicContent = RICH_TOPIC_CONTENTS[currentSelectedTopicId] || buildGenericTopicFallback(currentSelectedTopicId, subData);
+
   container.innerHTML = `
-    <!-- Top Header Banner -->
-    <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px 18px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+    <!-- Top Learning Center Header Bar -->
+    <div style="background:var(--bg-surface); border:1px solid var(--border-color); border-radius:10px; padding:12px 16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
       <div>
-        <h2 style="font-family:'Outfit', sans-serif; font-size:20px; font-weight:700; color:#F5F5F5; margin-bottom:2px;">Learn Center</h2>
-        <p style="color:#9CA3AF; font-size:12px;">Computer Networks (CN) Core Concepts & Study Modules.</p>
+        <h2 style="font-family:'Outfit', sans-serif; font-size:20px; font-weight:700; color:var(--text-main); margin-bottom:2px;">Learning Center</h2>
+        <p style="color:var(--text-sub); font-size:12px;">Comprehensive GATE Computer Science interactive documentation textbook.</p>
       </div>
-      <div style="display:flex; gap:8px;">
-        <span style="font-size:11px; background:rgba(59,130,246,0.15); color:#3B82F6; border:1px solid #3B82F6; padding:2px 10px; border-radius:12px; font-weight:700;">Computer Networks</span>
-        <span style="font-size:11px; background:rgba(16,185,129,0.15); color:#10B981; border:1px solid #10B981; padding:2px 10px; border-radius:12px; font-weight:700;">9 Modules</span>
+
+      <!-- Subject Switcher Dropdown & Search -->
+      <div style="display:flex; gap:10px; align-items:center;">
+        <select id="learn-subject-switcher" onchange="switchLearnSubject(this.value)" style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:6px 12px; border-radius:6px; font-size:12px; font-weight:600;">
+          ${Object.keys(LEARNING_SYLLABUS_DB).map(key => `
+            <option value="${key}" ${currentSelectedSubject === key ? 'selected' : ''}>${LEARNING_SYLLABUS_DB[key].title}</option>
+          `).join('')}
+        </select>
+
+        <div style="position:relative;">
+          <input type="text" id="learn-search-input" placeholder="Search topic or formula..." oninput="filterLearnTopics(this.value)" style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:6px 10px 6px 30px; border-radius:6px; font-size:12px; width:200px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--text-muted);"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+        </div>
       </div>
     </div>
 
-    <!-- Topics Grid -->
-    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:10px;">
-      ${LEARN_CN_TOPICS.map(t => `
-        <div class="card" style="padding:12px 14px; margin-bottom:0; cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="openLearnTopic('${t.id}')">
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div style="width:32px; height:32px; border-radius:6px; background:rgba(59,130,246,0.12); color:#3B82F6; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0;">
-              ${t.num}
-            </div>
+    <!-- 2-Column GitBook Layout (Left Navigation Sidebar + Right Content Area) -->
+    <div style="display:grid; grid-template-columns:260px 1fr; gap:14px; align-items:start;">
+      
+      <!-- Left Collapsible Sidebar Navigation -->
+      <div style="background:var(--bg-surface); border:1px solid var(--border-color); border-radius:10px; padding:12px; max-height:calc(100vh - 140px); overflow-y:auto;" id="learn-sidebar-nav">
+        <div style="font-size:11px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+          <span>${subData.title}</span>
+          <span style="font-size:10px; color:var(--text-muted);">${countTotalTopics(subData)} Topics</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          ${subData.chapters.map((chap, cIdx) => `
             <div>
-              <div style="font-size:13px; font-weight:700; color:#F5F5F5;">${t.title}</div>
+              <div style="font-size:12px; font-weight:700; color:var(--text-main); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+                <span style="font-size:10px; color:var(--accent-primary);">▼</span>
+                <span>${chap.name}</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:2px; padding-left:12px;">
+                ${chap.topics.map(t => {
+                  const isActive = t.id === currentSelectedTopicId;
+                  const isDone = userCompletedTopics[t.id];
+                  return `
+                    <button class="learn-topic-btn ${isActive ? 'active' : ''}" 
+                      style="background:${isActive ? 'var(--accent-subtle)' : 'transparent'}; border:none; color:${isActive ? 'var(--accent-primary)' : 'var(--text-sub)'}; font-size:11px; text-align:left; padding:5px 8px; border-radius:4px; cursor:pointer; font-weight:${isActive ? '700' : '400'}; display:flex; justify-content:space-between; align-items:center; transition:all 0.15s;"
+                      onclick="selectLearnTopic('${t.id}')">
+                      <span style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${t.title}</span>
+                      ${isDone ? '<span style="color:var(--color-success); font-size:10px;">✓</span>' : ''}
+                    </button>
+                  `;
+                }).join('')}
+              </div>
             </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- Right Main Reading Workspace Content -->
+      <div style="background:var(--bg-surface); border:1px solid var(--border-color); border-radius:10px; padding:20px;" id="learn-reading-workspace">
+        ${renderTopicContentReadingView(topicContent)}
+      </div>
+
+    </div>
+  `;
+}
+
+function renderTopicContentReadingView(c) {
+  const isDone = userCompletedTopics[c.id || currentSelectedTopicId];
+  const isBked = userBookmarkedTopics[c.id || currentSelectedTopicId];
+
+  return `
+    <!-- Topic Title & Meta Info -->
+    <div style="border-bottom:1px solid var(--border-color); padding-bottom:14px; margin-bottom:16px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
+        <div>
+          <div style="display:flex; gap:6px; align-items:center; margin-bottom:4px;">
+            <span style="background:rgba(59,130,246,0.15); color:var(--accent-primary); font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px; text-transform:uppercase;">${c.subject}</span>
+            <span style="font-size:10px; font-weight:700; color:${c.diff === 'Hard' ? '#EF4444' : c.diff === 'Easy' ? '#10B981' : '#F59E0B'}; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;">${c.diff}</span>
+            <span style="font-size:11px; color:var(--text-muted);">&bull; Est. ${c.time}</span>
           </div>
-          <button class="btn-primary" style="font-size:11px; padding:4px 10px; height:28px;" onclick="event.stopPropagation(); openLearnTopic('${t.id}')">Open ➔</button>
+          <h1 style="font-family:'Outfit', sans-serif; font-size:24px; font-weight:700; color:var(--text-main); margin-bottom:4px;">${c.title}</h1>
+          <p style="font-size:12px; color:var(--text-sub); margin:0;">Prerequisites: <strong>${c.prereq || 'Basic Computing Concepts'}</strong></p>
+        </div>
+
+        <!-- Action Controls -->
+        <div style="display:flex; gap:8px;">
+          <button class="btn-secondary" style="font-size:11px; padding:4px 10px; ${isBked ? 'border-color:#F59E0B; color:#F59E0B;' : ''}" onclick="toggleBookmarkTopic('${c.id || currentSelectedTopicId}')">
+            ${isBked ? 'Bookmarked' : 'Bookmark Topic'}
+          </button>
+          <button class="btn-primary" style="font-size:11px; padding:4px 12px; ${isDone ? 'background:#10B981;' : ''}" onclick="toggleMarkTopicCompleted('${c.id || currentSelectedTopicId}')">
+            ${isDone ? '✓ Completed' : 'Mark Completed'}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Introduction Box -->
+    <div style="background:var(--bg-surface-hover); border-left:3px solid var(--accent-primary); padding:12px 14px; border-radius:6px; font-size:13px; color:var(--text-main); line-height:1.6; margin-bottom:16px;">
+      ${c.intro}
+    </div>
+
+    <!-- Topic Sections Body -->
+    <div style="display:flex; flex-direction:column; gap:16px; line-height:1.6;">
+      ${(c.sections || []).map(sec => `
+        <div>
+          <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; color:var(--text-main); margin-bottom:8px;">${sec.heading}</h3>
+          <div style="font-size:13px; color:var(--text-main);">${sec.text}</div>
         </div>
       `).join('')}
     </div>
-  `;
-}
 
-function openLearnTopic(topicId) {
-  activeLearnTopicId = topicId;
-  initRevisionModule();
-}
-
-function closeLearnTopicViewer() {
-  activeLearnTopicId = null;
-  initRevisionModule();
-}
-
-function renderLearnTopicViewer(container, topicId) {
-  const topic = LEARN_CN_TOPICS.find(t => t.id === topicId) || LEARN_CN_TOPICS[0];
-  const customHTML = CN_TOPIC_CONTENTS[topicId];
-
-  container.innerHTML = `
-    <!-- Top Action Bar -->
-    <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:12px 16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
-      <button class="btn-secondary" style="font-size:12px; padding:4px 12px; height:30px;" onclick="closeLearnTopicViewer()">← Back to Modules</button>
-      <span style="font-size:12px; color:#9CA3AF; font-weight:600;">Module ${topic.num} of 09</span>
+    <!-- One-Page Summary Box -->
+    <div style="background:rgba(59,130,246,0.06); border:1px solid rgba(59,130,246,0.25); border-radius:8px; padding:14px; margin-top:20px;">
+      <div style="font-size:12px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:4px;">One-Page Revision Summary</div>
+      <p style="font-size:12px; color:var(--text-main); margin:0; line-height:1.5;">${c.summary || 'Summary notes available upon completing topic exercises.'}</p>
     </div>
 
-    <!-- Article Reader Card -->
-    <div class="card" style="padding:20px;">
-      <div style="border-bottom:1px solid #23262D; padding-bottom:12px; margin-bottom:16px;">
-        <span style="font-size:11px; font-weight:700; color:#3B82F6; text-transform:uppercase;">Computer Networks &bull; Unit ${topic.num}</span>
-        <h1 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; color:#F5F5F5; margin-top:4px;">${topic.title}</h1>
-      </div>
+    <!-- PYQs & Practice Section -->
+    ${c.pyqs && c.pyqs.length > 0 ? `
+      <div style="margin-top:20px; border-top:1px solid var(--border-color); padding-top:16px;">
+        <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; color:var(--text-main); margin-bottom:10px;">Official GATE PYQ Reference</h3>
+        ${c.pyqs.map(p => `
+          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:12px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-bottom:6px;">
+              <span>GATE ${p.year} Official Paper</span>
+              <span style="color:var(--color-success); font-weight:700;">1 Mark</span>
+            </div>
+            <div style="font-size:13px; color:var(--text-main); margin-bottom:10px; font-weight:600;">${p.q}</div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:12px; margin-bottom:10px;">
+              ${p.opt.map((o, idx) => `
+                <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:6px 10px; border-radius:4px; color:${idx === p.ans ? '#10B981' : 'var(--text-main)'};">
+                  ${String.fromCharCode(65 + idx)}) ${o} ${idx === p.ans ? '✓' : ''}
+                </div>
+              `).join('')}
+            </div>
 
-      <!-- Module Content Body -->
-      ${customHTML ? customHTML : `
-        <div id="learn-topic-content-body" style="min-height:240px; background:#0A0B0E; border:1px solid #23262D; border-radius:8px; padding:24px; text-align:center;">
-          <div style="width:44px; height:44px; border-radius:50%; background:rgba(59,130,246,0.12); color:#3B82F6; display:flex; align-items:center; justify-content:center; margin:0 auto 12px auto;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+            <div style="font-size:11px; color:var(--text-sub); background:rgba(0,0,0,0.3); padding:8px 10px; border-radius:4px;">
+              <strong>Solution Explanation:</strong> ${p.explanation}
+            </div>
           </div>
-          <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; color:#F5F5F5; margin-bottom:4px;">Module Workspace Ready</h3>
-          <p style="color:#9CA3AF; max-width:440px; margin:0 auto; font-size:12px; line-height:1.5;">
-            This study module is ready to receive your custom notes, formulas, diagrams, and explanations for <strong>${topic.title}</strong>.
-          </p>
-        </div>
-      `}
+        `).join('')}
+      </div>
+    ` : ''}
+
+    <!-- Next & Previous Topic Navigation Footer -->
+    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); margin-top:24px; padding-top:14px;">
+      <button class="btn-secondary" style="font-size:12px; padding:6px 12px;" onclick="navigateLearnTopicPrev()">← Previous Topic</button>
+      <button class="btn-primary" style="font-size:12px; padding:6px 16px;" onclick="navigateLearnTopicNext()">Next Topic →</button>
     </div>
   `;
+}
+
+function buildGenericTopicFallback(topicId, subData) {
+  let matchedTitle = 'GATE Core Topic Guide';
+  let matchedDiff = 'Medium';
+  let matchedTime = '15 min';
+
+  subData.chapters.forEach(chap => {
+    chap.topics.forEach(t => {
+      if (t.id === topicId) {
+        matchedTitle = t.title;
+        matchedDiff = t.diff;
+        matchedTime = t.time;
+      }
+    });
+  });
+
+  return {
+    id: topicId,
+    title: matchedTitle,
+    subject: subData.title,
+    diff: matchedDiff,
+    time: matchedTime,
+    prereq: 'Core Fundamental Computing Concepts',
+    intro: `Welcome to the comprehensive guide for <strong>${matchedTitle}</strong>. This module covers core theorems, mathematical derivations, architecture diagrams, and GATE CSE problem-solving techniques.`,
+    sections: [
+      {
+        heading: '1. Overview & Core Concepts',
+        text: `The study of <strong>${matchedTitle}</strong> is essential for solving 1-mark and 2-mark GATE questions. Focus on understanding the underlying properties and avoiding standard time-bound pitfalls.`
+      },
+      {
+        heading: '2. Essential Formulae & Derivations',
+        text: `
+          <div style="background:var(--bg-surface-hover); border-left:3px solid var(--accent-primary); padding:10px 12px; border-radius:6px; font-size:12px;">
+            Key Formula: <code>Complexity T(n) = O(n log n)</code> &bull; Maximum Nodes: <code>2^(h+1) - 1</code>
+          </div>
+        `
+      }
+    ],
+    summary: `${matchedTitle} forms a critical component of ${subData.title}. Master the definitions, practice PYQs, and revise the formula sheet prior to mock exams.`,
+    pyqs: []
+  };
+}
+
+function countTotalTopics(subData) {
+  let count = 0;
+  subData.chapters.forEach(c => count += c.topics.length);
+  return count;
+}
+
+function switchLearnSubject(subKey) {
+  currentSelectedSubject = subKey;
+  const subData = LEARNING_SYLLABUS_DB[subKey];
+  if (subData && subData.chapters[0] && subData.chapters[0].topics[0]) {
+    currentSelectedTopicId = subData.chapters[0].topics[0].id;
+  }
+  const container = document.getElementById('revision-content-area') || document.getElementById('revision-main-content');
+  if (container) renderLearningCenterWorkspace(container);
+}
+
+function selectLearnTopic(tId) {
+  currentSelectedTopicId = tId;
+  const workspace = document.getElementById('learn-reading-workspace');
+  if (workspace) {
+    const subData = LEARNING_SYLLABUS_DB[currentSelectedSubject] || LEARNING_SYLLABUS_DB['cn'];
+    const topicContent = RICH_TOPIC_CONTENTS[tId] || buildGenericTopicFallback(tId, subData);
+    workspace.innerHTML = renderTopicContentReadingView(topicContent);
+  }
+
+  // Update active state in sidebar
+  document.querySelectorAll('.learn-topic-btn').forEach(btn => {
+    btn.classList.remove('active');
+    btn.style.background = 'transparent';
+    btn.style.color = 'var(--text-sub)';
+  });
+
+  const activeBtn = Array.from(document.querySelectorAll('.learn-topic-btn')).find(b => b.getAttribute('onclick')?.includes(tId));
+  if (activeBtn) {
+    activeBtn.classList.add('active');
+    activeBtn.style.background = 'var(--accent-subtle)';
+    activeBtn.style.color = 'var(--accent-primary)';
+  }
+}
+
+function toggleMarkTopicCompleted(tId) {
+  userCompletedTopics[tId] = !userCompletedTopics[tId];
+  selectLearnTopic(tId);
+}
+
+function toggleBookmarkTopic(tId) {
+  userBookmarkedTopics[tId] = !userBookmarkedTopics[tId];
+  selectLearnTopic(tId);
+}
+
+function navigateLearnTopicNext() {
+  const subData = LEARNING_SYLLABUS_DB[currentSelectedSubject];
+  if (!subData) return;
+  
+  const allTopics = [];
+  subData.chapters.forEach(c => c.topics.forEach(t => allTopics.push(t.id)));
+
+  const idx = allTopics.indexOf(currentSelectedTopicId);
+  if (idx > -1 && idx < allTopics.length - 1) {
+    selectLearnTopic(allTopics[idx + 1]);
+  }
+}
+
+function navigateLearnTopicPrev() {
+  const subData = LEARNING_SYLLABUS_DB[currentSelectedSubject];
+  if (!subData) return;
+
+  const allTopics = [];
+  subData.chapters.forEach(c => c.topics.forEach(t => allTopics.push(t.id)));
+
+  const idx = allTopics.indexOf(currentSelectedTopicId);
+  if (idx > 0) {
+    selectLearnTopic(allTopics[idx - 1]);
+  }
+}
+
+function filterLearnTopics(query) {
+  const cleanQ = query.trim().toLowerCase();
+  document.querySelectorAll('.learn-topic-btn').forEach(btn => {
+    const txt = btn.textContent.toLowerCase();
+    if (!cleanQ || txt.includes(cleanQ)) {
+      btn.style.display = 'flex';
+    } else {
+      btn.style.display = 'none';
+    }
+  });
 }
 
 window.initRevisionModule = initRevisionModule;
-window.openLearnTopic = openLearnTopic;
-window.closeLearnTopicViewer = closeLearnTopicViewer;
-window.openConceptExplanationModal = openConceptExplanationModal;
-window.closeConceptModal = closeConceptModal;
+window.switchLearnSubject = switchLearnSubject;
+window.selectLearnTopic = selectLearnTopic;
+window.toggleMarkTopicCompleted = toggleMarkTopicCompleted;
+window.toggleBookmarkTopic = toggleBookmarkTopic;
+window.navigateLearnTopicNext = navigateLearnTopicNext;
+window.navigateLearnTopicPrev = navigateLearnTopicPrev;
+window.filterLearnTopics = filterLearnTopics;
 
 document.addEventListener('DOMContentLoaded', () => {
   initRevisionModule();
