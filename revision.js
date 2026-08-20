@@ -155,6 +155,152 @@ const CN_TOPIC_CONTENTS = {
       </div>
 
     </div>
+  `,
+  'cn_2': `
+    <div style="font-family: inherit; line-height: 1.6; color: #D1D5DB; font-size: 13px;">
+      
+      <!-- Section 2.1 Overview & Notes -->
+      <div style="margin-bottom: 20px; background: rgba(255,255,255,0.02); border: 1px solid #23262D; border-radius: 8px; padding: 14px 16px;">
+        <h3 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin-bottom: 8px;">2.1 Error Control Fundamentals</h3>
+        
+        <div style="background:#0F1115; border:1px solid #23262D; border-radius:6px; padding:10px 12px; margin-bottom:12px;">
+          <strong style="color:#F59E0B; font-size:12px;">Key Formula & Concepts:</strong>
+          <ul style="margin:6px 0 0 0; padding-left:16px; font-size:12px; color:#F5F5F5;">
+            <li><strong>Corrupted / Affected Bits Formula:</strong> <code style="color:#10B981;">Number of Corrupted Bits = Data Rate &times; Noise Duration</code></li>
+            <li>Burst errors are far more likely to occur in real networks than single-bit errors.</li>
+            <li>Error correction is mathematically and computationally more complex than simple error detection.</li>
+          </ul>
+        </div>
+
+        <!-- Detection vs Correction Table -->
+        <table style="width:100%; border-collapse:collapse; font-size:12px; border:1px solid #23262D; background:#0F1115; text-align:left;">
+          <thead>
+            <tr style="background:#161920; border-bottom:1px solid #23262D; color:#F5F5F5;">
+              <th style="padding:8px 12px; width:50%;">Error Detection</th>
+              <th style="padding:8px 12px; width:50%;">Error Correction</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:8px 12px;">1. Once an error is noticed, the corrupted packet is simply discarded.</td>
+              <td style="padding:8px 12px;">1. Has the internal capability to find and correct corrupted bits automatically.</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 12px;">2. Requires asking the sender for retransmission (e.g. ARQ).</td>
+              <td style="padding:8px 12px;">2. Does not require retransmission.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Error Types & Techniques Summary Grid -->
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-bottom:20px;">
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid #23262D; border-radius: 8px; padding: 14px 16px;">
+          <h3 style="font-family:'Outfit', sans-serif; font-size: 14px; font-weight: 700; color: #3B82F6; margin-bottom: 8px;">Error Control Schemes</h3>
+          <div style="font-size:12px; color:#F5F5F5;">
+            <strong style="color:#10B981; display:block; margin-bottom:4px;">Error Detection Schemes:</strong>
+            <ol style="margin:0 0 10px 0; padding-left:16px; color:#9CA3AF;">
+              <li>Simple Parity</li>
+              <li>2D Parity</li>
+              <li>Checksum</li>
+              <li>CRC (Cyclic Redundancy Check)</li>
+            </ol>
+            <strong style="color:#3B82F6; display:block; margin-bottom:4px;">Error Correction Scheme:</strong>
+            <ol style="margin:0; padding-left:16px; color:#9CA3AF;">
+              <li>Hamming Code</li>
+            </ol>
+          </div>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid #23262D; border-radius: 8px; padding: 14px 16px;">
+          <h3 style="font-family:'Outfit', sans-serif; font-size: 14px; font-weight: 700; color: #3B82F6; margin-bottom: 8px;">Types of Errors</h3>
+          <div style="font-size:12px; color:#9CA3AF;">
+            <p style="margin-bottom:8px;"><strong style="color:#F5F5F5;">1. Single-Bit Error:</strong> Only 1 bit in a given data unit is altered from 1 to 0 or 0 to 1.</p>
+            <p style="margin-bottom:0;"><strong style="color:#F5F5F5;">2. Burst Error:</strong> 2 or more bits in the data unit are changed. Measured from the first corrupted bit to the last corrupted bit.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2.1.1 - 2.1.4 Hamming Distance & Minimum Distance -->
+      <div style="margin-bottom: 20px; background: rgba(255,255,255,0.02); border: 1px solid #23262D; border-radius: 8px; padding: 14px 16px;">
+        <h3 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin-bottom: 8px;">2.1.1 – 2.1.4 Hamming Distance & Minimum Distance</h3>
+        
+        <p style="font-size:12px; margin-bottom:8px;">
+          <strong>Hamming Distance d(x, y):</strong> The number of corresponding bit positions in which two equal-length binary strings differ.
+        </p>
+
+        <div style="background:#0F1115; border:1px solid #23262D; padding:8px 12px; border-radius:6px; font-family:monospace; font-size:12px; margin-bottom:12px;">
+          d(000, 011) = 2 &nbsp;|&nbsp; d(100, 011) = 3 &nbsp;|&nbsp; d(10101, 11110) = 3<br>
+          <span style="color:#10B981; font-size:11px;">Shortcut: Apply XOR operation (&oplus;) on the two words and count the number of 1's in the result!</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px 12px; border-radius:6px;">
+            <strong style="color:#10B981; font-size:12px;">For Error Detection:</strong>
+            <p style="font-size:12px; color:#F5F5F5; margin-top:4px; margin-bottom:0;">
+              To detect <strong>d-bit</strong> errors, required minimum Hamming distance:<br>
+              <code style="color:#10B981; font-size:14px; font-weight:700;">d<sub>min</sub> = d + 1</code>
+            </p>
+          </div>
+
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px 12px; border-radius:6px;">
+            <strong style="color:#3B82F6; font-size:12px;">For Error Correction:</strong>
+            <p style="font-size:12px; color:#F5F5F5; margin-top:4px; margin-bottom:0;">
+              To correct <strong>d-bit</strong> errors, required minimum Hamming distance:<br>
+              <code style="color:#3B82F6; font-size:14px; font-weight:700;">d<sub>min</sub> = 2d + 1</code>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2.2 & 2.3 Parity Schemes -->
+      <div style="margin-bottom: 20px; background: rgba(255,255,255,0.02); border: 1px solid #23262D; border-radius: 8px; padding: 14px 16px;">
+        <h3 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin-bottom: 8px;">2.2 Simple Parity & 2.3 2D Parity Check</h3>
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px; border-radius:6px;">
+            <strong style="color:#F5F5F5; font-size:12px;">Simple Parity Check:</strong>
+            <ul style="margin:4px 0 0 0; padding-left:16px; font-size:11px; color:#9CA3AF;">
+              <li>Adds 1 extra parity bit to each dataword.</li>
+              <li>Can detect all single-bit errors.</li>
+              <li>Can detect any <strong>odd number</strong> of errors.</li>
+              <li><strong style="color:#EF4444;">CANNOT</strong> detect an even number of errors.</li>
+            </ul>
+          </div>
+
+          <div style="background:#0F1115; border:1px solid #23262D; padding:10px; border-radius:6px;">
+            <strong style="color:#F5F5F5; font-size:12px;">2D Parity Check Code:</strong>
+            <ul style="margin:4px 0 0 0; padding-left:16px; font-size:11px; color:#9CA3AF;">
+              <li>Organizes data bits into a matrix of rows & columns; parity calculated for each row & column.</li>
+              <li>Detects & corrects all <strong>single-bit errors</strong>.</li>
+              <li>Detects 2 or 3 bit errors anywhere in matrix.</li>
+              <li>Detects only specific 4+ bit error patterns.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2.4 CRC -->
+      <div style="background: rgba(255,255,255,0.02); border: 1px solid #23262D; border-radius: 8px; padding: 14px 16px;">
+        <h3 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin-bottom: 8px;">2.4 Cyclic Redundancy Check (CRC)</h3>
+        
+        <div style="font-size:12px; color:#F5F5F5;">
+          <div style="display:flex; gap:16px; margin-bottom:10px; font-family:monospace;">
+            <span>Dataword length = <strong>n</strong></span>
+            <span>Divisor length = <strong>k</strong></span>
+            <span>Appended Zeros = <strong style="color:#10B981;">(k &ndash; 1)</strong></span>
+          </div>
+
+          <ol style="margin:0; padding-left:18px; color:#9CA3AF;">
+            <li>Append <code style="color:#10B981;">(k &ndash; 1)</code> zeros to the original dataword message.</li>
+            <li>Perform <strong>Modulo-2 Binary Division</strong> (XOR division) using generator polynomial.</li>
+            <li>Remainder of the division = <strong>CRC Bits</strong>.</li>
+            <li>Transmitted Codeword = Original Dataword + CRC Bits.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
   `
 };
 
