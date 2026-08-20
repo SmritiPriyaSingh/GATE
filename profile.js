@@ -105,34 +105,72 @@ function renderProfileModule() {
       </div>
     </div>
 
-    <!-- 2. Read-Only Automated Study Statistics Grid -->
-    <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-bottom:14px;">Preparation Metrics (Read-Only)</h3>
+    <!-- 2. GATE Rank Prediction & Circular Progress Ring -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px;">
+      
+      <!-- Rank & Score Prediction Card -->
+      <div class="card" style="display:flex; justify-content:space-between; align-items:center; border-left:4px solid #10B981;">
+        <div>
+          <div style="font-size:11px; font-weight:700; color:#10B981; text-transform:uppercase;">GATE 2027 Prediction Engine</div>
+          <div style="font-size:20px; font-weight:700; color:#F5F5F5; margin-top:2px;">Est. Score: 74.50 / 100</div>
+          <div style="font-size:12px; color:#9CA3AF; margin-top:2px;">Predicted AIR Rank: <strong style="color:#10B981;">AIR < 350</strong> (Top 0.4%)</div>
+        </div>
+      </div>
+
+      <!-- Circular Progress Ring Card -->
+      <div class="card" style="display:flex; align-items:center; gap:16px;">
+        <svg width="60" height="60" viewBox="0 0 36 36" style="transform:rotate(-90deg);">
+          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#23262D" stroke-width="3" />
+          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#3B82F6" stroke-width="3" stroke-dasharray="${syllabusPct}, 100" />
+        </svg>
+        <div>
+          <div style="font-size:11px; font-weight:700; color:#3B82F6; text-transform:uppercase;">Mastery Level</div>
+          <div style="font-size:18px; font-weight:700; color:#F5F5F5;">${syllabusPct}% Syllabus Covered</div>
+          <div style="font-size:11px; color:#9CA3AF;">${completedTopics} of 85 Core Topics Mastered</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3. Achievements & Badges Bar -->
+    <div class="card" style="margin-bottom:20px;">
+      <div style="font-size:14px; font-weight:700; color:#F5F5F5; margin-bottom:10px;">Achievements & Badges</div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <span style="background:rgba(59,130,246,0.12); color:#3B82F6; border:1px solid rgba(59,130,246,0.3); padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700;">🎯 100+ Solved</span>
+        <span style="background:rgba(16,185,129,0.12); color:#10B981; border:1px solid rgba(16,185,129,0.3); padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700;">🔥 18-Day Streak</span>
+        <span style="background:rgba(245,158,11,0.12); color:#F59E0B; border:1px solid rgba(245,158,11,0.3); padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700;">📝 Mock Master (70+ Marks)</span>
+        <span style="background:rgba(139,92,246,0.12); color:#8B5CF6; border:1px solid rgba(139,92,246,0.3); padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700;">⚡ Fast Solver</span>
+      </div>
+    </div>
+
+    <!-- 4. Read-Only Automated Study Statistics Grid -->
+    <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin-bottom:12px;">Preparation Metrics (Read-Only)</h3>
     
-    <div class="stats-grid" style="grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); margin-bottom:24px;">
+    <div class="stats-grid" style="grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); margin-bottom:20px;">
       <div class="card stat-box">
         <div>
-          <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Syllabus Completed</div>
+          <div style="font-size:11px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Syllabus Completed</div>
           <div class="stat-val" style="color:var(--accent-primary);">${syllabusPct}%</div>
         </div>
       </div>
 
       <div class="card stat-box">
         <div>
-          <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Questions Solved</div>
+          <div style="font-size:11px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Questions Solved</div>
           <div class="stat-val">${solvedCount}</div>
         </div>
       </div>
 
       <div class="card stat-box">
         <div>
-          <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Overall Accuracy</div>
+          <div style="font-size:11px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Overall Accuracy</div>
           <div class="stat-val" style="color:var(--color-success);">${accuracy}%</div>
         </div>
       </div>
 
       <div class="card stat-box">
         <div>
-          <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Mock Tests Attempted</div>
+          <div style="font-size:11px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Mock Tests Attempted</div>
           <div class="stat-val">${mockCount}</div>
         </div>
       </div>

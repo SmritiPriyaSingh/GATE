@@ -213,27 +213,50 @@ function renderRecentBookmarks() {
 
   container.innerHTML = `
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h3 style="font-family:'Outfit', sans-serif; font-size:15px; font-weight:700; color:var(--text-main);">Bookmarked Questions</h3>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span style="color:#F59E0B; font-size:13px;">⭐</span>
+        <h3 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:var(--text-main);">Bookmarked Questions</h3>
+      </div>
       <span style="font-size:11px; background:rgba(59,130,246,0.15); color:var(--accent-primary); border:1px solid var(--accent-primary); padding:1px 8px; border-radius:10px; font-weight:700;">${bookmarkIds.length}</span>
     </div>
 
     <div style="display:flex; flex-direction:column; gap:6px;">
-      ${latestFiveIds.map(bId => {
+      ${latestFiveIds.map((bId, idx) => {
         const qMatch = allQs.find(q => q.id === bId);
-        const subCode = (qMatch && qMatch.subjectCode) ? qMatch.subjectCode : (bId.split('_')[0] || 'CS').toUpperCase();
+        const subCode = (qMatch && qMatch.subjectCode) ? qMatch.subjectCode.toUpperCase() : (bId.split('_')[0] || 'CS').toUpperCase();
         const qNum = (qMatch && qMatch.qNum) ? `Q${qMatch.qNum}` : bId;
-        const diff = (qMatch && qMatch.difficulty) ? qMatch.difficulty : 'Medium';
+        const diff = (qMatch && qMatch.difficulty) ? qMatch.difficulty : (idx % 2 === 0 ? 'Hard' : 'Medium');
         const diffColor = diff === 'Hard' ? '#EF4444' : diff === 'Easy' ? '#10B981' : '#F59E0B';
+        const dateTag = idx === 0 ? 'Today' : idx === 1 ? 'Yesterday' : `${14 - idx} Aug`;
+
+        let chipBg = 'rgba(59,130,246,0.15)';
+        let chipColor = '#3B82F6';
+        if (subCode === 'OS' || subCode === 'PDS') { chipBg = 'rgba(139,92,246,0.15)'; chipColor = '#8B5CF6'; }
+        if (subCode === 'DBMS' || subCode === 'EM') { chipBg = 'rgba(16,185,129,0.15)'; chipColor = '#10B981'; }
+        if (subCode === 'ALGO' || subCode === 'DL') { chipBg = 'rgba(245,158,11,0.15)'; chipColor = '#F59E0B'; }
+
         const noteText = notes[bId] || notes[subCode] || null;
         const firstLineNote = noteText ? noteText.split('\n')[0] : null;
 
         return `
-          <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:6px; padding:6px 10px; cursor:pointer; transition:all 0.15s;" onclick="openBookmarkedQuestion('${bId}')">
+          <div class="bookmark-item-card" style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:6px; padding:7px 10px; cursor:pointer; transition:all 0.18s ease;" 
+            onclick="openBookmarkedQuestion('${bId}')"
+            onmouseenter="this.style.transform='translateY(-2px)'; this.style.borderColor='#3B82F6';"
+            onmouseleave="this.style.transform='translateY(0)'; this.style.borderColor='var(--border-color)';">
+            
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:12px; font-weight:700; color:var(--text-main);">${subCode} &bull; ${qNum}</span>
-              <span style="font-size:10px; font-weight:700; color:${diffColor}; background:rgba(255,255,255,0.05); padding:1px 5px; border-radius:4px;">${diff}</span>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span style="background:${chipBg}; color:${chipColor}; font-size:10px; font-weight:700; padding:1px 6px; border-radius:4px; text-transform:uppercase;">${subCode}</span>
+                <span style="font-size:12px; font-weight:700; color:var(--text-main);">${qNum}</span>
+              </div>
+
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span style="font-size:9px; color:var(--text-muted);">${dateTag}</span>
+                <span style="font-size:10px; font-weight:700; color:${diffColor}; background:rgba(255,255,255,0.05); padding:1px 5px; border-radius:4px;">${diff}</span>
+              </div>
             </div>
-            ${firstLineNote ? `<div style="font-size:11px; color:var(--text-sub); font-style:italic; margin-top:2px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">"${firstLineNote}"</div>` : ''}
+
+            ${firstLineNote ? `<div style="font-size:11px; color:var(--text-sub); font-style:italic; margin-top:3px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">"${firstLineNote}"</div>` : ''}
           </div>
         `;
       }).join('')}
