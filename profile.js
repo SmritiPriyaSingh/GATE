@@ -3,6 +3,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   renderProfileModule();
   updateHeaderProfileButton();
+
+  // Prompt onboarding auth modal for first-time visitors
+  if (!localStorage.getItem('gate2027_user_registered')) {
+    setTimeout(() => {
+      openAuthModal();
+    }, 800);
+  }
 });
 
 function updateHeaderProfileButton() {
@@ -321,6 +328,38 @@ function removeBookmarkFromProfile(qId) {
   renderProfileModule();
 }
 
+function openAuthModal() {
+  const modal = document.getElementById('auth-modal-overlay');
+  if (modal) {
+    const prof = StorageManager.getProfile();
+    if (prof) {
+      const nameIn = document.getElementById('auth-input-name');
+      const emailIn = document.getElementById('auth-input-email');
+      if (nameIn && prof.name) nameIn.value = prof.name;
+      if (emailIn && prof.email) emailIn.value = prof.email;
+    }
+    modal.classList.add('active');
+  }
+}
+
+function closeAuthModal() {
+  const modal = document.getElementById('auth-modal-overlay');
+  if (modal) modal.classList.remove('active');
+}
+
+function handleUserAuthSubmit(e) {
+  if (e) e.preventDefault();
+  const name = document.getElementById('auth-input-name')?.value || 'Student Aspirant';
+  const email = document.getElementById('auth-input-email')?.value || 'student@gate2027.edu';
+  const targetYear = document.getElementById('auth-input-target')?.value || '2027';
+  const branch = document.getElementById('auth-input-branch')?.value || 'Computer Science (CS)';
+
+  StorageManager.saveProfile({ name, email, targetYear, branch });
+  localStorage.setItem('gate2027_user_registered', 'true');
+  closeAuthModal();
+  renderProfileModule();
+}
+
 window.renderProfileModule = renderProfileModule;
 window.updateHeaderProfileButton = updateHeaderProfileButton;
 window.handleAvatarUpload = handleAvatarUpload;
@@ -329,3 +368,6 @@ window.openEditProfileModal = openEditProfileModal;
 window.closeEditProfileModal = closeEditProfileModal;
 window.saveProfileChanges = saveProfileChanges;
 window.removeBookmarkFromProfile = removeBookmarkFromProfile;
+window.openAuthModal = openAuthModal;
+window.closeAuthModal = closeAuthModal;
+window.handleUserAuthSubmit = handleUserAuthSubmit;
