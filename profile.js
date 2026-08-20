@@ -423,18 +423,23 @@ function handleUserSignOut() {
 }
 
 function handleGoogleAuth() {
-  const sampleName = prompt('Enter your Google Account Name:', 'Alex Johnson');
-  if (!sampleName) return;
-  const sampleEmail = prompt('Enter your Gmail Address:', `${sampleName.toLowerCase().replace(/[^a-z0-9]/g, '.')}@gmail.com`);
-  if (!sampleEmail) return;
-  const username = `@${sampleName.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+  const typedName = document.getElementById('auth-input-name')?.value?.trim();
+  const typedUsername = document.getElementById('auth-input-username')?.value?.trim();
+  const typedEmail = document.getElementById('auth-input-email')?.value?.trim();
+  const typedTarget = document.getElementById('auth-input-target')?.value?.trim() || '2027';
+  const typedBranch = document.getElementById('auth-input-branch')?.value || 'Computer Science (CS)';
+
+  const name = typedName || 'Google User';
+  let username = typedUsername || `@${name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+  if (!username.startsWith('@')) username = `@${username}`;
+  const email = (typedEmail && typedEmail.includes('@')) ? typedEmail : `${name.toLowerCase().replace(/[^a-z0-9]/g, '.')}@gmail.com`;
 
   StorageManager.saveProfile({
-    name: sampleName,
+    name: name,
     username: username,
-    email: sampleEmail,
-    targetYear: '2027',
-    branch: 'Computer Science (CS)'
+    email: email,
+    targetYear: typedTarget,
+    branch: typedBranch
   });
   localStorage.setItem('gate2027_user_registered', 'true');
   closeAuthModal();
@@ -442,17 +447,23 @@ function handleGoogleAuth() {
 }
 
 function handleAppleAuth() {
-  const sampleName = prompt('Enter your Apple ID Name:', 'Alex Rivers');
-  if (!sampleName) return;
-  const sampleEmail = `${sampleName.toLowerCase().replace(/[^a-z0-9]/g, '.')}@icloud.com`;
-  const username = `@${sampleName.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+  const typedName = document.getElementById('auth-input-name')?.value?.trim();
+  const typedUsername = document.getElementById('auth-input-username')?.value?.trim();
+  const typedEmail = document.getElementById('auth-input-email')?.value?.trim();
+  const typedTarget = document.getElementById('auth-input-target')?.value?.trim() || '2027';
+  const typedBranch = document.getElementById('auth-input-branch')?.value || 'Computer Science (CS)';
+
+  const name = typedName || 'Apple User';
+  let username = typedUsername || `@${name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+  if (!username.startsWith('@')) username = `@${username}`;
+  const email = (typedEmail && typedEmail.includes('@')) ? typedEmail : `${name.toLowerCase().replace(/[^a-z0-9]/g, '.')}@icloud.com`;
 
   StorageManager.saveProfile({
-    name: sampleName,
+    name: name,
     username: username,
-    email: sampleEmail,
-    targetYear: '2027',
-    branch: 'Computer Science (CS)'
+    email: email,
+    targetYear: typedTarget,
+    branch: typedBranch
   });
   localStorage.setItem('gate2027_user_registered', 'true');
   closeAuthModal();
