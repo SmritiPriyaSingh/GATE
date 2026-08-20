@@ -1,4 +1,5 @@
 // Main Application Controller & Professional Navigation Drawer Handler
+import { inject } from '@vercel/analytics';
 
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
@@ -6,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
   updateBrandTitle();
   initGATE2027Countdown();
   initProfileDropdown();
+  
+  // Initialize Vercel Analytics
+  inject();
 });
 
 function initTheme() {
