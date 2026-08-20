@@ -27,7 +27,7 @@ function renderSettingsModule() {
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
         <div>
           <div style="font-size:11px; font-weight:700; color:var(--accent-primary); text-transform:uppercase;">Developer Tool</div>
-          <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-top:2px;">⚙️ Developer Demo Mode</h3>
+          <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; margin-top:2px;">Developer Demo Mode</h3>
           <p style="font-size:13px; color:var(--text-sub); margin-top:4px; max-width:600px;">
             Populate every dashboard, analytics page, and PYQ library with 6 months of realistic student study history (800+ solved questions, mock scores, heatmaps, and weak topics).
           </p>

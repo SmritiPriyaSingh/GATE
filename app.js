@@ -106,8 +106,6 @@ function navigateToView(targetView) {
     window.renderCBTWelcomeHub();
   } else if (targetView === 'analytics' && window.renderAnalyticsModule) {
     window.renderAnalyticsModule();
-  } else if (targetView === 'revision' && window.renderRevisionModule) {
-    window.renderRevisionModule();
   } else if (targetView === 'profile' && window.renderProfileModule) {
     window.renderProfileModule();
   } else if (targetView === 'settings' && window.renderSettingsModule) {

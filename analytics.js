@@ -70,7 +70,7 @@ function renderAnalyticsModule() {
         </p>
 
         <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-          <button class="btn-primary" style="font-size:12px; padding:8px 16px;" onclick="StorageManager.setDemoMode(true)">⚙️ Enable Demo Mode Now</button>
+          <button class="btn-primary" style="font-size:12px; padding:8px 16px;" onclick="StorageManager.setDemoMode(true)">Enable Demo Mode Now</button>
           <button class="btn-secondary" style="font-size:12px; padding:8px 16px;" onclick="navigateToView('practice')">Start Practice Center ➔</button>
           <button class="btn-secondary" style="font-size:12px; padding:8px 16px;" onclick="navigateToView('cbt')">Take Full Mock Test ➔</button>
         </div>
@@ -151,7 +151,7 @@ function renderAnalyticsModule() {
           <span style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Current Streak</span>
           <span style="font-size:11px; color:#9CA3AF;">Best: 41 Days</span>
         </div>
-        <div style="font-size:24px; font-weight:700; color:#F5F5F5; margin-top:2px;">18 Days 🔥</div>
+        <div style="font-size:24px; font-weight:700; color:#F5F5F5; margin-top:2px;">18 Days</div>
         <div style="font-size:10px; color:#10B981; letter-spacing:1px; margin-top:2px;">■■■■■■■■■■■■■■■■■■</div>
       </div>
 
@@ -248,7 +248,7 @@ function renderAnalyticsModule() {
         </div>
 
         <button class="btn-secondary" style="font-size:11px; padding:4px 10px; color:#3B82F6; border-color:rgba(59,130,246,0.3);" onclick="triggerReplayProgressAnimation()">
-          ▶ Replay Timeline
+          Replay Timeline
         </button>
       </div>
 
