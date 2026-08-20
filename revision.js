@@ -1,88 +1,28 @@
-// Revision & Topic Notes Module
-
-let activeRevisionCategory = 'bookmarks';
+// Learn Center Module (Formerly Revision)
 
 function initRevisionModule() {
-  renderRevisionCategory('bookmarks');
-}
-
-function renderRevisionCategory(category) {
-  activeRevisionCategory = category;
-  const container = document.getElementById('revision-content-area');
+  const container = document.getElementById('revision-content-area') || document.getElementById('revision-main-content');
   if (!container) return;
 
-  if (category === 'bookmarks') {
-    const bookmarkedIds = StorageManager.getBookmarks();
-    const bookmarkedQuestions = allPracticeQuestions.filter(q => bookmarkedIds.includes(q.id));
+  container.innerHTML = `
+    <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:20px; margin-bottom:16px;">
+      <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; color:#F5F5F5; margin-bottom:4px;">Learn Center</h2>
+      <p style="color:#9CA3AF; font-size:12px;">Structured learning resources, concept guides, and study materials.</p>
+    </div>
 
-    if (bookmarkedQuestions.length === 0) {
-      container.innerHTML = `
-        <div class="glass-card" style="text-align:center; padding:40px; color:var(--text-muted);">
-          ⭐ No bookmarked questions yet! Click the "☆ Bookmark" button while practicing to add questions here for quick revision.
-        </div>
-      `;
-    } else {
-      container.innerHTML = `
-        <div style="display:flex; flex-direction:column; gap:16px;">
-          ${bookmarkedQuestions.map((q, idx) => `
-            <div class="glass-card">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span class="badge badge-purple">${q.subjectName} &bull; ${q.type}</span>
-                <button class="btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="StorageManager.toggleBookmark('${q.id}'); renderRevisionCategory('bookmarks');">Remove ⭐</button>
-              </div>
-              <div style="font-weight:600; font-size:15px;">${q.text}</div>
-              <div class="solution-card">
-                <strong>Solution:</strong>
-                <p style="margin-top:4px; white-space:pre-line;">${q.solution}</p>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
-  } else if (category === 'notes') {
-    const notes = StorageManager.getAllTopicNotes();
-    const keys = Object.keys(notes);
-
-    container.innerHTML = `
-      <div class="glass-card" style="margin-bottom:20px;">
-        <h3 class="section-title">📝 My Personal Study Notes</h3>
-        <p style="color:var(--text-secondary); font-size:14px; margin-bottom:16px;">Write notes for any syllabus topic below. Everything is saved automatically.</p>
-        
-        <div style="display:flex; gap:12px; margin-bottom:16px;">
-          <input type="text" id="custom-note-key" class="search-input" placeholder="Topic name (e.g. Recurrence Relations)..." style="flex:1;">
-        </div>
-        <textarea id="custom-note-text" class="search-input" style="width:100%; height:120px; font-family:var(--font-main);" placeholder="Write key formulas, concepts, or shortcuts here..."></textarea>
-        <button class="btn-primary" style="margin-top:12px;" onclick="saveCustomTopicNote()">💾 Save Note</button>
+    <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:48px 24px; text-align:center;">
+      <div style="width:48px; height:48px; border-radius:50%; background:rgba(59,130,246,0.1); color:#3B82F6; display:flex; align-items:center; justify-content:center; margin:0 auto 14px auto;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
       </div>
-
-      <div style="display:flex; flex-direction:column; gap:16px;">
-        ${keys.length === 0 ? `<div style="color:var(--text-muted); text-align:center; padding:20px;">No saved notes yet. Write your first note above!</div>` :
-          keys.map(k => `
-            <div class="glass-card">
-              <div style="font-weight:700; color:var(--accent-primary); margin-bottom:6px;">${k}</div>
-              <div style="white-space:pre-line; color:var(--text-primary); font-size:14px;">${notes[k]}</div>
-            </div>
-          `).join('')
-        }
-      </div>
-    `;
-  }
+      <h3 style="font-family:'Outfit', sans-serif; font-size:18px; font-weight:700; color:#F5F5F5; margin-bottom:6px;">Learn Center Ready</h3>
+      <p style="color:#9CA3AF; max-width:480px; margin:0 auto 16px auto; font-size:13px; line-height:1.5;">
+        This section is set up and ready for your custom learning content.
+      </p>
+    </div>
+  `;
 }
 
-function saveCustomTopicNote() {
-  const key = document.getElementById('custom-note-key')?.value.trim();
-  const text = document.getElementById('custom-note-text')?.value.trim();
-
-  if (!key || !text) {
-    alert('Please enter both a topic name and note text.');
-    return;
-  }
-
-  StorageManager.saveTopicNotes(key, text);
-  alert('Note saved successfully!');
-  renderRevisionCategory('notes');
-}
+window.initRevisionModule = initRevisionModule;
 
 document.addEventListener('DOMContentLoaded', () => {
   initRevisionModule();

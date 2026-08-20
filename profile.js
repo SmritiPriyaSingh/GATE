@@ -53,6 +53,7 @@ function renderProfileModule() {
 
   const lastTopic = StorageManager.getLastTopic();
   const lastActiveText = lastTopic ? `${lastTopic.subject} (${lastTopic.topic})` : 'No active session recorded yet';
+  const bookmarks = StorageManager.getBookmarks();
 
   const initials = profile.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
   const defaultAvatarSVG = `
@@ -137,9 +138,43 @@ function renderProfileModule() {
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" style="margin-bottom:16px;">
       <h4 style="font-size:14px; font-weight:700; margin-bottom:8px;">Last Active Session</h4>
       <div style="font-size:13px; color:var(--text-sub);">${lastActiveText}</div>
+    </div>
+
+    <!-- 3. Bookmarked Questions & Saved Notes Section -->
+    <div class="card" style="margin-bottom:24px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <div>
+          <h4 style="font-size:15px; font-weight:700; color:var(--text-main);">Bookmarked Questions & Saved Items</h4>
+          <div style="font-size:12px; color:var(--text-sub); margin-top:2px;">Questions saved during practice sessions for quick reference.</div>
+        </div>
+        <span style="font-size:11px; background:rgba(59,130,246,0.15); color:var(--accent-primary); border:1px solid var(--accent-primary); padding:2px 8px; border-radius:12px; font-weight:700;">${bookmarks.length} Saved</span>
+      </div>
+
+      ${bookmarks.length === 0 ? `
+        <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); border-radius:8px; padding:20px; text-align:center;">
+          <div style="font-size:13px; font-weight:600; color:var(--text-main); margin-bottom:4px;">No Bookmarked Questions Yet</div>
+          <div style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">Bookmark tricky or important questions during practice to view them here.</div>
+          <button class="btn-primary" style="font-size:11px; padding:5px 12px;" onclick="navigateToView('practice')">Go to Practice Center ➔</button>
+        </div>
+      ` : `
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          ${bookmarks.map(bId => `
+            <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); padding:10px 14px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+              <div>
+                <span style="background:rgba(59,130,246,0.1); color:var(--accent-primary); border:1px solid var(--border-color); padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700; text-transform:uppercase;">${bId.split('_')[0] || 'GATE'}</span>
+                <span style="font-size:12px; font-weight:600; color:var(--text-main); margin-left:8px;">Question ID: ${bId}</span>
+              </div>
+              <div style="display:flex; gap:6px;">
+                <button class="btn-primary" style="font-size:11px; padding:3px 8px;" onclick="navigateToView('practice')">Practice</button>
+                <button class="btn-secondary" style="font-size:11px; padding:3px 8px; color:var(--color-danger); border-color:rgba(239,68,68,0.3);" onclick="removeBookmarkFromProfile('${bId}')">Remove</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `}
     </div>
 
     <!-- Edit Profile Modal -->
@@ -243,6 +278,11 @@ function saveProfileChanges() {
   renderProfileModule();
 }
 
+function removeBookmarkFromProfile(qId) {
+  StorageManager.toggleBookmark(qId);
+  renderProfileModule();
+}
+
 window.renderProfileModule = renderProfileModule;
 window.updateHeaderProfileButton = updateHeaderProfileButton;
 window.handleAvatarUpload = handleAvatarUpload;
@@ -250,3 +290,4 @@ window.removeUserAvatar = removeUserAvatar;
 window.openEditProfileModal = openEditProfileModal;
 window.closeEditProfileModal = closeEditProfileModal;
 window.saveProfileChanges = saveProfileChanges;
+window.removeBookmarkFromProfile = removeBookmarkFromProfile;
