@@ -422,54 +422,6 @@ function handleUserSignOut() {
   window.location.reload();
 }
 
-function handleGoogleAuth() {
-  const typedName = document.getElementById('auth-input-name')?.value?.trim();
-  const typedUsername = document.getElementById('auth-input-username')?.value?.trim();
-  const typedEmail = document.getElementById('auth-input-email')?.value?.trim();
-  const typedTarget = document.getElementById('auth-input-target')?.value?.trim() || '2027';
-  const typedBranch = document.getElementById('auth-input-branch')?.value || 'Computer Science (CS)';
-
-  const name = typedName || 'Google User';
-  let username = typedUsername || `@${name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
-  if (!username.startsWith('@')) username = `@${username}`;
-  const email = (typedEmail && typedEmail.includes('@')) ? typedEmail : `${name.toLowerCase().replace(/[^a-z0-9]/g, '.')}@gmail.com`;
-
-  StorageManager.saveProfile({
-    name: name,
-    username: username,
-    email: email,
-    targetYear: typedTarget,
-    branch: typedBranch
-  });
-  localStorage.setItem('gate2027_user_registered', 'true');
-  closeAuthModal();
-  renderProfileModule();
-}
-
-function handleAppleAuth() {
-  const typedName = document.getElementById('auth-input-name')?.value?.trim();
-  const typedUsername = document.getElementById('auth-input-username')?.value?.trim();
-  const typedEmail = document.getElementById('auth-input-email')?.value?.trim();
-  const typedTarget = document.getElementById('auth-input-target')?.value?.trim() || '2027';
-  const typedBranch = document.getElementById('auth-input-branch')?.value || 'Computer Science (CS)';
-
-  const name = typedName || 'Apple User';
-  let username = typedUsername || `@${name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
-  if (!username.startsWith('@')) username = `@${username}`;
-  const email = (typedEmail && typedEmail.includes('@')) ? typedEmail : `${name.toLowerCase().replace(/[^a-z0-9]/g, '.')}@icloud.com`;
-
-  StorageManager.saveProfile({
-    name: name,
-    username: username,
-    email: email,
-    targetYear: typedTarget,
-    branch: typedBranch
-  });
-  localStorage.setItem('gate2027_user_registered', 'true');
-  closeAuthModal();
-  renderProfileModule();
-}
-
 window.renderProfileModule = renderProfileModule;
 window.updateHeaderProfileButton = updateHeaderProfileButton;
 window.handleAvatarUpload = handleAvatarUpload;
@@ -483,5 +435,3 @@ window.openAuthModal = openAuthModal;
 window.closeAuthModal = closeAuthModal;
 window.handleUserAuthSubmit = handleUserAuthSubmit;
 window.handleUserSignOut = handleUserSignOut;
-window.handleGoogleAuth = handleGoogleAuth;
-window.handleAppleAuth = handleAppleAuth;
