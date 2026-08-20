@@ -568,9 +568,15 @@ body {
   border-top: 1px solid var(--border-color);
   z-index: 990;
   align-items: center;
-  justify-content: space-around;
-  padding: 0 6px;
+  justify-content: flex-start;
+  padding: 0 4px;
   backdrop-filter: blur(12px);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.bottom-nav-bar::-webkit-scrollbar {
+  display: none;
 }
 
 .bottom-nav-bar .nav-btn {
@@ -581,6 +587,8 @@ body {
   padding: 4px;
   gap: 2px;
   font-size: 10px;
+  flex: 1;
+  min-width: 48px;
 }
 
 .bottom-nav-bar .nav-btn .icon {
