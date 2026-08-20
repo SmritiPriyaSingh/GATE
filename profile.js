@@ -186,12 +186,12 @@ function renderProfileModule() {
 
     <!-- 3. Achievements & Badges Bar -->
     <div class="card" style="margin-bottom:20px;">
-      <div style="font-size:14px; font-weight:700; color:#F5F5F5; margin-bottom:10px;">Achievements & Badges</div>
+      <div style="font-size:13px; font-weight:700; color:#F5F5F5; margin-bottom:10px;">Achievements & Badges</div>
       <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <span style="background:rgba(59,130,246,0.12); color:#3B82F6; border:1px solid rgba(59,130,246,0.3); padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700;">🎯 100+ Solved</span>
-        <span style="background:rgba(16,185,129,0.12); color:#10B981; border:1px solid rgba(16,185,129,0.3); padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700;">🔥 18-Day Streak</span>
-        <span style="background:rgba(245,158,11,0.12); color:#F59E0B; border:1px solid rgba(245,158,11,0.3); padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700;">📝 Mock Master (70+ Marks)</span>
-        <span style="background:rgba(139,92,246,0.12); color:#8B5CF6; border:1px solid rgba(139,92,246,0.3); padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700;">⚡ Fast Solver</span>
+        <span style="background:rgba(59,130,246,0.12); color:#3B82F6; border:1px solid rgba(59,130,246,0.3); padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700;">100+ Questions Milestone</span>
+        <span style="background:rgba(16,185,129,0.12); color:#10B981; border:1px solid rgba(16,185,129,0.3); padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700;">18-Day Streak Active</span>
+        <span style="background:rgba(245,158,11,0.12); color:#F59E0B; border:1px solid rgba(245,158,11,0.3); padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700;">Mock Master (70+ Marks)</span>
+        <span style="background:rgba(139,92,246,0.12); color:#8B5CF6; border:1px solid rgba(139,92,246,0.3); padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700;">Fast Solver Badge</span>
       </div>
     </div>
 

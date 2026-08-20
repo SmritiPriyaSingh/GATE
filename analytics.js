@@ -125,35 +125,33 @@ function renderAnalyticsModule() {
       </div>
 
       <!-- Card 2: Questions Solved -->
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-          <div>
-            <div style="font-size:13px; font-weight:700; color:#F5F5F5;">Daily Study Hours</div>
-            <div style="font-size:11px; color:#9CA3AF;">Logged Duration Area</div>
-          </div>
-          <span style="font-size:11px; color:#3B82F6; font-weight:700;">● Hours</span>
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:8px; padding:10px 12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:10px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Questions Solved</span>
+          <span style="font-size:10px; color:#3B82F6; font-weight:700;">Goal: 1000</span>
         </div>
-
-        <div style="height:150px; position:relative; width:100%;">
-          ${generateSplineWaveChart(currentSet.hours, currentSet.labels, '#3B82F6', 'area')}
-        </div>
+        <div style="font-size:22px; font-weight:700; color:#F5F5F5; margin-top:2px;">845 Solved</div>
+        <div style="font-size:10px; color:#9CA3AF; margin-top:1px;"><strong style="color:#3B82F6;">155 Qs remaining</strong></div>
       </div>
 
-      <!-- Chart 4: Subject Accuracy Horizontal Bars (Notion Style) -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px;">
-        <div style="font-size:13px; font-weight:700; color:#F5F5F5; margin-bottom:12px;">Subject Accuracy Levels</div>
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          ${subjectRows.slice(0, 5).map(s => `
-            <div>
-              <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:600; color:#F5F5F5; margin-bottom:3px;">
-                <span>${s.name}</span>
-                <span style="color:${s.accuracy < 60 ? '#EF4444' : s.accuracy < 75 ? '#F59E0B' : '#10B981'};">${s.accuracy}%</span>
-              </div>
-              <div style="height:5px; background:#161920; border-radius:3px; overflow:hidden;">
-                <div style="width:${s.accuracy}%; height:100%; background:${s.accuracy < 60 ? '#EF4444' : s.accuracy < 75 ? '#F59E0B' : '#10B981'};"></div>
-              </div>
-            </div>
-          `).join('')}
+      <!-- Card 3: Study Hours -->
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:8px; padding:10px 12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:10px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Study Hours</span>
+          <span style="font-size:10px; color:#10B981; font-weight:700;">Avg 3.2h/day</span>
         </div>
+        <div style="font-size:22px; font-weight:700; color:#F5F5F5; margin-top:2px;">164.5 Hours</div>
+        <div style="font-size:10px; color:#9CA3AF; margin-top:1px;">93 / 180 Days Active</div>
+      </div>
+
+      <!-- Card 4: Streak -->
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:8px; padding:10px 12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:10px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Current Streak</span>
+          <span style="font-size:10px; color:#9CA3AF;">Best: 41 Days</span>
+        </div>
+        <div style="font-size:22px; font-weight:700; color:#F5F5F5; margin-top:2px;">18-Day Streak</div>
+        <div style="font-size:9px; color:#10B981; letter-spacing:1px; margin-top:1px;">■■■■■■■■■■■■■■■■■■</div>
       </div>
 
     </div>

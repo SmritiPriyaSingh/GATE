@@ -213,10 +213,7 @@ function renderRecentBookmarks() {
 
   container.innerHTML = `
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <div style="display:flex; align-items:center; gap:6px;">
-        <span style="color:#F59E0B; font-size:13px;">⭐</span>
-        <h3 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:var(--text-main);">Bookmarked Questions</h3>
-      </div>
+      <h3 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:var(--text-main);">Bookmarked Questions</h3>
       <span style="font-size:11px; background:rgba(59,130,246,0.15); color:var(--accent-primary); border:1px solid var(--accent-primary); padding:1px 8px; border-radius:10px; font-weight:700;">${bookmarkIds.length}</span>
     </div>
 
