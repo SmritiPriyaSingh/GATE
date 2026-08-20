@@ -257,9 +257,6 @@ function renderLearnTopicList(container) {
             </div>
             <div>
               <div style="font-size:13px; font-weight:700; color:#F5F5F5;">${t.title}</div>
-              <div style="font-size:11px; color:${CN_TOPIC_CONTENTS[t.id] ? '#10B981' : '#9CA3AF'}; margin-top:2px;">
-                ${CN_TOPIC_CONTENTS[t.id] ? 'Study Material Added' : 'Workspace Ready'}
-              </div>
             </div>
           </div>
           <button class="btn-primary" style="font-size:11px; padding:4px 10px; height:28px;" onclick="event.stopPropagation(); openLearnTopic('${t.id}')">Open ➔</button>
