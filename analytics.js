@@ -97,9 +97,9 @@ function renderAnalyticsModule() {
 
   container.innerHTML = `
     <!-- Header with Integrated Underline Time Filter -->
-    <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px 20px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+    <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:12px 16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
       <div>
-        <h2 style="font-family:'Outfit', sans-serif; font-size:22px; font-weight:700; color:#F5F5F5; margin-bottom:2px;">Performance Analytics</h2>
+        <h2 style="font-family:'Outfit', sans-serif; font-size:20px; font-weight:700; color:#F5F5F5; margin-bottom:2px;">Performance Analytics</h2>
         <p style="color:#9CA3AF; font-size:12px;">GATE 2027 Diagnostic report, TradingView smooth curves, and GitHub study activity.</p>
       </div>
 
@@ -111,100 +111,20 @@ function renderAnalyticsModule() {
       </div>
     </div>
 
-    <!-- 1. Storytelling Hero Card & Tighter Quick Stats (3 Columns x 2 Rows) -->
-    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-bottom:16px;">
+    <!-- SECTION 1: Hero Stats (One Single Row - 4 KPI Cards) -->
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:12px;">
       
       <!-- Card 1: Accuracy -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px;">
+      <div style="background:#0F1115; border:1px solid #23262D; border-radius:8px; padding:10px 12px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Overall Accuracy</span>
-          <span style="font-size:11px; color:#10B981; font-weight:700;">▲ ${currentSet.delta}</span>
+          <span style="font-size:10px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Overall Accuracy</span>
+          <span style="font-size:10px; color:#10B981; font-weight:700;">▲ ${currentSet.delta}</span>
         </div>
-        <div style="font-size:26px; font-weight:700; color:#F5F5F5; margin-top:2px;">84.2%</div>
-        <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Target: 90.0% &bull; <strong style="color:#10B981;">5.8% to go</strong></div>
+        <div style="font-size:22px; font-weight:700; color:#F5F5F5; margin-top:2px;">84.2%</div>
+        <div style="font-size:10px; color:#9CA3AF; margin-top:1px;">Target: 90.0% &bull; <strong style="color:#10B981;">5.8% to go</strong></div>
       </div>
 
       <!-- Card 2: Questions Solved -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px;">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Questions Solved</span>
-          <span style="font-size:11px; color:#3B82F6; font-weight:700;">Goal: 1000</span>
-        </div>
-        <div style="font-size:26px; font-weight:700; color:#F5F5F5; margin-top:2px;">845 Solved</div>
-        <div style="font-size:11px; color:#9CA3AF; margin-top:2px;"><strong style="color:#3B82F6;">155 Qs remaining</strong></div>
-      </div>
-
-      <!-- Card 3: Active Days -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px;">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Active Days Tracked</span>
-          <span style="font-size:11px; color:#10B981; font-weight:700;">87% Consistency</span>
-        </div>
-        <div style="font-size:26px; font-weight:700; color:#F5F5F5; margin-top:2px;">93 / 180 Days</div>
-        <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Started 22 Aug &bull; 8 Missed</div>
-      </div>
-
-      <!-- Card 4: Story Streak -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px;">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Current Streak</span>
-          <span style="font-size:11px; color:#9CA3AF;">Best: 41 Days</span>
-        </div>
-        <div style="font-size:24px; font-weight:700; color:#F5F5F5; margin-top:2px;">18 Days</div>
-        <div style="font-size:10px; color:#10B981; letter-spacing:1px; margin-top:2px;">■■■■■■■■■■■■■■■■■■</div>
-      </div>
-
-      <!-- Card 5: Weakest Subject -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px;">
-        <div style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Weakest Focus Area</div>
-        <div style="font-size:16px; font-weight:700; color:#EF4444; margin-top:4px;">Algorithms</div>
-        <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">58% Accuracy &bull; Needs Practice</div>
-      </div>
-
-      <!-- Card 6: Strongest Subject -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:14px;">
-        <div style="font-size:11px; font-weight:700; color:#9CA3AF; text-transform:uppercase;">Strongest Subject</div>
-        <div style="font-size:16px; font-weight:700; color:#10B981; margin-top:4px;">Databases (DBMS)</div>
-        <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">91% Accuracy &bull; Mastered</div>
-      </div>
-
-    </div>
-
-    <!-- 2. Mixed Chart Types Grid (TradingView Line, Bar Velocity, Area Chart) -->
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
-      
-      <!-- Chart 1: Accuracy TradingView Smooth Line Chart -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-          <div>
-            <div style="font-size:13px; font-weight:700; color:#F5F5F5;">Accuracy Trend Curve</div>
-            <div style="font-size:11px; color:#9CA3AF;">TradingView Line Chart &bull; <span style="color:#10B981;">${currentSet.delta}</span></div>
-          </div>
-          <span style="font-size:11px; color:#10B981; font-weight:700;">● Live</span>
-        </div>
-
-        <div style="height:150px; position:relative; width:100%;">
-          ${generateSplineWaveChart(currentSet.accuracy, currentSet.labels, '#10B981', 'line')}
-        </div>
-      </div>
-
-      <!-- Chart 2: Questions Solved Bar Chart -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-          <div>
-            <div style="font-size:13px; font-weight:700; color:#F5F5F5;">Questions Solved Velocity</div>
-            <div style="font-size:11px; color:#9CA3AF;">Daily Solved Counts</div>
-          </div>
-          <span style="font-size:11px; color:#3B82F6; font-weight:700;">● Solved</span>
-        </div>
-
-        <div style="height:150px; position:relative; width:100%;">
-          ${generateBarChart(currentSet.questions, currentSet.labels, '#3B82F6')}
-        </div>
-      </div>
-
-      <!-- Chart 3: Study Hours Area Chart -->
-      <div style="background:#0F1115; border:1px solid #23262D; border-radius:10px; padding:16px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
           <div>
             <div style="font-size:13px; font-weight:700; color:#F5F5F5;">Daily Study Hours</div>
