@@ -1,6 +1,83 @@
 // Learn Center Module - Computer Networks (CN) Study Modules
 
 const CONCEPT_EXPLANATIONS = {
+  'flow_delays': {
+    title: '3.1 – 3.3 Network Delays & Efficiency Formulas',
+    html: `
+      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
+        <h4 style="font-family:'Outfit', sans-serif; font-size:14px; font-weight:700; color:#3B82F6; margin-bottom:8px;">4 Key Network Delays:</h4>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+          <div style="background:#0F1115; border-left:3px solid #3B82F6; padding:8px 12px; border-radius:4px;">
+            <strong style="color:#F5F5F5;">Transmission Delay (T<sub>d</sub>):</strong> <code>T<sub>d</sub> = L / B</code><br>
+            <span style="color:#9CA3AF; font-size:11.5px;">Time to push all bits of frame size <strong>L</strong> onto link bandwidth <strong>B</strong>.</span>
+          </div>
+          <div style="background:#0F1115; border-left:3px solid #10B981; padding:8px 12px; border-radius:4px;">
+            <strong style="color:#F5F5F5;">Propagation Delay (P<sub>d</sub>):</strong> <code>P<sub>d</sub> = distance / velocity</code><br>
+            <span style="color:#9CA3AF; font-size:11.5px;">Time for 1 bit to travel distance <strong>d</strong> over medium speed <strong>v</strong>.</span>
+          </div>
+        </div>
+
+        <!-- Solved GATE Problem -->
+        <div style="background:#0F1115; border:1px solid #3B82F6; padding:12px; border-radius:6px;">
+          <span style="font-size:10px; font-weight:700; color:#3B82F6; text-transform:uppercase;">Solved GATE Standard Problem</span>
+          <div style="font-size:12px; color:#F5F5F5; margin-top:4px;">
+            <strong>Question:</strong> Packet Size L = 1000 bytes, Bandwidth B = 1 Mbps, Distance d = 2000 km, Speed v = 2 &times; 10<sup>8</sup> m/s. Find T<sub>d</sub> and P<sub>d</sub>.<br>
+            <div style="background:rgba(16,185,129,0.1); border-left:3px solid #10B981; padding:6px 10px; border-radius:4px; margin-top:6px; font-family:monospace; font-size:11.5px;">
+              T<sub>d</sub> = (1000 &times; 8 bits) / 10<sup>6</sup> bps = 8 ms<br>
+              P<sub>d</sub> = (2000 &times; 10<sup>3</sup> m) / (2 &times; 10<sup>8</sup> m/s) = 10 ms<br>
+              a = P<sub>d</sub> / T<sub>d</sub> = 10 / 8 = 1.25<br>
+              Stop-and-Wait Efficiency &eta; = 1 / (1 + 2a) = 1 / (1 + 2.5) = 1 / 3.5 = 28.57%
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+  },
+
+  'gbn_sr_compare': {
+    title: '3.7 – 3.9 GBN vs Selective Repeat (SR) Deep Dive',
+    html: `
+      <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
+        <table style="width:100%; border-collapse:collapse; font-size:12px; background:#0F1115; border-radius:6px; overflow:hidden;">
+          <thead>
+            <tr style="background:#161920; color:#F5F5F5; border-bottom:1px solid #23262D;">
+              <th style="padding:8px 12px; text-align:left;">Parameter</th>
+              <th style="padding:8px 12px;">Go-Back-N (GBN)</th>
+              <th style="padding:8px 12px;">Selective Repeat (SR)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:8px 12px; font-weight:700;">Sender Window (W<sub>s</sub>)</td>
+              <td style="padding:8px 12px;">N</td>
+              <td style="padding:8px 12px;">N (where W<sub>s</sub> = W<sub>r</sub> = 2<sup>k-1</sup>)</td>
+            </tr>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:8px 12px; font-weight:700;">Receiver Window (W<sub>r</sub>)</td>
+              <td style="padding:8px 12px; color:#EF4444;">1 (Always 1)</td>
+              <td style="padding:8px 12px; color:#10B981;">N (Equal to W<sub>s</sub>)</td>
+            </tr>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:8px 12px; font-weight:700;">Out-of-Order Frames</td>
+              <td style="padding:8px 12px; color:#EF4444;">Discarded &amp; Rejected</td>
+              <td style="padding:8px 12px; color:#10B981;">Accepted &amp; Buffered</td>
+            </tr>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:8px 12px; font-weight:700;">ACK Type</td>
+              <td style="padding:8px 12px;">Cumulative ACK</td>
+              <td style="padding:8px 12px;">Independent ACK + NACK</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 12px; font-weight:700;">Min Sequence Numbers</td>
+              <td style="padding:8px 12px;">N + 1</td>
+              <td style="padding:8px 12px;">2N (or W<sub>s</sub> + W<sub>r</sub>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    `
+  },
+
   'error_basics': {
     title: '2.1 Error Control Basics & Detection vs Correction',
     html: `
@@ -117,7 +194,6 @@ const CONCEPT_EXPLANATIONS = {
     title: '1.8 CIDR Allocation Rules & Solved GATE Example',
     html: `
       <div style="font-size:13px; line-height:1.6; color:#D1D5DB;">
-        
         <div style="background:rgba(59,130,246,0.1); border-left:4px solid #3B82F6; padding:12px 14px; border-radius:4px; margin-bottom:14px;">
           <strong style="color:#3B82F6; font-size:14px;">In Plain English: What is CIDR?</strong>
           <p style="margin:4px 0 0 0; color:#F5F5F5;">
@@ -662,6 +738,165 @@ const CN_TOPIC_CONTENTS = {
             5. <strong>Codeword Sent = Dataword + CRC Remainder</strong>.
           </div>
         </div>
+      </div>
+
+    </div>
+  `,
+
+  'cn_3': `
+    <div style="font-family:'Inter', system-ui, sans-serif; color: #E5E7EB; font-size: 13px; line-height: 1.6; max-width: 860px; margin: 0 auto;">
+
+      <!-- 3.1 – 3.3 Delays in Computer Networks -->
+      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('flow_delays')">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 6px; margin-bottom: 12px;">
+          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
+            3.1 – 3.3 &bull; Delays in Computer Networks
+          </h2>
+          <span style="font-size:11px; color:#3B82F6; font-weight:600;">Click for Solved GATE Examples ➔</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:10px; margin-bottom:12px;">
+          <div style="background:#0F1115; border-left:3px solid #3B82F6; padding:10px 12px; border-radius:4px;">
+            <strong style="color:#F5F5F5;">Transmission Delay (T<sub>d</sub>)</strong>
+            <div style="font-family:monospace; font-size:12px; color:#10B981; margin-top:2px;">T<sub>d</sub> = L / B</div>
+            <div style="font-size:11px; color:#9CA3AF;">Time to put bits onto link (Length / Bandwidth)</div>
+          </div>
+
+          <div style="background:#0F1115; border-left:3px solid #10B981; padding:10px 12px; border-radius:4px;">
+            <strong style="color:#F5F5F5;">Propagation Delay (P<sub>d</sub>)</strong>
+            <div style="font-family:monospace; font-size:12px; color:#10B981; margin-top:2px;">P<sub>d</sub> = d / v</div>
+            <div style="font-size:11px; color:#9CA3AF;">Time to travel medium (Distance / Velocity)</div>
+          </div>
+
+          <div style="background:#0F1115; border-left:3px solid #F59E0B; padding:10px 12px; border-radius:4px;">
+            <strong style="color:#F5F5F5;">Queuing Delay (Q<sub>d</sub>)</strong>
+            <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Time spent waiting in router buffer queues</div>
+          </div>
+
+          <div style="background:#0F1115; border-left:3px solid #8B5CF6; padding:10px 12px; border-radius:4px;">
+            <strong style="color:#F5F5F5;">Processing Delay (P<sub>rd</sub>)</strong>
+            <div style="font-size:11px; color:#9CA3AF; margin-top:2px;">Time router takes to inspect frame headers</div>
+          </div>
+        </div>
+
+        <div style="background:rgba(59,130,246,0.08); border-left:3px solid #3B82F6; padding:8px 12px; border-radius:4px; font-size:12px;">
+          <strong>Total Round-Trip Delay Formula:</strong> <code>Total Time = T<sub>d</sub> + 2&bull;P<sub>d</sub> + Q<sub>d</sub> + P<sub>rd</sub> + T<sub>ACK</sub></code>
+        </div>
+      </div>
+
+      <!-- 3.4 – 3.6 Stop-and-Wait Protocol -->
+      <div style="margin-bottom: 24px;">
+        <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
+          3.4 – 3.6 &bull; Stop-and-Wait ARQ & Efficiency
+        </h2>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div style="background:#0F1115; padding:12px; border-radius:6px; border-top:2px solid #3B82F6;">
+            <strong style="color:#3B82F6;">Sender &amp; Receiver Rules:</strong>
+            <ul style="margin:4px 0 0 0; padding-left:16px; font-size:11.5px; color:#D1D5DB;">
+              <li>Sender transmits 1 frame and waits for ACK.</li>
+              <li>Receiver consumes frame and sends ACK.</li>
+              <li>Sender window size <strong>W<sub>s</sub> = 1</strong>, Receiver window size <strong>W<sub>r</sub> = 1</strong>.</li>
+            </ul>
+          </div>
+
+          <div style="background:#0F1115; padding:12px; border-radius:6px; border-top:2px solid #10B981;">
+            <strong style="color:#10B981;">Efficiency &amp; Throughput Formulas:</strong>
+            <div style="font-family:monospace; font-size:12px; margin-top:4px; color:#F5F5F5;">
+              Efficiency &eta; = T<sub>d</sub> / (T<sub>d</sub> + 2P<sub>d</sub>) = 1 / (1 + 2a)<br>
+              where a = P<sub>d</sub> / T<sub>d</sub><br><br>
+              Throughput = &eta; &times; Bandwidth = L / Total_Time
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.7 Go-Back-N & 3.8 Selective Repeat -->
+      <div style="margin-bottom: 24px; cursor:pointer;" onclick="openConceptExplanationModal('gbn_sr_compare')">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
+          <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; margin:0;">
+            3.7 &bull; Go-Back-N (GBN) vs 3.8 &bull; Selective Repeat (SR)
+          </h2>
+          <span style="font-size:11px; background:#3B82F6; color:#FFF; font-weight:700; padding:2px 8px; border-radius:4px;">Click for Deep Comparison ➔</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div style="background:#0F1115; border-left:3px solid #EF4444; padding:12px; border-radius:6px;">
+            <strong style="color:#EF4444;">Go-Back-N (GBN):</strong>
+            <ul style="margin:4px 0 0 0; padding-left:16px; font-size:11.5px; color:#D1D5DB;">
+              <li>Sender Window <strong>W<sub>s</sub> = N</strong>, Receiver Window <strong>W<sub>r</sub> = 1</strong>.</li>
+              <li>Out-of-order frames <strong>discarded completely</strong>.</li>
+              <li>Uses <strong>Cumulative ACKs</strong>. Single timer for 1st frame.</li>
+              <li>Efficiency &eta; = N / (1 + 2a).</li>
+            </ul>
+          </div>
+
+          <div style="background:#0F1115; border-left:3px solid #10B981; padding:12px; border-radius:6px;">
+            <strong style="color:#10B981;">Selective Repeat (SR):</strong>
+            <ul style="margin:4px 0 0 0; padding-left:16px; font-size:11.5px; color:#D1D5DB;">
+              <li>Sender Window <strong>W<sub>s</sub> = N</strong>, Receiver Window <strong>W<sub>r</sub> = N</strong>.</li>
+              <li>Out-of-order frames <strong>accepted &amp; buffered</strong>.</li>
+              <li>Uses <strong>Independent ACKs &amp; NACKs</strong>. Timer per frame.</li>
+              <li>Efficiency &eta; = W<sub>s</sub> / (1 + 2a).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.9 Master Protocol Comparison Table -->
+      <div style="cursor:pointer;" onclick="openConceptExplanationModal('gbn_sr_compare')">
+        <h2 style="font-family:'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #3B82F6; border-bottom: 1px solid #23262D; padding-bottom: 4px; margin-bottom: 10px;">
+          3.9 &bull; Master Protocol Comparison Table (GATE CS)
+        </h2>
+
+        <table style="width:100%; border-collapse:collapse; font-size:12px; background:#0F1115; border-radius:6px; overflow:hidden;">
+          <thead>
+            <tr style="background:#161920; color:#F5F5F5; border-bottom:1px solid #23262D; text-align:left;">
+              <th style="padding:10px 12px;">Parameter</th>
+              <th style="padding:10px 12px;">Stop &amp; Wait</th>
+              <th style="padding:10px 12px;">Go-Back-N (GBN)</th>
+              <th style="padding:10px 12px;">Selective Repeat (SR)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Sender Window (W<sub>s</sub>)</td>
+              <td style="padding:10px 14px;">1</td>
+              <td style="padding:10px 14px;">N</td>
+              <td style="padding:10px 14px;">2<sup>k-1</sup></td>
+            </tr>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Receiver Window (W<sub>r</sub>)</td>
+              <td style="padding:10px 14px;">1</td>
+              <td style="padding:10px 14px; color:#EF4444;">1</td>
+              <td style="padding:10px 14px; color:#10B981;">2<sup>k-1</sup></td>
+            </tr>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Efficiency (&eta;)</td>
+              <td style="padding:10px 14px;">1 / (1 + 2a)</td>
+              <td style="padding:10px 14px;">min(1, N / (1 + 2a))</td>
+              <td style="padding:10px 14px;">min(1, W<sub>s</sub> / (1 + 2a))</td>
+            </tr>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Total Buffers (W<sub>s</sub> + W<sub>r</sub>)</td>
+              <td style="padding:10px 14px;">1 + 1 = 2</td>
+              <td style="padding:10px 14px;">N + 1</td>
+              <td style="padding:10px 14px;">N + N = 2N</td>
+            </tr>
+            <tr style="border-bottom:1px solid #23262D;">
+              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Min Sequence Numbers</td>
+              <td style="padding:10px 14px;">2</td>
+              <td style="padding:10px 14px;">N + 1</td>
+              <td style="padding:10px 14px;">2N</td>
+            </tr>
+            <tr>
+              <td style="padding:10px 14px; font-weight:700; color:#3B82F6;">Min Bits for Seq No. (k)</td>
+              <td style="padding:10px 14px;">1 bit</td>
+              <td style="padding:10px 14px;">&lceil;log<sub>2</sub>(N + 1)&rceil;</td>
+              <td style="padding:10px 14px;">&lceil;log<sub>2</sub>(2N)&rceil;</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
     </div>
