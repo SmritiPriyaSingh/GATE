@@ -422,6 +422,43 @@ function handleUserSignOut() {
   window.location.reload();
 }
 
+function handleGoogleAuth() {
+  const sampleName = prompt('Enter your Google Account Name:', 'Alex Johnson');
+  if (!sampleName) return;
+  const sampleEmail = prompt('Enter your Gmail Address:', `${sampleName.toLowerCase().replace(/[^a-z0-9]/g, '.')}@gmail.com`);
+  if (!sampleEmail) return;
+  const username = `@${sampleName.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+
+  StorageManager.saveProfile({
+    name: sampleName,
+    username: username,
+    email: sampleEmail,
+    targetYear: '2027',
+    branch: 'Computer Science (CS)'
+  });
+  localStorage.setItem('gate2027_user_registered', 'true');
+  closeAuthModal();
+  renderProfileModule();
+}
+
+function handleAppleAuth() {
+  const sampleName = prompt('Enter your Apple ID Name:', 'Alex Rivers');
+  if (!sampleName) return;
+  const sampleEmail = `${sampleName.toLowerCase().replace(/[^a-z0-9]/g, '.')}@icloud.com`;
+  const username = `@${sampleName.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+
+  StorageManager.saveProfile({
+    name: sampleName,
+    username: username,
+    email: sampleEmail,
+    targetYear: '2027',
+    branch: 'Computer Science (CS)'
+  });
+  localStorage.setItem('gate2027_user_registered', 'true');
+  closeAuthModal();
+  renderProfileModule();
+}
+
 window.renderProfileModule = renderProfileModule;
 window.updateHeaderProfileButton = updateHeaderProfileButton;
 window.handleAvatarUpload = handleAvatarUpload;
@@ -435,3 +472,5 @@ window.openAuthModal = openAuthModal;
 window.closeAuthModal = closeAuthModal;
 window.handleUserAuthSubmit = handleUserAuthSubmit;
 window.handleUserSignOut = handleUserSignOut;
+window.handleGoogleAuth = handleGoogleAuth;
+window.handleAppleAuth = handleAppleAuth;
