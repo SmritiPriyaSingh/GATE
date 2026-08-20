@@ -98,18 +98,18 @@ function renderPYQLibrary() {
         <span>Recent Exam Papers (2020 – 2026)</span>
         <div style="flex:1; height:1px; background:var(--border-color);"></div>
       </div>
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(310px, 1fr)); gap:18px;">
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:12px;">
         ${renderPaperCards(allYears.filter(y => y >= 2020), pyqProgress)}
       </div>
     </div>
 
     <!-- Timeline Group 2: Classic Papers (2007 - 2019) -->
     <div>
-      <div style="font-size:13px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+      <div style="font-size:12px; font-weight:700; color:var(--accent-primary); text-transform:uppercase; margin-bottom:10px; display:flex; align-items:center; gap:8px;">
         <span>Classic Exam Papers (2007 – 2019)</span>
         <div style="flex:1; height:1px; background:var(--border-color);"></div>
       </div>
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(310px, 1fr)); gap:18px;">
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:12px;">
         ${renderPaperCards(allYears.filter(y => y < 2020), pyqProgress)}
       </div>
     </div>
@@ -133,79 +133,34 @@ function renderPaperCards(yearsList, pyqProgress) {
   });
 
   if (filteredYears.length === 0) {
-    return `<div style="grid-column:1/-1; padding:30px; text-align:center; color:var(--text-muted); background:var(--bg-surface); border:1px solid var(--border-color); border-radius:8px;">No papers found matching your search and filter criteria.</div>`;
+    return `<div style="grid-column:1/-1; padding:20px; text-align:center; color:var(--text-muted); background:var(--bg-surface); border:1px solid var(--border-color); border-radius:8px; font-size:12px;">No papers found matching criteria.</div>`;
   }
 
   return filteredYears.map(yr => {
     const qCount = pyqDatabase.filter(q => q.year == yr).length || 65;
     const prog = pyqProgress[yr] || { completed: 0, accuracy: 0, bestScore: 0, lastAttempt: null };
-
     const isAttempted = prog.completed > 0;
 
-    if (isAttempted) {
-      return `
-        <div class="card" style="padding:20px; display:flex; flex-direction:column; justify-content:space-between; border-left:3px solid var(--accent-primary);">
-          <div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-              <h3 style="font-family:'Outfit', sans-serif; font-size:20px; font-weight:700;">GATE ${yr}</h3>
-              <span style="font-size:11px; font-weight:600; color:var(--accent-primary); background:var(--accent-subtle); padding:2px 8px; border-radius:4px;">
-                ${prog.completed >= qCount ? 'Completed' : 'In Progress'}
-              </span>
-            </div>
-            <div style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">Computer Science &bull; ${qCount} Questions</div>
-
-            <!-- Progress Details -->
-            <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); padding:10px 12px; border-radius:6px; display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:12px; margin-bottom:14px;">
-              <div>Completed: <strong>${prog.completed} / ${qCount}</strong></div>
-              <div>Accuracy: <strong style="color:var(--color-success);">${prog.accuracy}%</strong></div>
-              <div>Best Score: <strong>${prog.bestScore} M</strong></div>
-              <div>Last Attempt: <strong style="color:var(--text-sub);">${prog.lastAttempt || 'Recently'}</strong></div>
-            </div>
+    return `
+      <div class="card" style="padding:10px 12px; display:flex; flex-direction:column; justify-content:space-between; margin-bottom:0; ${isAttempted ? 'border-left:3px solid var(--accent-primary);' : ''}">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <h3 style="font-family:'Outfit', sans-serif; font-size:15px; font-weight:700; color:var(--text-main);">GATE ${yr}</h3>
+            <span style="font-size:10px; font-weight:600; color:${isAttempted ? 'var(--accent-primary)' : 'var(--text-muted)'};">
+              ${isAttempted ? `${prog.completed}/${qCount} Solved` : 'Never Attempted'}
+            </span>
           </div>
-
-          <!-- Action Buttons -->
-          <div style="display:flex; flex-direction:column; gap:8px;">
-            <button class="btn-primary" style="font-size:13px; padding:8px 14px;" onclick="launchPYQPaper(${yr}, 'practice')">
-              ▶ Continue Practice
-            </button>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-              <button class="btn-secondary" style="font-size:12px; padding:6px 10px;" onclick="launchPYQPaper(${yr}, 'exam')">CBT Exam</button>
-              <button class="btn-secondary" style="font-size:12px; padding:6px 10px;" onclick="launchPYQPaper(${yr}, 'practice')">Solutions</button>
-            </div>
+          <div style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">
+            ${qCount} Qs &bull; 3h &bull; 100 Marks ${isAttempted ? `&bull; <strong style="color:var(--color-success);">${prog.accuracy}% Acc</strong>` : ''}
           </div>
         </div>
-      `;
-    } else {
-      return `
-        <div class="card" style="padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
-          <div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-              <h3 style="font-family:'Outfit', sans-serif; font-size:20px; font-weight:700;">GATE ${yr}</h3>
-              <span style="font-size:11px; font-weight:600; color:var(--text-muted); background:var(--bg-surface-hover); padding:2px 8px; border-radius:4px;">
-                Never Attempted
-              </span>
-            </div>
-            <div style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">Computer Science Paper</div>
 
-            <!-- Empty State Details -->
-            <div style="background:var(--bg-surface-hover); border:1px solid var(--border-color); padding:10px 12px; border-radius:6px; font-size:12px; color:var(--text-sub); margin-bottom:14px;">
-              <div>Expected Time: <strong>3 Hours</strong> &bull; Max Marks: <strong>100</strong></div>
-              <div style="margin-top:2px;">Questions: <strong>${qCount} Qs</strong> &bull; Difficulty: <strong>★★★★☆</strong></div>
-            </div>
-          </div>
-
-          <!-- Primary First Attempt Action -->
-          <div style="display:flex; flex-direction:column; gap:8px;">
-            <button class="btn-primary" style="font-size:13px; padding:8px 14px;" onclick="launchPYQPaper(${yr}, 'practice')">
-              Start First Attempt ➔
-            </button>
-            <button class="btn-secondary" style="font-size:12px; padding:6px 10px;" onclick="launchPYQPaper(${yr}, 'exam')">
-              Take CBT Exam Mode
-            </button>
-          </div>
+        <div style="display:flex; gap:6px;">
+          <button class="btn-primary" style="flex:1; font-size:11px; padding:5px 8px;" onclick="launchPYQPaper(${yr}, 'practice')">${isAttempted ? 'Continue' : 'Start'}</button>
+          <button class="btn-secondary" style="flex:1; font-size:11px; padding:5px 8px;" onclick="launchPYQPaper(${yr}, 'exam')">CBT</button>
         </div>
-      `;
-    }
+      </div>
+    `;
   }).join('');
 }
 

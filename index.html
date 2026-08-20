@@ -170,10 +170,10 @@
       </div>
 
       <!-- 2 Column Layout: Workspace Focus (Left) & Today's Tasks (Right) -->
-      <div style="display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;">
+      <div style="display:grid; grid-template-columns:1fr 340px; gap:12px; align-items:start;">
 
         <!-- Left Column: Continue Studying & Subject Progress Overview -->
-        <div style="display:flex; flex-direction:column; gap:24px;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
 
           <!-- Continue Studying Card (Handles empty state gracefully) -->
           <div class="card" id="cmd-continue-card">
@@ -182,7 +182,7 @@
 
           <!-- Subject Progress Overview -->
           <div class="card">
-            <h3 style="font-family:'Outfit', sans-serif; font-size:17px; font-weight:700; margin-bottom:14px;">Subject Progress Overview</h3>
+            <h3 style="font-family:'Outfit', sans-serif; font-size:15px; font-weight:700; margin-bottom:10px;">Subject Progress Overview</h3>
             <div id="cmd-subject-progress-grid">
               <!-- Rendered dynamically -->
             </div>
@@ -191,18 +191,18 @@
         </div>
 
         <!-- Right Column: Today's Tasks & Diagnostic Activity Stream -->
-        <div style="display:flex; flex-direction:column; gap:24px;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
 
           <!-- Today's Tasks -->
           <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-              <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin:0;">Today's Tasks</h3>
-              <span style="font-size:12px; color:var(--text-sub);" id="cmd-task-count">0 remaining</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <h3 style="font-family:'Outfit', sans-serif; font-size:15px; font-weight:700; margin:0;">Today's Tasks</h3>
+              <span style="font-size:11px; color:var(--text-sub);" id="cmd-task-count">0 remaining</span>
             </div>
 
-            <div style="display:flex; gap:6px; margin-bottom:12px;">
-              <input type="text" id="cmd-task-input" placeholder="Add study target..." style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:6px 10px; border-radius:6px; font-size:13px; flex:1;" onkeydown="if(event.key==='Enter') addMissionTask()">
-              <button class="btn-primary" style="font-size:12px; padding:6px 12px;" onclick="addMissionTask()">+ Add</button>
+            <div style="display:flex; gap:6px; margin-bottom:10px;">
+              <input type="text" id="cmd-task-input" placeholder="Add study target..." style="background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-main); padding:5px 10px; border-radius:6px; font-size:12px; flex:1;" onkeydown="if(event.key==='Enter') addMissionTask()">
+              <button class="btn-primary" style="font-size:11px; padding:4px 10px;" onclick="addMissionTask()">+ Add</button>
             </div>
 
             <div id="cmd-task-list">
@@ -212,14 +212,14 @@
 
           <!-- Activity & Diagnostic Log -->
           <div class="card">
-            <h3 style="font-family:'Outfit', sans-serif; font-size:16px; font-weight:700; margin-bottom:12px;">Recent Activity</h3>
+            <h3 style="font-family:'Outfit', sans-serif; font-size:15px; font-weight:700; margin-bottom:10px;">Recent Activity</h3>
             <div id="cmd-activity-feed">
               <!-- Rendered dynamically -->
             </div>
           </div>
 
-          <!-- Bookmarked Questions Card (Populated dynamically) -->
-          <div class="card" id="cmd-bookmarks-card" style="margin-top:16px;">
+          <!-- Bookmarked Questions Card -->
+          <div class="card" id="cmd-bookmarks-card">
             <!-- Rendered dynamically from dashboard.js -->
           </div>
 
