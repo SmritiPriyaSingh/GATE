@@ -56,9 +56,14 @@ const DEMO_DATA = {
     '2026-08-11': 7, '2026-08-10': 13, '2026-08-09': 5, '2026-08-08': 10
   },
 
-  bookmarks: ['pyq_2026_q1', 'pyq_2025_q5', 'pyq_2024_q12'],
+  bookmarks: ['cn_q45', 'os_q18', 'dbms_q81', 'coa_q16', 'algo_q92'],
 
   notes: {
+    'cn_q45': 'Remember Dijkstra shortest path edge relaxation rule (d[v] > d[u] + w(u,v))',
+    'os_q18': 'Banker\'s Algorithm safe sequence condition check',
+    'dbms_q81': 'B+ Tree order vs max key calculation formula (m - 1 keys per node)',
+    'coa_q16': 'Cache hit latency vs main memory page fault miss penalty',
+    'algo_q92': 'QuickSelect average time complexity O(N) vs worst case O(N^2)',
     'Linear Algebra': 'Eigenvalues: det(A - lambda*I) = 0. Trace = sum of eigenvalues.',
     'Deadlock Conditions': '1. Mutual Exclusion\n2. Hold and Wait\n3. No Preemption\n4. Circular Wait'
   },
