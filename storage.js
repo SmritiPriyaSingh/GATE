@@ -79,7 +79,7 @@ const StorageManager = {
   // Demo Mode Control
   isDemoMode() {
     const val = localStorage.getItem(STORAGE_KEYS.DEMO_MODE);
-    if (val === null) return true; // Default to Demo Mode ON so dashboards are pre-populated on first launch
+    if (val === null) return false; // Default to Demo Mode OFF for new users
     return val === 'true';
   },
   setDemoMode(enabled) {
